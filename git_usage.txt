@@ -12,4 +12,7 @@ git branch -M main
 git push -u origin main
 
 other : 
-git status // get status of the working tree if there is any changes
+1. git status // get status of the working tree if there is any changes
+2. git add . // add all tree files
+3. git commit -m "" // commiting the changes
+4. git push -u origin main // push the changes

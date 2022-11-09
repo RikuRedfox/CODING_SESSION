@@ -1,0 +1,630 @@
+<style>
+*{padding: 0; margin: 0; box-sizing: border-box;}
+body{
+	background-color:black;
+}
+#container{
+	position: relative;
+	width: 550px;
+	height: 260px;
+	overflow: hidden;
+	/*border: 5px solid red;*/
+	background: red;
+	/*opacity:  0;*/
+}
+#background{
+	position: relative;
+	top: 0; left: 0;
+	width: 550px;
+	height:260px;
+	background: url('background_blanka.gif');
+	background-size: cover;
+}
+
+.player1, .player2{
+	position: absolute;
+	width: 100%; height: 100%;
+}
+
+#character1{
+	background: url('ken.png') 0px -80px;
+	bottom: 10px; left: 30px;
+	width:70px;
+	height:80px;
+	position:absolute;
+
+	border: 2px solid rgba(225, 0, 0, 0.4);
+}
+#character2{
+	background: url('ken.png') -70px -160px;
+	bottom: 10px; right: 620px;
+	width:70px;
+	height:80px;
+	position:absolute;
+	transform-origin: center center;
+	transform: scaleX(-1);
+
+	border: 2px solid rgba(0, 0, 225, 0.4);
+}
+#healthbar1{
+	width:200px;
+	height:15px;
+	background-color:lightgreen;
+	border:3px solid green;
+	position:absolute;
+	top:30px;
+	left:25px;
+}
+#healthbar2{
+	width:200px;
+	height:15px;
+	background-color:pink;
+	border:3px solid red;
+	position:absolute;
+	top:30px;
+	right: 25px;
+}
+.hadouken{
+	background: url('ken.png') no-repeat -9px -340px;
+	width: 32px;
+	height: 23px;
+}
+
+</style>
+
+<div id = "container">
+	<div id='background'>
+		<div class="player1">
+			<div id='character1'></div>
+		</div>
+
+		<div class="player2">
+			<div id='character2'></div>
+		</div>
+
+		<div id="hadouken"></div>
+
+		<div id='healthbar1'></div>
+		<div id='healthbar2'></div>
+	</div>
+</div>
+
+<script>
+	/// SCRIPT
+	// Input Object
+	var scInputs = {
+		player1: {
+			up: false,
+			down: false,
+			left: false,
+			right: false,
+			punch: false,
+			kick: false
+		},
+		player2: {
+			up: false,
+			down: false,
+			left: false,
+			right: false,
+			punch: false,
+			kick: false
+		}
+	}
+
+	// INITIALIZE
+	var ground = 240;
+	var bgm = new Audio("bg.mp3");
+	bgm.loop = true;
+	var instructions = confirm("Player 1:\n WASD - Movements\n F - Punch\n G - Kick\n\nPlayer 2:\n KO;L - Movements\n H - Punch\n J - Kick");
+
+	// Custom Sprite Composer
+	var spriteComposer = {
+		ken : {
+			idle : {
+				0: {x: -16, y: -81, w: 35, h: 79},
+				1: {x: -88, y: -80, w: 35, h: 80},
+				2: {x: -158, y: -81, w: 35, h: 79},
+				3: {x: -226, y: -82, w: 36, h: 78}
+			},
+			walkF : {
+				0: {x: -15, y: -242, w: 37, h: 78},
+				1: {x: -85, y: -242, w: 36, h: 78}
+			},
+			walkB : {
+				0: {x: -156, y: -242, w: 32, h: 78},
+				1: {x: -229, y: -242, w: 31, h: 78}
+			},
+			dock : {
+				0: {x: -17, y: -746, w: 35, h: 54}
+			},
+			punch : {
+				0: {x: -15, y: -161, w: 37, h: 79},
+				1: {x: -86, y: -161, w: 54, h: 79},
+				2: {x: -157, y: -161, w: 37, h: 79}
+			},
+			kick1 : {
+				0: {x: -19, y: -481, w: 37, h: 79},
+				1: {x: -19, y: -481, w: 37, h: 79},
+				2: {x: -70, y: -480, w: 54, h: 80},
+				3: {x: -141, y: -480, w: 67, h: 80},
+				4: {x: -141, y: -480, w: 67, h: 80},
+				5: {x: -223, y: -480, w: 39, h: 80}
+			},
+			kick2 : {
+				0: {x: -7, y: -561, w: 35, h: 79},
+				1: {x: -70, y: -561, w: 56, h: 80},
+				2: {x: -141, y: -561, w: 69, h: 80},
+				3: {x: -218, y: -561, w: 59, h: 80},
+				4: {x: -296, y: -561, w: 38, h: 80}
+			},
+			hadouken : {
+				0: {x: -10, y: -3, w: 50, h: 73},
+				1: {x: -80, y: -6, w: 51, h: 70},
+				2: {x: -146, y: -9, w: 62, h: 67},
+				3: {x: -218, y: -9, w: 62, h: 67},
+				4: {x: -218, y: -9, w: 62, h: 67},
+				5: {x: -218, y: -9, w: 62, h: 67},
+			},
+			hurt : {
+				0: {x: -296, y: -561, w: 38, h: 80},
+				1: {x: -296, y: -561, w: 38, h: 80}
+			}
+		},
+		hadouken : {
+			fire : {
+				0: {x: -9, y: -340, w: 32, h: 23},
+				1: {x: -84, y: -338, w: 25, h: 27}
+			}
+		}
+	}
+
+	/// Objects
+	var objPlayer1 = {
+		x: 100,
+		y: 180,
+		speed: 8,
+		state: "idle",
+		frame: 0,
+		kickCombo: 0,
+		nextFrame: true,
+		isColliding: false,
+		isHadouken: false,
+		isHurt: false,
+		canMove: true,
+		hp: 100
+	}
+	var objPlayer2 = {
+		x: 100,
+		y: 180,
+		speed: 8,
+		state: "idle",
+		frame: 0,
+		kickCombo: 0,
+		nextFrame: true,
+		isColliding: false,
+		isHadouken: false,
+		isHurt: false,
+		canMove: true,
+		hp: 100
+	}
+
+	var hadoukenNextFrame = true;
+	var hadoukenFrame = 0;
+	var hadouken = [];
+	var hitBox = [];
+
+	/// Functions
+	function updateCharacter(){
+		// Player 1
+		drawCharacter(objPlayer1);
+		stepCharacter(objPlayer1);
+		// Player 2
+		drawCharacter(objPlayer2);
+		stepCharacter(objPlayer2);
+
+	}
+	function stepCharacter(obj){
+		/// Movements 
+		// Player 1 and 2
+		var $id = "";
+		var $player = "";
+		var $parent = "";
+		var $origin = "";
+		var $face = 0;
+		var $speed = 0;
+		var $offset = 0;
+		if (obj == objPlayer1){$id = "#character1"; $player = "player1"; $parent = "p1"; $face = 1; $speed = 10; $offset = 50; $origin = "left"}
+		else {$id = "#character2"; $player = "player2"; $parent = "p2"; $face = -1; $speed = 10; $offset = 50; $origin = "right";}
+
+		var left = parseInt( getComputedStyle(document.querySelector($id), null).getPropertyValue("left").replace("px", "") );
+		if (scInputs[$player].down && obj.canMove){
+			if (obj.state != "dock") obj.frame = 0; obj.state = "dock";
+		}
+		else if (scInputs[$player].right && obj.canMove && obj.x < 530){
+			if (!obj.isColliding) obj.x += obj.speed;
+			if (obj.state != "walkF") obj.frame = 0; obj.state = "walkF";
+		}
+		else if (scInputs[$player].left && obj.canMove && obj.x > 20){
+			obj.x -= obj.speed;
+			if (obj.state != "walkB") obj.frame = 0; obj.state = "walkB";
+		}
+		else if (obj.canMove){
+			if (obj.state != "idle") obj.frame = 0; obj.state = "idle";
+		}
+		else if (!obj.canMove && obj.isHurt){
+			if (obj.state != "hurt") obj.frame = 0; obj.state = "hurt";
+		}
+		document.querySelector($id).style[$origin] = obj.x+"px";
+
+		/// Attacks
+		// Player 1 and 2
+		if (scInputs[$player].down && scInputs[$player].right && scInputs[$player].punch && obj.canMove){
+			obj.canMove = false;
+			obj.frame = 0;
+			obj.state = "hadouken";
+
+
+			setTimeout(()=>{
+				if (obj.isHadouken){return;}
+				new Audio("hadouken.mp3").play();
+				hadouken.push({x: obj.x+$offset, y: obj.y+14, face: $face, speed: $speed, parent: $parent});
+				obj.isHadouken = true;
+			},250);
+		}
+		else if (scInputs[$player].punch && obj.canMove && !scInputs[$player].down && !scInputs[$player].right){
+			obj.canMove = false;
+			obj.frame = 0;
+			obj.state = "punch";
+		}
+		else if (scInputs[$player].kick && obj.canMove && !scInputs[$player].down){
+			if (obj.kickCombo == 1) {
+				obj.canMove = false;
+				obj.frame = 0;
+				obj.state = "kick2";
+				obj.kickCombo = 0;
+				return
+			}
+			obj.canMove = false;
+			obj.frame = 0;
+			obj.state = "kick1";
+			obj.kickCombo = 1;
+
+			setTimeout(()=>{
+				obj.kickCombo = 0;
+			}, 1000);
+
+		}
+
+	}
+	function drawCharacter(obj){
+		/// Player 1
+		var output = "";
+		var frame = Object.keys(spriteComposer.ken[obj.state]).length;
+		var animationSpeed = 60;
+
+		switch(obj.state){
+			case "idle":
+				animationSpeed = 60;
+			break;
+			case "walkF":
+				animationSpeed = 120;
+			break;
+			case "walkB":
+				animationSpeed = 120;
+			break;
+			case "dock":
+				animationSpeed = 0;
+			break;
+			case "hadouken":
+				animationSpeed = 60;
+			break;
+			case "punch":
+				animationSpeed = 60;
+			break;
+			case "kick1":
+				animationSpeed = 60;
+			break;
+			case "kick2":
+				animationSpeed = 60;
+			break;
+			case "hurt":
+				var frames = 0;
+				if (objPlayer1.state == "hurt"){
+					frames = Object.keys(spriteComposer.ken[objPlayer2.state]).length;
+					if (objPlayer2.state == "kick1" || objPlayer2.state == "kick2"){ frames += 5;}
+				}
+				else if (objPlayer2.state == "hurt"){
+					frames = Object.keys(spriteComposer.ken[objPlayer1.state]).length;
+					if (objPlayer1.state == "kick1" || objPlayer2.state == "kick2"){ frames += 5;}
+				}
+				animationSpeed = 60 * (frames);
+			break;
+		}
+
+		var $id = "";
+		var $class = "";
+		var $healthId = 0;
+		if (obj == objPlayer1){$class = ".player1"; $id = "character1"; $origin = "left"; $healthId = 1}
+		else {$class = ".player2"; $id = "character2"; $origin = "left"; $healthId = 2}
+
+		if (!obj.nextFrame){return}
+		obj.nextFrame = false;
+		obj.frame = (obj.frame + 1) % frame;
+		output = `<div id='${$id}' style='background: url("ken.png") no-repeat ${spriteComposer.ken[obj.state][obj.frame].x}px ${spriteComposer.ken[obj.state][obj.frame].y}px; width: ${spriteComposer.ken[obj.state][obj.frame].w}px; height: ${spriteComposer.ken[obj.state][obj.frame].h}px;'></div>`;
+
+		setTimeout(()=>{
+			if (obj.frame == frame-1 && (obj.state == "punch" || obj.state == "kick1" || obj.state == "kick2" || obj.state == "hadouken" || obj.state == "hurt")) {
+				obj.state = "idle"; 
+				obj.isHurt = false;
+				obj.canMove = true; 
+				obj.isHadouken = false;
+				obj.isInvinsible = false;
+				obj.frame = 0;
+
+
+				// Check Health
+				if (objPlayer2.hp <= 0){
+					alert("Player 1 Won!");
+					location.reload();
+				}
+				else if (objPlayer1.hp <= 0){
+					alert("Player 2 Wonr!");
+					location.reload();
+				}
+			}
+			obj.nextFrame = true;
+		}, animationSpeed);
+
+
+		document.querySelector($class).innerHTML = output;
+		document.querySelector("#healthbar"+$healthId).style.width = obj.hp * 2+"px";
+	}
+
+	// Hadouken
+	function updateHadouken(){
+		drawHadouken();
+		stepHadouken();
+	}
+	function stepHadouken(){
+		for (var i = 0; i < hadouken.length; i++){
+			hadouken[i].x = hadouken[i].x + hadouken[i].speed; 
+		}
+	}
+	function drawHadouken(){
+		var output = "";
+		for (var i = 0; i < hadouken.length; i++){
+			var $origin = "";
+			if (hadouken[i].face == 1){$origin = "left"}
+			else if (hadouken[i].face == -1){$origin = "right"}
+			output += `<div class='hadouken' style='background: url("ken.png") no-repeat ${spriteComposer.hadouken.fire[hadoukenFrame].x}px ${spriteComposer.hadouken.fire[hadoukenFrame].y}px; position: absolute; top: ${hadouken[i].y}px; ${$origin}: ${hadouken[i].x}px; transform: scalex(${hadouken[i].face})' ></div>`;
+		}
+		document.querySelector("#hadouken").innerHTML = output;
+
+		if (hadoukenNextFrame){
+			hadoukenNextFrame = false;
+			hadoukenFrame = (hadoukenFrame+1) % 2;
+			setTimeout(()=>{hadoukenNextFrame = true},20);
+		}
+	}
+
+	// Collision Check
+	function collision(){
+		var roomWidth = parseInt(getComputedStyle(document.querySelector("#background"), null).getPropertyValue("width").replace("px", ""));
+		/// Hadouken
+		for (var i = 0; i < hadouken.length; i++){
+			// Out of bounds
+			if (hadouken[i].x < 10 || hadouken[i].x > roomWidth-10){
+				hadouken[i] = hadouken[hadouken.length-1];
+				hadouken.pop();
+			}
+
+			// If it hits players
+			if (hadouken[i].parent == "p1"){
+				if ((hadouken[i].x + objPlayer2.x) > 510 && !objPlayer2.isInvinsible){
+					hadouken[i] = hadouken[hadouken.length-1];
+					hadouken.pop();
+
+					objPlayer2.canMove = false;
+					objPlayer2.isInvinsible = true;
+					objPlayer2.frame = 0;
+					objPlayer2.state = "hurt";
+					objPlayer2.x -= 2;
+					objPlayer2.hp -= 4;
+
+					new Audio("stronghit.mp3").play();
+				}
+			}
+			else if (hadouken[i].parent == "p2"){
+				if ((hadouken[i].x + objPlayer1.x) > 510 && !objPlayer1.isInvinsible){
+					hadouken[i] = hadouken[hadouken.length-1];
+					hadouken.pop();
+
+					objPlayer1.canMove = false;
+					objPlayer1.isInvinsible = true;
+					objPlayer1.frame = 0;
+					objPlayer1.state = "hurt";
+					objPlayer1.x -= 2;
+					objPlayer1.hp -= 4;
+
+					new Audio("stronghit.mp3").play();
+				}
+			}
+		}
+
+		/// Player to Player
+		// They cant go through pass each other
+		if ((objPlayer1.x + objPlayer2.x) > 490 && (objPlayer1.x + objPlayer2.x) < 520){
+			objPlayer1.isColliding = true;
+			objPlayer2.isColliding = true;
+		} 
+		else{
+			objPlayer1.isColliding = false;
+			objPlayer2.isColliding = false;
+		}
+
+		// If player is attacking and close to opponentasdjasndhjkashdiujhfw
+		// For Punch
+		if ((objPlayer1.x + objPlayer2.x) > 470 && (objPlayer1.x + objPlayer2.x) < 520){
+			if (objPlayer1.state == "punch" && objPlayer2.state != "dock" && !objPlayer2.isInvinsible){
+				objPlayer2.canMove = false;
+				objPlayer2.isInvinsible = true;
+				objPlayer2.frame = 0;
+				objPlayer2.state = "hurt";
+				objPlayer2.x -= 2;
+				objPlayer2.hp -= 2;
+
+				new Audio("weakhit.mp3").play();
+			}
+			if (objPlayer2.state == "punch" && objPlayer1.state != "dock" && !objPlayer1.isInvinsible){
+				objPlayer1.canMove = false;
+				objPlayer1.isInvinsible = true;
+				objPlayer1.frame = 0;
+				objPlayer1.state = "hurt";
+				objPlayer1.x -= 2;
+				objPlayer1.hp -= 2;
+
+				new Audio("weakhit.mp3").play();
+			}
+		} 
+		if ((objPlayer1.x + objPlayer2.x) > 450 && (objPlayer1.x + objPlayer2.x) < 520){
+			if (objPlayer1.state == "kick1" && objPlayer2.state != "dock" && !objPlayer2.isInvinsible){
+				objPlayer2.canMove = false;
+				objPlayer2.isInvinsible = true;
+				objPlayer2.frame = 0;
+				objPlayer2.state = "hurt";
+				objPlayer2.x -= 2;
+				objPlayer2.hp -= 3;
+
+				new Audio("weakhit.mp3").play();
+			}
+			if (objPlayer2.state == "kick1" && objPlayer1.state != "dock" && !objPlayer1.isInvinsible){
+				objPlayer1.canMove = false;
+				objPlayer1.isInvinsible = true;
+				objPlayer1.frame = 0;
+				objPlayer1.state = "hurt";
+				objPlayer1.x -= 1;
+				objPlayer1.hp -= 3;
+
+				new Audio("weakhit.mp3").play();
+			}
+			if (objPlayer1.state == "kick2" && objPlayer2.canMove && !objPlayer2.isInvinsible){
+				objPlayer2.canMove = false;
+				objPlayer2.isInvinsible = true;
+				objPlayer2.frame = 0;
+				objPlayer2.state = "hurt";
+				objPlayer2.x -= 4;
+				objPlayer2.hp -= 5;
+
+				new Audio("strongHit.mp3").play();
+			}
+			if (objPlayer2.state == "kick2" && objPlayer1.canMove && !objPlayer1.isInvinsible){
+				objPlayer1.canMove = false;
+				objPlayer1.isInvinsible = true;
+				objPlayer1.frame = 0;
+				objPlayer1.state = "hurt";
+				objPlayer1.x -= 4;
+				objPlayer1.hp -= 5;
+
+				new Audio("strongHit.mp3").play();
+			}
+		} 
+	}
+
+	// Game Loop
+	function gameLoop(){
+		// Functions Here
+		updateCharacter();
+		updateHadouken();
+		collision();
+	}
+	setInterval(gameLoop, 60);
+
+	// Input Listener
+	document.onkeydown = function (e){
+		// console.log(e.keyCode);
+		bgm.play();
+
+		// Player 1 : A W D S | F G
+		if (e.keyCode == 65){
+			scInputs.player1.left = true;
+		}
+		if (e.keyCode == 87){
+			scInputs.player1.up = true;
+		}
+		if (e.keyCode == 68){
+			scInputs.player1.right = true;
+		}
+		if (e.keyCode == 83){
+			scInputs.player1.down = true;
+		}
+		if (e.keyCode == 70){
+			scInputs.player1.punch = true;
+		}
+		if (e.keyCode == 71){
+			scInputs.player1.kick = true;
+		}
+
+		// Player 2 : K O ; L | H J
+		if (e.keyCode == 75){
+			scInputs.player2.right = true;
+		}
+		if (e.keyCode == 79){
+			scInputs.player2.up = true;
+		}
+		if (e.keyCode == 186){
+			scInputs.player2.left = true;
+		}
+		if (e.keyCode == 76){
+			scInputs.player2.down = true;
+		}
+		if (e.keyCode == 72){
+			scInputs.player2.punch = true;
+		}
+		if (e.keyCode == 74){
+			scInputs.player2.kick = true;
+		}
+	}
+	document.onkeyup = function (e){
+		// console.log(e.keyCode);
+
+		// Player 1 : A W D S | F G
+		if (e.keyCode == 65){
+			scInputs.player1.left = false;
+		}
+		if (e.keyCode == 87){
+			scInputs.player1.up = false;
+		}
+		if (e.keyCode == 68){
+			scInputs.player1.right = false;
+		}
+		if (e.keyCode == 83){
+			scInputs.player1.down = false;
+		}
+		if (e.keyCode == 70){
+			scInputs.player1.punch = false;
+		}
+		if (e.keyCode == 71){
+			scInputs.player1.kick = false;
+		}
+
+		// Player 2 : K O ; L | H J
+		if (e.keyCode == 75){
+			scInputs.player2.right = false;
+		}
+		if (e.keyCode == 79){
+			scInputs.player2.up = false;
+		}
+		if (e.keyCode == 186){
+			scInputs.player2.left = false;
+		}
+		if (e.keyCode == 76){
+			scInputs.player2.down = false;
+		}
+		if (e.keyCode == 72){
+			scInputs.player2.punch = false;
+		}
+		if (e.keyCode == 74){
+			scInputs.player2.kick = false;
+		}
+	}
+</script>

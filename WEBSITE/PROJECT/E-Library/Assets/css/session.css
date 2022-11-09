@@ -1,0 +1,131 @@
+*{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+/* Background Colors */
+.bg-pink{
+	background-color: var(--pink);
+}
+.bg-grayishPink{
+	background-color: var(--grayishPink); 
+}
+.bg-gradientPink{
+	background: var(--gradientPink);
+	background: var(--gradientPink);
+}
+.customRounded{
+	border-radius: 50px !important;
+}
+label{
+	color: white;
+}
+
+/* Scrollbar */
+.registerForm::-webkit-scrollbar {
+  	width: 6px;     
+}
+
+.registerForm::-webkit-scrollbar-track {
+  	background: transparent;
+}
+
+.registerForm::-webkit-scrollbar-thumb {
+	background: rgb(2,0,36);
+	background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(165,170,150,1) 50%, rgba(0,212,255,0) 100%);
+	border-radius: 20px;      
+}
+
+/* Content */
+.overflow{
+	position: relative;
+	overflow-x: hidden;
+}
+
+.loginSwitch{
+	position: relative;
+	width: 100%;
+	border-radius: 10px;
+	text-align: center;
+	color: white;
+	padding: 10px;
+	float: right;
+	background-color: transparent;
+	z-index: 1;
+}
+
+.registerSwitch{
+	position: relative;
+	width: 100%;
+	border-radius: 10px;
+	text-align: center;
+	color: white;
+	padding: 10px;
+	float: left;
+	background-color: transparent;
+	z-index: 1;
+}
+
+.loginSwitch:hover, .registerSwitch:hover{
+	cursor: pointer;
+}
+
+.loginSwitch div{
+	position: absolute;
+	bottom: 0; left: 0;
+	width: 100%; height: 5px;
+	content: " ";
+	border-radius: 50px;
+	background-color: var(--grayishPink);
+	z-index: -1;
+	transition: all .5s ease-in-out; 
+}
+
+.registerSwitch div{
+	position: absolute;
+	bottom: 0; left: 0;
+	width: 0; height: 5px;
+	content: " ";
+	border-radius: 50px;
+	background-color: var(--grayishPink);
+	z-index: -1;
+	transition: all .5s ease-in-out; 
+}
+
+.sessionForm{
+	position: relative;
+	width: 200%;
+	height: 500px;
+	left: 0;
+	display: flex;
+	justify-content: space-around;
+	transition: all .5s ease-in-out;
+	padding: 10px 0;
+}
+.sessionForm .loginForm{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding-top: 20px !important;
+	padding-bottom: 20px !important;
+	overflow: auto;
+}
+.sessionForm .registerForm{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding-top: 20px !important;
+	padding-bottom: 20px !important;
+	overflow: auto;
+}
+
+/* Footer */
+.sessionWave{
+	position: absolute;
+	top: 0px; left: 0;
+	width: 100%; 
+	z-index: -1;
+	margin: 0; padding: 0;
+	opacity: 0.8;
+}

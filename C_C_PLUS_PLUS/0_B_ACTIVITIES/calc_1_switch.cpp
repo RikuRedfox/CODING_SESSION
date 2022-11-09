@@ -12,20 +12,12 @@ int main(){
         std::cin >> x >> op >> y;
 
         switch (op){
-        case '+':
-            result = x + y;
-            break;
-        case '-':
-            result = x - y;
-            break;
-        case '*':
-            result = x * y;
-            break;
-        case '/':
-            result = x / y;
-            break;
+        case '+': result = x + y; break;
+        case '-': result = x - y; break;
+        case '*': result = x * y; break;
+        case '/': result = x / y; break;
         case '%':
-            int Result = result, a = x, b = y;
+            int Result = result, a = x, b = y; 
             Result = a % b;
             std::cout << "= " << Result << std::endl;
             break;

@@ -1,16 +1,15 @@
 #include <iostream>
+#include <limits>
+#include <sstream>
 
 int main(){
     double x, y, result;
     char op;
-    while (true){
+    while (1){
+        std::cin.clear(); // clearning the buffer if there is a string input
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         std::cout << "Put the calculation you want to do in here. [ex: 1 + 2]\n>>";
         std::cin >> x >> op >> y;
-
-        if (!std::cin){
-            std::cerr << "incorrect input format The program has ended.\n";
-            return -1;
-        }
 
         if (op == '+'){
             result = x + y;

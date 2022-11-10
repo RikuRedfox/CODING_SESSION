@@ -1,5 +1,3 @@
-#include "question.class.hpp"
-
 Question q1;
 Question q2;
 Question q3;

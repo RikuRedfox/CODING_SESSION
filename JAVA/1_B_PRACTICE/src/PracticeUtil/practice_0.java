@@ -1,4 +1,4 @@
-package src.PracticeSwing;
+package src.PracticeUtil;
 import java.util.Scanner;
 
 //Input and Scanner.

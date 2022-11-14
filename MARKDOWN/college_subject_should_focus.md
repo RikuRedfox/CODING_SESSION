@@ -21,7 +21,7 @@
 1. Application Development and Emerging 
 1. Technologies
 
-## Learn this as an IT.
+## Consider to learn this things.
 
 1. SysAdmin
 1. Networking

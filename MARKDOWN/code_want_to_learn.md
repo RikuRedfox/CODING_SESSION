@@ -21,8 +21,10 @@
 >- [_API_](https://rapidapi.com/learn)
 
 # Programming
-1. C/C++ -> C# -> RUST -> CARBON 
-1. JAVA -> KOTLIN
+1. C/C++ -> RUST
+1. JAVA -> Flutter
+1. JavaScript -> TypeScript
+1. C#
 
 # Download
 >- JDK (Java)

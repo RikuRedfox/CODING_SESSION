@@ -75,15 +75,10 @@ void final_grade(){
 int main(){
 
     std::cout << "AMA GRADING SYSTEM" << std::endl;
-
     lecture_grade();
-
     std::cout << "\n================================\n";
-
     laboratory_grade();
-
     std::cout << "\n================================\n";
-
     final_grade();
 
     return 0;

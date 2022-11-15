@@ -1,16 +1,15 @@
 >**TIP: Code atleast 1-2 hrs.**
 # WebDev
-### Front-End
+## Front-End
 1. HTML
 1. CSS -> SCSS
 1. BULMA or BOOTSTRP
 
-### Bakc-End
-1. JAVASCRIPT -> JQUERY -> TYPESCRIPT
+## Bakc-End
+1. JavaScript -> NODE JS -> TypeScript
+
+### Consider to learn.
 1. JSON
-1. NODE JS
-1. PHP -> Laravel
-1. Ruby -> Ruby on Rails
 1. API
 
 >Learning Websites
@@ -23,13 +22,11 @@
 # Programming
 1. C/C++ -> RUST
 1. JAVA -> Flutter
-1. JavaScript -> TypeScript
 1. C#
 
 # Download
 >- JDK (Java)
 >- MINGw (C / C++)
->- 
 
 # OS Server(s)
 - Windows Server

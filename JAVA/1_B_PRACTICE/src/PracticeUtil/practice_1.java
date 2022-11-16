@@ -12,7 +12,7 @@ public class practice_1 {
     }
     public static void main(String[] args) {
         int day = getChoice();
-        String song = "My true love gave to me ";
+        String song = "My good friends brought to me ";
 
         switch(day){
             case 1: song += "and A partridge in a pear tree"; break;

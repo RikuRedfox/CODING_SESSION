@@ -22,7 +22,6 @@
 # Programming
 1. C/C++ -> RUST
 1. JAVA -> Flutter
-1. C#
 
 # Download
 >- JDK (Java)

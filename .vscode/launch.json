@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch practice_3",
+            "request": "launch",
+            "mainClass": "src.PracticeUtil.practice_3",
+            "projectName": "CODE_72d6c7e6"
+        },
+        {
+            "type": "java",
+            "name": "Launch practice_3",
+            "request": "launch",
+            "mainClass": "src.practice_3",
+            "projectName": "CODE_72d6c7e6"
+        },
+        {
+            "type": "java",
             "name": "Launch kwizto",
             "request": "launch",
             "mainClass": "src.PracticeUtil.kwizto",

@@ -1,0 +1,5 @@
+@import "import-scss/0-import.scss";
+
+*{
+    @include uni-reset;
+}

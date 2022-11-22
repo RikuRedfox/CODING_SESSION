@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Pacman Assignment</title>
+	<link rel="stylesheet" type="text/css" href="./src/css/style.css">
+</head>
+<body>
+	<div class="menu">
+		<div class="title">
+			<h2>PAC MAN</h2> <br> <br>
+			<button onclick="loadGame(); this.disabled=true;">Start</button> <br><br>
+			<button onclick="document.querySelector('.option').style.display = 'block';" style="display: none;">Options</button>
+		</div>
+		<div class="option">
+			<h2>OPTION</h2> <br><br>
+			<div>
+				<h4>Can Dash: </h4>
+				<input type="checkbox">
+			</div>
+			<br>
+			<div>
+				<h4>Can Shoot: </h4>
+				<input type="checkbox">
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="game" id="game" style="width: 722px; height: 398px;">
+			
+		</div>
+	</div>
+
+
+	<script type="text/javascript" stc="./src/js/pacman.js"></script>
+	<script type="text/javascript" src="./src/js/main.js"></script>
+	<!-- Thank you so much sir Michael Choi! -->
+</body>
+</html>

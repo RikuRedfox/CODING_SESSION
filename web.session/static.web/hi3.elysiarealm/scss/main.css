@@ -10,10 +10,20 @@ body {
   background-color: black;
 }
 
+b {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
 .container {
-  background-color: rgba(80, 80, 80, 0.2);
-  margin: 0 auto;
+  background-color: rgba(80, 80, 80, 0.4);
+  margin: 0 2rem;
   padding: 20px;
+}
+@media screen and (max-width: 768px) {
+  .container {
+    margin: auto 0px;
+  }
 }
 
 .headers {
@@ -41,67 +51,52 @@ body {
   font-size: 18px;
   font-weight: 400;
 }
-.headers .headers-info .para-h b {
-  color: rgba(255, 255, 255, 0.7);
-}
 
 .valk-names {
   display: flex;
-  flex-flow: wrap;
-  justify-content: center;
-  background-color: rgba(70, 70, 70, 0.4);
+  overflow: auto;
+  background-color: rgba(70, 70, 70, 0.6);
   padding: 1em 2em;
   border-radius: 20px;
   margin: 0 1em;
+  position: sticky;
+  top: 1em;
 }
 .valk-names a {
   text-decoration: none;
   text-align: center;
   background-color: rgba(50, 50, 50, 0.8);
-  width: 200px;
   padding: 10px 20px;
   border-radius: 20px;
   margin: 5px;
-  cursor: pointer;
-}
-.valk-names a b {
-  color: rgba(255, 255, 255, 0.7);
-}
-.valk-names a b i {
-  color: rgba(255, 255, 255, 0.7);
 }
 .valk-names a:hover {
   background-color: rgba(100, 100, 100, 0.5);
+  cursor: pointer;
 }
 
-.content {
-  background-color: rgba(70, 70, 70, 0.4);
-  padding: 1em 2em;
-  border-radius: 20px;
-  margin: 2em 1em;
-}
-.content .container {
+main {
   display: flex;
-  flex-direction: row;
+  flex-flow: wrap;
   justify-content: center;
-  padding: 20px 0px;
-  width: 98%;
-  overflow-x: scroll;
+  margin: 10px 1em;
+  border-radius: 20px;
+  height: 64em;
+  overflow-y: scroll !important;
 }
-.content .valk-card {
+main .valk-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: rgb(215, 45, 45);
-  overflow: visible;
-  margin: 0 1em;
+  background-color: rgba(70, 70, 70, 0.6);
+  text-align: center;
+  margin: 10px 0px;
+  border-radius: 20px;
 }
-.content .valk-card .img-div {
-  height: 200px;
-  width: 400px;
-  overflow: hidden;
+main .valk-card .img-div {
+  display: grid;
+  justify-content: center;
+  padding: 20px;
 }
 
-.n-table {
-  display: table;
-}/*# sourceMappingURL=main.css.map */
+/*# sourceMappingURL=main.css.map */

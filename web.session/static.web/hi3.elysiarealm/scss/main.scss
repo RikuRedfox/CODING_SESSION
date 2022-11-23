@@ -4,8 +4,8 @@ $font-colors:(
     highlight: rgb(255,255,255, .7),
 );
 $background-colors:(
-    primary: rgba(80, 80, 80, 0.2),
-    secondary: rgba(70, 70, 70, 0.4),
+    primary: rgba(80, 80, 80, 0.4),
+    secondary: rgba(70, 70, 70, 0.6),
     // sub: 
     hover: rgb(100, 100, 100, .5),
 );
@@ -20,11 +20,12 @@ $background-colors:(
     flex-flow: wrap;
     justify-content: center;
 }
-@mixin flexible-d($f-type){
-    display: flex;
-    flex-direction: $f-type;
+@mixin flexible-d($d, $fd){
+    display: $d;
+    flex-direction: $fd;
     justify-content: center;
 }
+
 // Main Body
 *{
     box-sizing: border-box;
@@ -37,9 +38,16 @@ $background-colors:(
 body{
     background-color: black;
 }
+b{
+    color: map-get($font-colors, highlight);
+    font-weight: 600;
+}
 .container{
     background-color: map-get($background-colors, primary);
-    margin: 0 auto;
+    margin: 0 2rem;
+    @media screen and (max-width: 768px) {
+        margin: auto 0px;
+    }
     padding: 20px;
 }
 
@@ -63,67 +71,48 @@ body{
         .para-h{
             font-size: 18px;
             font-weight: 400;
-            b{
-                color: map-get($font-colors, highlight);
-            }
         }
     }
 }
 
 .valk-names{
-    @include flexible;
+    display: flex;
+    overflow: auto;
     background-color: map-get($background-colors, secondary);
     padding: 1em 2em;
     border-radius: 20px;
-    
     margin: 0 1em;
+    position: sticky;
+    top: 1em;
     a{
         text-decoration: none;
         text-align: center;
         background-color: rgb(50, 50, 50, .8);
-        width: 200px;
         padding: 10px 20px;
         border-radius: 20px;
         margin: 5px;
-
-        cursor: pointer;
-        b{
-            color: map-get($font-colors, highlight);
-            i{
-                color: map-get($font-colors, highlight);
-            }
-        }
     }
     a:hover{
         background-color: rgb(100, 100, 100, .5);
+        cursor: pointer;
     }
 }
-
-.content{
-    background-color: map-get($background-colors , secondary);
-    padding: 1em 2em;
+main{
+    @include flexible;
+    margin: 10px 1em;
     border-radius: 20px;
-    margin: 2em 1em;
-    .container{
-        @include flexible-d(row);
-        padding: 20px 0px;
-        width: 98%;
-        overflow-x: scroll;
-    }
+    height: 64em;
+    overflow-y: scroll !important;;
     .valk-card{
-        @include flexible-d(column);
-        background-color: rgb(215, 45, 45);
-        overflow: visible;
-        margin: 0 1em;
+        @include flexible-d(flex, column);
+        background-color: map-get($background-colors, secondary);
+        text-align: center;
+        margin: 10px 0px;
+        border-radius: 20px;
+        
         .img-div{
-            height: 200px;
-            width: 400px;
-            overflow: hidden;
+            @include center-div;
+            padding: 20px;
         }
     }
-}
-
-
-.n-table{
-    display: table;
 }

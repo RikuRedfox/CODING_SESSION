@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch labs4",
+            "request": "launch",
+            "mainClass": "src.labs4.labs4",
+            "projectName": "coding.session_4678fd14"
+        },
+        {
+            "type": "java",
             "name": "Launch practice_3",
             "request": "launch",
             "mainClass": "src.PracticeUtil.practice_3",

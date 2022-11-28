@@ -3,13 +3,15 @@ package src.labs4;
 import java.util.Scanner;
 
 public class labs4 {
+  static Scanner sc = new Scanner(System.in); // can be use everywhere
   public static void main(String[] args) {
+    
     String summaryOrder[][] = new String[99][99]; // Here will store the orders
     while (true) {
-      int i = 0;
+      int i = 0; // using for looping in while loop.
       // Order
       while (true) {
-        Scanner sc = new Scanner(System.in);
+        
         while (true) { // Will repeat the order if the user want to order again
                        // or the input are not in the list
           sc.nextLine();
@@ -43,6 +45,7 @@ public class labs4 {
                 break;
             }
             if (order > 3 || order < 1) {
+              System.out.println("\nThat menu is not existing.\n");
               continue;
             } else if (order == 1 || order == 2 || order == 3) {
               break;
@@ -71,7 +74,6 @@ public class labs4 {
         i++;
       }
       // In this section the program will review the orders that user requested and give the total amount to paid
-      Scanner in = new Scanner(System.in);
 
       System.out.println("\nOrder Summary : \n");
       int total = 0, cash, amount;
@@ -91,7 +93,7 @@ public class labs4 {
       System.out.println("\nTotal : " + total);
       while (true) {
         System.out.print("Enter Cash : ");
-        cash = in.nextInt();
+        cash = sc.nextInt();
 
         if (cash >= total) {
           break;
@@ -103,13 +105,14 @@ public class labs4 {
 
       System.out.print(
           "Do you want to make another transaction? [1] Yes | [any] No : ");
-      char dec = in.next().charAt(0);
-      in.nextLine();
+      char dec = sc.next().charAt(0);
+      sc.nextLine();
 
       if (dec != '1') {
         break;
       }
     }
     System.out.println("Okay have a nice day!");
+    sc.close(); // closing the scanner after using it to avoid leaking memory
   }
 }

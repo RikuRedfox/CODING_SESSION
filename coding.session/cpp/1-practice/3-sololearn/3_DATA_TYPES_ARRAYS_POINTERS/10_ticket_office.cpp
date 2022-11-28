@@ -9,9 +9,8 @@ int main() {
     //your code goes here
     int min = ages[0];
     for(int i = 1; i < 5; ++i) {
-        if(ages[i] < min){
+        if(ages[i] < min)
             min = ages[i];
-        }
     }
     std::cout << 50 - (min/100. * 50);
     

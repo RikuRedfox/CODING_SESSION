@@ -13,57 +13,7 @@ public class labs4b {
                 System.out.println("2. Menudo w/ Rice\tPhp 90");
                 System.out.println("3. B-B-Q w/ Rice\tPhp 50");
                 System.out.print("Your order? (1-3) : ");
-
                 int ch = sc.nextInt();
-
-                // if (ch == 1) {
-                // while (true) {
-                // System.out.println("\nAdobo with Rice");
-                // System.out.println("Price : " + 100);
-                // System.out.print("Enter Cash : ");
-                // int c = sc.nextInt();
-                // if (c < 100) {
-                // System.out.println("Insufficient amount.");
-                // continue;
-                // }
-                // int tl = (c - 100);
-                // System.out.println("Change : " + tl);
-                // break;
-                // }
-                // }
-                // if (ch == 2) {
-                // while (true) {
-                // System.out.println("\nMenudo with Rice");
-                // System.out.println("Price : " + 90);
-                // System.out.print("Enter Cash : ");
-                // int c = sc.nextInt();
-                // if (c < 90) {
-                // System.out.println("\nInsufficient amount.");
-                // continue;
-                // }
-                // int tl = (c - 90);
-                // System.out.println("\nChange:" + tl);
-                // break;
-                // }
-                // }
-                // if (ch == 3) {
-                // while (true) {
-                // System.out.println("B-B-Q with Rice");
-                // System.out.println("Price : " + 50);
-                // System.out.println("Enter Cash : ");
-                // int c = sc.nextInt();
-                // if (c < 50) {
-                // System.out.println("\nInsufficient amount.");
-                // continue;
-                // }
-                // int tl = (c - 50);
-                // System.out.println("Change : " + tl);
-                // break;
-                // }
-                // }
-                // if (ch < 1 || ch > 3){
-                // System.out.println("\nOut of order.\n");
-                // }
 
                 switch (ch) {
                     case 1:

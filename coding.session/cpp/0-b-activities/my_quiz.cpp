@@ -180,7 +180,7 @@ int main(){
             std::cin.clear(); // clearning the buffer if there is a string input
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
             // Display all subject available
-            std::string subjects[]{"Language", "Mathematics", "Science", "History", "Computers [ONG]"};
+            std::string subjects[]{"Language", "Mathematics", "Science", "History", "ComProg [ONG]"};
 
             int i {1};
             for (std::string str : subjects){

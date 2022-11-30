@@ -40,6 +40,9 @@ void loveScale() {
   // i for rows
   for (size_t i{0}; i < 13; i++) { // j for column
     for (size_t j{0}; j < 2; j++) {
+      while (1) {
+        std::cin.clear(); // clearning the buffer if there is a string input
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       // code here call the array value each iteration
       // increment j to call next column in same row
       std::cout << questions[i][j] << name;
@@ -50,14 +53,12 @@ void loveScale() {
       if (questions[i][j] == questions[5][2]) {
         std::cout << name << questions[i][j];
       }
-      while (1) {
-        std::cin.clear(); // clearning the buffer if there is a string input
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         try {
           std::cout << "Your scale: ";
           std::cin >> user_scale;
           // input for scale 1-5
           if (user_scale > 5 || user_scale < 1) {
+            j -= 2;
             throw 1;
           } else {
             break;
@@ -212,6 +213,7 @@ int main() {
       }
     }
     std::cout << "\nThank you trying this mini game. ヾ(≧▽≦*)o";
+    return 0;
   } else {
     std::cout << "Oh. . . Ok. ＞︿＜" << std::endl;
     return 0;

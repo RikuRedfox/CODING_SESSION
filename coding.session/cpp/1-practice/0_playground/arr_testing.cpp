@@ -5,21 +5,20 @@
 
 int main() {
 
-  std::array<std::array<std::string, 3>, 13> arr = {{
-      {"If ", " were feeling badly, my first duty would be to cheer him(her) up.\n", ""},
-      {"I feel that I can confide in ", " about virtually everything.\n", ""},
-      {"I find it easy to ignore ", "'s faults.\n", ""},
-      {"I would do almost anything for ", ".\n", ""},
-      {"I feel very possessive toward ", ".\n", ""},
-      {"If I could never be with ", ", I would be to seek ", " out.\n"},
-      {"If I were lonely, my first thought would be to seek ", " out.\n", ""},
-      {"One of my primary concern is ", "'s welfare.\n", ""},
-      {"I would forgive ", " for practically anything.\n", ""},
-      {"I feel responsible for ", "'s well-being.\n", ""},
-      {"When I am with ", ", I spend a good feal of time just looking at him(her).\n", ""},
-      {"I would greatly enjoy being confided in by ", ".\n", ""},
-      {"it would be hard for me to get along without ", ".\n", ""}
-  }};
+  std::array<std::array<std::string, 3>, 13> arr = {
+      {{"0, 0", "0, 1", "0, 2"},
+       {"1, 0", "1, 1", "1, 2"},
+       {"2, 0", "2, 1", "2, 2"},
+       {"3, 0", "3, 1", "3, 2"},
+       {"4, 0", "4, 1", "4, 2"},
+       {"5, 0", "5, 1", "5, 2"},
+       {"6, 0", "6, 1", "6, 2"},
+       {"7, 0", "7, 1", "7, 2"},
+       {"8, 0", "8, 1", "8, 2"},
+       {"9, 0", "9, 1", "9, 2"},
+       {"10, 0", "10, 1", "10, 2"},
+       {"11, 0", "11, 1", "11, 2"},
+       {"12, 0", "12, 1", "12, 2"}}};
 
   for (size_t i = 0; i < arr.size(); i++) {
     for (size_t j = 0; j < arr[i].size(); j++)
@@ -38,20 +37,13 @@ int main() {
   std::cout << "\n\n\nStart of vect\n\n\n";
 
   std::vector<std::vector<std::string>> vect = {
-      {"If ", " were feeling badly, my first duty would be to cheer him(her) up.\n", ""},
-      {"I feel that I can confide in ", " about virtually everything.\n", ""},
-      {"I find it easy to ignore ", "'s faults.\n", ""},
-      {"I would do almost anything for ", ".\n", ""},
-      {"I feel very possessive toward ", ".\n", ""},
-      {"If I could never be with ", ", I would be to seek ", " out.\n"},
-      {"If I were lonely, my first thought would be to seek ", " out.\n", ""},
-      {"One of my primary concern is ", "'s welfare.\n", ""},
-      {"I would forgive ", " for practically anything.\n", ""},
-      {"I feel responsible for ", "'s well-being.\n", ""},
-      {"When I am with ", ", I spend a good feal of time just looking at him(her).\n", ""},
-      {"I would greatly enjoy being confided in by ", ".\n", ""},
-      {"it would be hard for me to get along without ", ".\n", ""}
-  };
+      {"0, 0", "0, 1", "0, 2"},    {"1, 0", "1, 1", "1, 2"},
+      {"2, 0", "2, 1", "2, 2"},    {"3, 0", "3, 1", "3, 2"},
+      {"4, 0", "4, 1", "4, 2"},    {"5, 0", "5, 1", "5, 2"},
+      {"6, 0", "6, 1", "6, 2"},    {"7, 0", "7, 1", "7, 2"},
+      {"8, 0", "8, 1", "8, 2"},    {"9, 0", "9, 1", "9, 2"},
+      {"10, 0", "10, 1", "10, 2"}, {"11, 0", "11, 1", "11, 2"},
+      {"12, 0", "12, 1", "12, 2"}};
 
   for (size_t i = 0; i < vect.size(); i++) {
     for (size_t j = 0; j < vect[i].size(); j++)

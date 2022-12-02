@@ -11,22 +11,27 @@ private:
   std::string m_lName;
 
 public:
-  void Love() {
+  inline void Love() {
     std::cout << "\n\tLOVE SCALE!\n\n";
-
+    m_current_scale = 0;
     std::cin.get();
     const std::string questions[13][3]{
-        {"If ", " were feeling badly, my first duty would be to cheer him(her) up.\n", ""}, // 1
-        {"I feel that I can confide in ", " about virtually everything.\n", ""},                                                              // 2
+        {"If ",
+         " were feeling badly, my first duty would be to cheer him(her) up.\n",
+         ""}, // 1
+        {"I feel that I can confide in ", " about virtually everything.\n",
+         ""},                                                              // 2
         {"I find it easy to ignore ", "'s faults.\n", ""},                 // 3
         {"I would do almost anything for ", ".\n", ""},                    // 4
         {"I feel very possessive toward ", ".\n", ""},                     // 5
         {"If I could never be with ", ", I would be to seek ", " out.\n"}, // 6
-        {"If I were lonely, my first thought would be to seek ", " out.\n", ""},                                                     // 7
+        {"If I were lonely, my first thought would be to seek ", " out.\n",
+         ""},                                                     // 7
         {"One of my primary concern is ", "'s welfare.\n", ""},   // 8
         {"I would forgive ", " for practically anything.\n", ""}, // 9
         {"I feel responsible for ", "'s well-being.\n", ""},      // 10
-        {"When I am with ", ", I spend a good feal of time just looking at him(her).\n", ""}, // 11
+        {"When I am with ",
+         ", I spend a good feal of time just looking at him(her).\n", ""}, // 11
         {"I would greatly enjoy being confided in by ", ".\n", ""},        // 12
         {"it would be hard for me to get along without ", ".\n", ""}       // 13
     };
@@ -80,25 +85,29 @@ public:
     std::cout << result << "% That is you're inlove with " << m_lName
               << std::endl;
   }
-
-  void Like() {
+  inline void Like() {
     std::cout << "\n\tLIKE SCALE. Goodluck!\n\n";
-
+    m_current_scale = 0;
     std::cin.get();
     const std::string questions[13][3]{
-        {"When I am with ", ", we are almost always in the same mood.\n",""},                                                             // 1
+        {"When I am with ", ", we are almost always in the same mood.\n",
+         ""},                                                             // 1
         {"I think that ", " is unusually well adjusted.\n", ""},          // 2
         {"I would highly recommend ", " for a responsible job.\n", ""},   // 3
         {"In my opinion, ", " is an exceptionally mature person.\n", ""}, // 4
         {"I have great confidence in ", "'s good judgment.\n", ""},       // 5
-        {"Most people would react very favorably to ", " after a brief acquiantance.\n", ""},                             // 6
+        {"Most people would react very favorably to ",
+         " after a brief acquiantance.\n", ""},                             // 6
         {"I think that ", " and I are quite similar to each other.\n", ""}, // 7
         {"I would vote for ", " in a class or group election.\n", ""},      // 8
-        {"I think that ", " is one of those people who quicly wins respect.\n", ""},                                                            // 9
+        {"I think that ", " is one of those people who quicly wins respect.\n",
+         ""},                                                            // 9
         {"I feel that ", " is an extremenly intelligent person.\n", ""}, // 10
         {"", " is one of the most likable people I know.\n", ""},        // 11
-        {"", " is the sort of person whom I myself would like to be.\n", ""}, // 12
-        {"It seems to me that it is very easy for ", " to gain admiration.\n", ""} // 13
+        {"", " is the sort of person whom I myself would like to be.\n",
+         ""}, // 12
+        {"It seems to me that it is very easy for ", " to gain admiration.\n",
+         ""} // 13
     };
 
     std::cout << "Enter the name of your friend(love) : ";
@@ -208,8 +217,11 @@ int main() {
       std::cout << "\n\nDo you want to try it again or try the other one?\n"
                    "(Press 'Y for try again(other) | 'any' for exit) : ";
       std::cin >> respond;
-      if (respond != "Y" || respond != "y")
+      if (respond == "Y" || respond == "y")
+        continue;
+      else {
         break;
+      }
     }
     std::cout << "\nThank you trying this survey. ヾ(≧▽≦*)o";
     return 0;

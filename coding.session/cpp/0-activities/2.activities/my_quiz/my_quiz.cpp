@@ -159,7 +159,7 @@ void Question::setValues(std::string q, std::string a1, std::string a2,
 }
 
 // Function to ask questions
-void Question::askQuestion() {
+inline void Question::askQuestion() {
   while (1) {
     std::cin.clear(); // clearning the buffer if there is a string input
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -199,7 +199,7 @@ void Question::askQuestion() {
   }
 }
 
-void Question::language() {
+inline void Question::language() {
   // first int is the position of the correct answer the second int are the
   // score you will get.
   std::cout << "\n\tLanguage subject. GOODLUCK!\n\n";
@@ -250,7 +250,7 @@ void Question::language() {
       "Slang", "Jargon", "Dialect", "Sign Language", 2, 10);
 }
 
-void Question::mathematics() {
+inline void Question::mathematics() {
   // first int is the position of the correct answer the second int are the
   // correct score.
   std::cout << "\n\tMathematics subject. GOODLUCK!\n\n";
@@ -285,7 +285,7 @@ void Question::mathematics() {
                 "313cm²", "333cm²", "343cm²", "303cm²", 3, 10);
 }
 
-void Question::science() {
+inline void Question::science() {
   // first int is the position of the correct answer the second int are the
   // correct score.
   std::cout << "\n\tScience subject. GOODLUCK!\n\n";
@@ -313,7 +313,7 @@ void Question::science() {
                 "True", "False", "- - -", "- - -", 2, 10);
 }
 
-void Question::history() {
+inline void Question::history() {
   // first int is the position of the correct answer the second int are the
   // correct score.
   std::cout << "\n\tHistory subject. GOODLUCK!\n\n";
@@ -343,7 +343,7 @@ void Question::history() {
                 2, 10);
 }
 
-void Question::computers() {
+inline void Question::computers() {
   // first int is the position of the correct answer the second int are the
   // correct score.
   std::cout << "\n\tComProg subject. GOODLUCK!\n\n";

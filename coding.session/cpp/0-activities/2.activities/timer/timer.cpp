@@ -11,8 +11,6 @@ int main() {
 
   while (true) {
 
-    using namespace std::literals::chrono_literals;
-
     std::cout << "\tTIMER \n";
     std::cout << "Enter sec : ";
     std::cin >> sec;

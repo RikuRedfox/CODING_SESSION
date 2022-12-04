@@ -4,6 +4,7 @@
 #include <string>
 
 int Guess, Total;
+
 class Question {
 private:
   std::string Question_Text;
@@ -139,7 +140,7 @@ int main() {
     if (Respond == "Y" || Respond == "y") {
       continue;
     } else {
-      std::cout << "Goodbye! Have a nice day and do a review if you have low "
+      std::cout << "Goodbye! Have a nice day also do a review if you have low "
                    "score here.";
       return 0;
     }

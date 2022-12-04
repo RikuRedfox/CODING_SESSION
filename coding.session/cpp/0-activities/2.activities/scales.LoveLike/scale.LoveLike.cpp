@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <array>
 #include <iostream>
 #include <limits>
 #include <sstream>
@@ -9,13 +10,14 @@ private:
   double m_current_scale{}, m_total{65.};
   int m_user_scale;
   std::string m_lName;
+  std::array<std::array<std::string, 3>, 13> questions;
 
 public:
   inline void Love() {
     std::cout << "\n\tLOVE SCALE!\n\n";
     m_current_scale = 0;
     std::cin.get();
-    const std::string questions[13][3]{
+    questions = {{
         {"If ",
          " were feeling badly, my first duty would be to cheer him(her) up.\n",
          ""}, // 1
@@ -34,26 +36,26 @@ public:
          ", I spend a good feal of time just looking at him(her).\n", ""}, // 11
         {"I would greatly enjoy being confided in by ", ".\n", ""},        // 12
         {"it would be hard for me to get along without ", ".\n", ""}       // 13
-    };
+    }};
 
     std::cout << "Enter the name of your love one : ";
     std::getline(std::cin, m_lName);
     std::cout << std::endl;
     // i for rows
-    for (size_t i{0}; i < 13; i++) { // j for column
-      for (size_t j{0}; j < 2; j++) {
+    for (size_t i{0}; i < questions.size(); i++) { // j for column
+      for (size_t j{0}; j < questions.at(i).size(); j++) {
         while (1) {
           std::cin.clear(); // clearning the buffer if there is a string input
           std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
           // code here call the array value each iteration
           // increment j to call next column in same row
-          std::cout << questions[i][j] << m_lName;
+          std::cout << questions.at(i).at(j) << m_lName;
           j++;
-          std::cout << questions[i][j];
+          std::cout << questions.at(i).at(j);
           j++;
           // call this array if the iteration met the condition
-          if (questions[i][j] == questions[5][2]) {
-            std::cout << m_lName << questions[i][j];
+          if (questions.at(i).at(j) == questions.at(5).at(2)) {
+            std::cout << m_lName << questions.at(i).at(j);
           }
           try {
             std::cout << "Your scale: ";
@@ -89,7 +91,7 @@ public:
     std::cout << "\n\tLIKE SCALE. Goodluck!\n\n";
     m_current_scale = 0;
     std::cin.get();
-    const std::string questions[13][3]{
+    questions = {{
         {"When I am with ", ", we are almost always in the same mood.\n",
          ""},                                                             // 1
         {"I think that ", " is unusually well adjusted.\n", ""},          // 2
@@ -108,26 +110,26 @@ public:
          ""}, // 12
         {"It seems to me that it is very easy for ", " to gain admiration.\n",
          ""} // 13
-    };
+    }};
 
     std::cout << "Enter the name of your friend(love) : ";
     std::getline(std::cin, m_lName);
     std::cout << std::endl;
     // i for rows
-    for (size_t i{0}; i < 13; i++) { // j for column
-      for (size_t j{0}; j < 2; j++) {
+    for (size_t i{0}; i < questions.size(); i++) { // j for column
+      for (size_t j{0}; j < questions.at(i).size(); j++) {
         while (1) {
           std::cin.clear(); // clearning the buffer if there is a string input
           std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
           // call this array if the iteration met the condition
-          if (questions[i][j] == questions[11][1] ||
-              questions[i][j] == questions[12][1]) {
-            std::cout << m_lName << questions[i][j];
+          if (questions.at(i).at(j) == questions.at(11).at(1) ||
+              questions.at(i).at(j) == questions.at(12).at(1)) {
+            std::cout << m_lName << questions.at(i).at(j);
           }
           // increment j to call next column in same row
-          std::cout << questions[i][j] << m_lName;
+          std::cout << questions.at(i).at(j) << m_lName;
           j++;
-          std::cout << questions[i][j];
+          std::cout << questions.at(i).at(j);
           j++;
           try {
             std::cout << "Your scale: ";

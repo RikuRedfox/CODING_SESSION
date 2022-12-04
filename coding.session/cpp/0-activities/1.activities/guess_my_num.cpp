@@ -7,13 +7,14 @@ int main() {
     int guess, guessCount = 0, guessLimit = 10;
     bool outOfGuesses = false;
 
-    std::cout << "Guest my number.\n\n"; // You can't guess, every time you guess the
-                                    // number will chance. . . possible but
-                                    // small chance.
+    std::cout << "Guest my number.\n\n";
+    // You can't guess, every time you guess the
+    // number will chance. . . possible but
+    // small chance.
     while (secretNum != guess && !outOfGuesses) {
       if (guessCount < guessLimit) {
         std::cout << "[" << guessCount << "] "
-             << "Enter number guess: ";
+                  << "Enter number guess: ";
         // test;
         // std::cout << "\nThe number for this time is. . . ";
         // std::cout << rand() % 100 << endl;

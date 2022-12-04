@@ -47,7 +47,7 @@ int main() {
 
   for (size_t i = 0; i < vect.size(); i++) {
     for (size_t j = 0; j < vect[i].size(); j++)
-      std::cout << vect[i][j] << " ";
+      std::cout << vect.at(i).at(j) << " ";
     std::cout << std::endl;
   }
 

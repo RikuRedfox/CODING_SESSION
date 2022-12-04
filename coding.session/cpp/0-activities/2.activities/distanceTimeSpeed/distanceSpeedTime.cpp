@@ -12,9 +12,7 @@ private:
 public:
   void setValues(int, int, int, int, double, double);
 
-  double s(double);
-  double d(double);
-  int t(int, int, int, int);
+  int t(int, int, int);
 
   void getTime();
   void getDistance();
@@ -28,7 +26,7 @@ int main() {
 
   while (true) {
     std::cout << "\n\tChoice what to calculate\n"
-                 "(Type 'Time', 'Distance', 'Speed') : ";
+                 "(Type : 'Time', 'Distance', 'Speed') : ";
     std::cin >> respond;
 
     std::for_each(respond.begin(), respond.end(),
@@ -67,32 +65,14 @@ void Calc::setValues(int Time, int Hour, int Min, int Sec, double Distance,
   speed = Speed;
 }
 
-inline double Calc::s(double speed) { return speed; }
-inline int Calc::t(int hr, int min, int sec, int time) {
+inline int Calc::t(int hr, int min, int sec) {
+  time = 0;
   time += sec;
-  if (sec >= 60) {
-    while (sec < 60) {
-      sec /= 60;
-      min += sec;
-      min *= 60;
-      sec += min;
-      time += sec;
-    }
-  }
-  
   time += (min * 60);
-  if (min >= 60) {
-    while (min < 60) {
-      min /= 60;
-      sec += 3600;
-      time += sec;
-    }
-  }
-
   time += (hr * 3600);
   return time;
 }
-inline double Calc::d(double distance) { return distance; }
+
 inline void Calc::getDistance() {
   // Speed
   std::cout << "Enter Speed (m/sec) : ";
@@ -103,35 +83,43 @@ inline void Calc::getDistance() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cerr << "\n\nERROR: The input cannot be a string.\n\n";
 
-    std::cout << "Enter Speed (m/sec) : ";
+    std::cout << "Enter Speed (meter/sec) : ";
     std::cin >> speed;
   }
 
   // Time
-  std::cout << "\n\tEnter Time (hh:mm:ss)\n";
-  std::cout << "Enter second : ";
-  std::cin >> sec;
-  std::cout << "Enter minute : ";
-  std::cin >> min;
-  std::cout << "Enter hour : ";
-  std::cin >> hr;
-
-  while (std::cin.fail()) {
-    std::cin.clear(); // clearning the buffer if there is a string input
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    std::cerr << "\n\nERROR : Must not be a string or a double.\n\n";
-
+  while (true) {
     std::cout << "\n\tEnter Time (hh:mm:ss)\n";
-    std::cout << "Enter second : ";
+    std::cout << "Enter second [0 - 59]: ";
     std::cin >> sec;
-    std::cout << "Enter minute : ";
+    std::cout << "Enter minute [0 - 59]: ";
     std::cin >> min;
     std::cout << "Enter hour : ";
     std::cin >> hr;
+
+    while (std::cin.fail()) {
+      std::cin.clear(); // clearning the buffer if there is a string input
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cerr << "\n\nERROR : Must not be a string or a double.\n\n";
+
+      std::cout << "\n\tEnter Time (hh:mm:ss)\n";
+      std::cout << "Enter second [0 - 59]: ";
+      std::cin >> sec;
+      std::cout << "Enter minute [0 - 59]: ";
+      std::cin >> min;
+      std::cout << "Enter hour : ";
+      std::cin >> hr;
+    }
+    if (sec >= 60)
+      continue;
+    if (min >= 60)
+      continue;
+    break;
   }
 
-  std::cout << "Distance : " << (s(speed) * t(hr, min, sec, 0)) << " meters.";
+  std::cout << "Distance : " << (speed * t(hr, min, sec)) << " meters.";
 }
+
 inline void Calc::getSpeed() {
   // Distance
   std::cout << "Enter Distance (meters) : ";
@@ -145,29 +133,37 @@ inline void Calc::getSpeed() {
     std::cin >> distance;
   }
   // Time
-  std::cout << "\n\tEnter Time (hh:mm:ss)\n";
-  std::cout << "Enter second : ";
-  std::cin >> sec;
-  std::cout << "Enter minute : ";
-  std::cin >> min;
-  std::cout << "Enter hour : ";
-  std::cin >> hr;
-
-  while (std::cin.fail()) {
-    std::cin.clear(); // clearning the buffer if there is a string input
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    std::cerr << "\n\nERROR : Must not be a string or a double.\n\n";
-
+  while (true) {
     std::cout << "\n\tEnter Time (hh:mm:ss)\n";
-    std::cout << "Enter second : ";
+    std::cout << "Enter second [0 - 59]: ";
     std::cin >> sec;
-    std::cout << "Enter minute : ";
+    std::cout << "Enter minute [0 - 59]: ";
     std::cin >> min;
     std::cout << "Enter hour : ";
     std::cin >> hr;
+
+    while (std::cin.fail()) {
+      std::cin.clear(); // clearning the buffer if there is a string input
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cerr << "\n\nERROR : Must not be a string or a double.\n\n";
+
+      std::cout << "\n\tEnter Time (hh:mm:ss)\n";
+      std::cout << "Enter second [0 - 59]: ";
+      std::cin >> sec;
+      std::cout << "Enter minute [0 - 59]: ";
+      std::cin >> min;
+      std::cout << "Enter hour : ";
+      std::cin >> hr;
+    }
+    if (sec >= 60)
+      continue;
+    if (min >= 60)
+      continue;
+    break;
   }
-  std::cout << "Speed : " << (d(distance) / t(hr, min, sec, 0)) << " m/sec";
+  std::cout << "Speed : " << (distance / t(hr, min, sec)) << " m/sec";
 }
+
 inline void Calc::getTime() {
   // Distance
   std::cout << "Enter Distance (meters) : ";
@@ -194,7 +190,7 @@ inline void Calc::getTime() {
     std::cin >> speed;
   }
 
-  sec = (d(distance) / s(speed));
+  sec = (distance / speed);
   min = 0;
   hr = 0;
   while (true) {
@@ -210,5 +206,6 @@ inline void Calc::getTime() {
     }
   }
 
-  std::cout << hr << " [hour] : " << min << " [mins] : " << sec << " [secs]";
+  std::cout << "Time : " << hr << " [hrs] : " << min << " [mins] : " << sec
+            << " [secs]";
 }

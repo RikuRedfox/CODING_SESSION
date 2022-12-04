@@ -26,7 +26,7 @@ int main() {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-      std::cout << "\n\tSTOP WATCH : \n";
+      std::cout << "\n\tTIMER \n";
       std::cout << "Enter sec : ";
       std::cin >> sec;
       std::cout << "Enter min : ";

@@ -1,9 +1,0 @@
-:root{
-	/* Colors */
-	--pink: rgb(239, 160, 159) !important;
-	--grayishPink: rgb(165, 170, 150) !important;
-
-	/* Gradient */
-	--gradientPink: rgb(255,229,243);
-	--gradientPink: linear-gradient(140deg, rgba(244,200,243,1) 0%, rgba(224,111,159,1) 100%);
-}

@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch labs5$Cipher",
+            "request": "launch",
+            "mainClass": "src.labs5.labs5$Cipher",
+            "projectName": "coding.session_4678fd14"
+        },
+        {
+            "type": "java",
+            "name": "Launch labs5",
+            "request": "launch",
+            "mainClass": "src.labs5.labs5",
+            "projectName": "coding.session_4678fd14"
+        },
+        {
+            "type": "java",
             "name": "Launch labs4b",
             "request": "launch",
             "mainClass": "src.labs4.labs4b",

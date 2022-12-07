@@ -1,14 +1,38 @@
 package src.labs5;
 
 import java.util.*;
-// import java.io.*;
 
 public class labs5 {
     static Scanner sc = new Scanner(System.in);
 
     public class Cipher {
         public static final String letters = "ABCDEFGHIJKLNMOPQRSTUVWXYZ";
-        // public static final int numberLetters[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
+
+        public static void main(String[] args) {
+            String message = new String();
+            int key = 0;
+            {
+                System.out.print("Enter the String for Encrpttion : ");
+                message = sc.nextLine();
+
+                System.out.print("\n\nEnter Shift Key : ");
+                key = sc.nextInt();
+
+                System.out.println("\nEncrypt msg : " + encrypt(message, key));
+            }
+            sc.nextLine();
+            message = "";
+            key = 0;
+            {
+                System.out.print("Enter the String for Decryption : ");
+                message = sc.nextLine();
+                System.out.print("\n\nEnter Shift Key : ");
+                key = sc.nextInt();
+
+                System.out.println("\nDecrypted msg : " + decrypt(message, key));
+
+            }
+        }
 
         public static String encrypt(String message, int shiftKey) {
             message = message.toUpperCase();
@@ -36,32 +60,6 @@ public class labs5 {
                 messaage += replaceVal;
             }
             return messaage;
-        }
-
-        public static void main(String[] args) {
-            String message = new String();
-            int key = 0;
-            {
-                System.out.print("Enter the String for Encrpttion : ");
-                message = sc.nextLine();
-
-                System.out.print("\n\nEnter Shift Key : ");
-                key = sc.nextInt();
-
-                System.out.println("\nEncrypt msg : " + encrypt(message, key));
-            }
-            sc.nextLine();
-            message = "";
-            key = 0;
-            {
-                System.out.print("Enter the String for Encrpttion : ");
-                message = sc.nextLine();
-                System.out.print("\n\nEnter Shift Key : ");
-                key = sc.nextInt();
-
-                System.out.println("\nDecrypted msg : " + decrypt(message, key));
-
-            }
         }
     }
 }

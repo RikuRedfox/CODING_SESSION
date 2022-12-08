@@ -2,7 +2,7 @@ package src.labs5;
 
 import java.util.*;
 
-public class labs5Basic {
+public class labsCipherASCII {
 
     static Scanner sc = new Scanner(System.in);
 
@@ -12,10 +12,9 @@ public class labs5Basic {
 
     public static void main(String[] args) {
         Encrypt();
-
         sc.nextLine();
-
         Decrypt();
+        sc.close();
     }
 
     public static void Encrypt() {
@@ -33,7 +32,6 @@ public class labs5Basic {
             c += key;
             System.out.print(c);
         }
-
     }
 
     public static void Decrypt() {
@@ -52,5 +50,4 @@ public class labs5Basic {
             System.out.print(c);
         }
     }
-
 }

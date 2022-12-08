@@ -7,7 +7,7 @@ public class labsCipherLetters {
 
     public static final String letters = "ABCDEFGHIJKLNMOPQRSTUVWXYZ";
 
-    public static void main(String[] args) {
+    labsCipherLetters() {
         String message = new String();
         int key = 0;
         {

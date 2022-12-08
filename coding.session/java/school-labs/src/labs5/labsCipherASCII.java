@@ -9,7 +9,7 @@ public class labsCipherASCII {
     static public int key;
     static public char[] chars;
 
-    public static void main(String[] args) {
+    labsCipherASCII(){
         Encrypt();
         sc.nextLine();
         Decrypt();

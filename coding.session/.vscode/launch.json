@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch labsMain",
+            "request": "launch",
+            "mainClass": "src.labs5.labsMain",
+            "projectName": "coding.session_4678fd14"
+        },
+        {
+            "type": "java",
             "name": "Launch labsCipherLetters",
             "request": "launch",
             "mainClass": "src.labs5.labsCipherLetters",

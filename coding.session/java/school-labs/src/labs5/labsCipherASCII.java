@@ -1,9 +1,8 @@
 package src.labs5;
 
-import java.util.*;
+import java.util.Scanner;
 
 public class labsCipherASCII {
-
     static Scanner sc = new Scanner(System.in);
 
     static public String text = new String();

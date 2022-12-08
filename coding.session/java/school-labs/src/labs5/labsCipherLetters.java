@@ -1,6 +1,6 @@
 package src.labs5;
 
-import java.util.*;
+import java.util.Scanner;
 
 public class labsCipherLetters {
     static Scanner sc = new Scanner(System.in);
@@ -13,7 +13,6 @@ public class labsCipherLetters {
         {
             System.out.print("Enter the String for Encrpttion : ");
             message = sc.nextLine();
-
             System.out.print("\n\nEnter Shift Key : ");
             key = sc.nextInt();
 

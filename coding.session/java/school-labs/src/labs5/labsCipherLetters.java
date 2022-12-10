@@ -1,6 +1,7 @@
 package src.labs5;
 
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class labsCipherLetters {
     static Scanner sc = new Scanner(System.in);
@@ -10,19 +11,50 @@ public class labsCipherLetters {
     labsCipherLetters() {
         String message = new String();
         int key = 0;
+        while (true) {
+            sc.nextLine();
+            System.out.print("\nEnter the String for Encryption : ");
+            message = sc.nextLine();
+            if (Pattern.compile("[0-9]").matcher(message).find()) {
+                continue;
+            }
+            break;
+        }
+        while (true) {
+            try {
+                System.out.print("Enter Shift Key : ");
+                key = sc.nextInt();
 
-        System.out.print("Enter the String for Encrpttion : ");
-        message = sc.nextLine();
-        System.out.print("Enter Shift Key : ");
-        key = sc.nextInt();
+            } catch (Exception e) {
+                System.err.println("Something went wrong!");
+                sc.nextLine();
+                continue;
+            }
+            break;
+        }
         System.out.println("\nEncrypt msg : " + encrypt(message, key));
 
         sc.nextLine();
 
-        System.out.print("Enter the String for Decryption : ");
-        message = sc.nextLine();
-        System.out.print("Enter Shift Key : ");
-        key = sc.nextInt();
+        while (true) {
+            System.out.print("\nEnter the String for Decryption : ");
+            message = sc.nextLine();
+            if (Pattern.compile("[0-9]").matcher(message).find()) {
+                continue;
+            }
+            break;
+        }
+        while (true) {
+            try {
+                System.out.print("Enter Shift Key : ");
+                key = sc.nextInt();
+            } catch (Exception e) {
+                System.err.println("Something went wrong!");
+                sc.nextLine();
+                continue;
+            }
+            break;
+        }
         System.out.println("\nDecrypted msg : " + decrypt(message, key));
 
     }

@@ -10,26 +10,21 @@ public class labsCipherLetters {
     labsCipherLetters() {
         String message = new String();
         int key = 0;
-        {
-            System.out.print("Enter the String for Encrpttion : ");
-            message = sc.nextLine();
-            System.out.print("\n\nEnter Shift Key : ");
-            key = sc.nextInt();
 
-            System.out.println("\nEncrypt msg : " + encrypt(message, key));
-        }
+        System.out.print("Enter the String for Encrpttion : ");
+        message = sc.nextLine();
+        System.out.print("Enter Shift Key : ");
+        key = sc.nextInt();
+        System.out.println("\nEncrypt msg : " + encrypt(message, key));
+
         sc.nextLine();
-        message = "";
-        key = 0;
-        {
-            System.out.print("Enter the String for Decryption : ");
-            message = sc.nextLine();
-            System.out.print("\n\nEnter Shift Key : ");
-            key = sc.nextInt();
 
-            System.out.println("\nDecrypted msg : " + decrypt(message, key));
-        }
-        sc.close();
+        System.out.print("Enter the String for Decryption : ");
+        message = sc.nextLine();
+        System.out.print("Enter Shift Key : ");
+        key = sc.nextInt();
+        System.out.println("\nDecrypted msg : " + decrypt(message, key));
+
     }
 
     public static String encrypt(String message, int shiftKey) {

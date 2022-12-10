@@ -13,13 +13,11 @@ public class labsCipherASCII {
         Encrypt();
         sc.nextLine();
         Decrypt();
-        sc.close();
     }
 
     public static void Encrypt() {
-        System.out.print("\n\nEnter an text to Encrypt : ");
-        text = sc.nextLine();
-        text.toUpperCase();
+        System.out.print("\nEnter an text to Encrypt : ");
+        text = sc.nextLine().toUpperCase();
         System.out.print("Enter shift key : ");
         key = sc.nextInt();
 
@@ -34,9 +32,8 @@ public class labsCipherASCII {
     }
 
     public static void Decrypt() {
-        System.out.print("\n\nEnter an text to Decrypt : ");
-        text = sc.nextLine();
-        text.toUpperCase();
+        System.out.print("\nEnter an text to Decrypt : ");
+        text = sc.nextLine().toUpperCase();
         System.out.print("Enter shift key : ");
         key = sc.nextInt();
 

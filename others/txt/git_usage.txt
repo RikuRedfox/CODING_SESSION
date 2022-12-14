@@ -1,0 +1,20 @@
+# Create a new repository on the command line.
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/RikuRedfox/coding_session.git
+git push -u origin main
+
+or Push an exiting repository from the command line.
+git remote add origin https://github.com/RikuRedfox/coding_session.git
+git branch -M main
+git push -u origin main
+
+other : 
+1. git status // get status of the working tree if there is any changes
+2. git add . // add all tree files
+3. git commit -m "" // commiting the changes
+4. git push -u origin main // push the changes
+
+offline testing

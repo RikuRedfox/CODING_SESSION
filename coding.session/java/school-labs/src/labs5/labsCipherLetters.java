@@ -8,54 +8,56 @@ public class labsCipherLetters {
 
     public static final String letters = "ABCDEFGHIJKLNMOPQRSTUVWXYZ";
 
-    labsCipherLetters() {
+    public void CipherLetters() {
+        System.out.println("\tCipher Letters\n");
         String message = new String();
         int key = 0;
-        while (true) {
-            sc.nextLine();
-            System.out.print("\nEnter the String for Encryption : ");
-            message = sc.nextLine();
-            if (Pattern.compile("[0-9]").matcher(message).find()) {
-                continue;
+        {
+            while (true) {
+                System.out.print("Enter the String for Encryption : ");
+                message = sc.nextLine();
+                if (Pattern.compile("[0-9]").matcher(message).find()) {
+                    continue;
+                }
+                break;
             }
-            break;
-        }
-        while (true) {
-            try {
-                System.out.print("Enter Shift Key : ");
-                key = sc.nextInt();
+            while (true) {
+                try {
+                    System.out.print("Enter Shift Key : ");
+                    key = sc.nextInt();
 
-            } catch (Exception e) {
-                System.err.println("Something went wrong!");
-                sc.nextLine();
-                continue;
+                } catch (Exception e) {
+                    System.err.println("Something went wrong!");
+                    sc.nextLine();
+                    continue;
+                }
+                break;
             }
-            break;
+            System.out.println("\nEncrypt msg : " + encrypt(message, key));
         }
-        System.out.println("\nEncrypt msg : " + encrypt(message, key));
-
         sc.nextLine();
-
-        while (true) {
-            System.out.print("\nEnter the String for Decryption : ");
-            message = sc.nextLine();
-            if (Pattern.compile("[0-9]").matcher(message).find()) {
-                continue;
+        {
+            while (true) {
+                System.out.print("\nEnter the String for Decryption : ");
+                message = sc.nextLine();
+                if (Pattern.compile("[0-9]").matcher(message).find()) {
+                    continue;
+                }
+                break;
             }
-            break;
-        }
-        while (true) {
-            try {
-                System.out.print("Enter Shift Key : ");
-                key = sc.nextInt();
-            } catch (Exception e) {
-                System.err.println("Something went wrong!");
-                sc.nextLine();
-                continue;
+            while (true) {
+                try {
+                    System.out.print("Enter Shift Key : ");
+                    key = sc.nextInt();
+                } catch (Exception e) {
+                    System.err.println("Something went wrong!");
+                    sc.nextLine();
+                    continue;
+                }
+                break;
             }
-            break;
+            System.out.println("\nDecrypted msg : " + decrypt(message, key));
         }
-        System.out.println("\nDecrypted msg : " + decrypt(message, key));
 
     }
 

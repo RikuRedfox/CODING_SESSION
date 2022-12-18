@@ -3,6 +3,10 @@ package src.labs5;
 import java.util.Scanner;
 
 public class labsMain {
+
+    public static labsCipherASCII cAscii = new labsCipherASCII();
+    public static labsCipherLetters cLetter = new labsCipherLetters();
+
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -16,14 +20,14 @@ public class labsMain {
                 respond = sc.next().toUpperCase().charAt(0);
 
                 if (respond == 'A' || respond == 'B') {
+                    sc.nextLine();
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
                     if (respond == 'A') {
-                        labsCipherASCII lCASCII = new labsCipherASCII();
-
+                        cAscii.CipherASCII();
                     }
                     if (respond == 'B') {
-                        labsCipherLetters lCLetters = new labsCipherLetters();
+                        cLetter.CipherLetters();
                     }
                 }
                 break;

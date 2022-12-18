@@ -5,6 +5,13 @@
             "name": "Launch labsMain",
             "request": "launch",
             "mainClass": "src.labs5.labsMain",
+            "projectName": "coding.session_523e3134"
+        },
+        {
+            "type": "java",
+            "name": "Launch labsMain",
+            "request": "launch",
+            "mainClass": "src.labs5.labsMain",
             "projectName": "coding.session_4678fd14"
         },
         {

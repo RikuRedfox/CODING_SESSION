@@ -1,9 +1,10 @@
-#include <array>
+#include <vector>
 #include <bitset>
 #include <iomanip>
 #include <iostream>
 #include <limits>
 #include <sstream>
+#include <cstdlib>
 #include <string>
 
 std::string respond;
@@ -11,32 +12,32 @@ std::string respond;
 int main()
 {
   // cashier credentials
-  std::string username;
-  {
-    std::string password;
-    while (true)
-    {
-      std::cout << "Enter Username: ";
-      std::cin >> username;
-      std::cout << "Enter Password: ";
-      std::cin >> password;
+  std::string username = "Xulio";
+  // {
+  //   std::string password;
+  //   while (true)
+  //   {
+  //     std::cout << "Enter Username: ";
+  //     std::cin >> username;
+  //     std::cout << "Enter Password: ";
+  //     std::cin >> password;
 
-      if (username == "Xulio" && password == "admin")
-        break;
-      else
-        std::cout << "\nWrong Credentials.\n";
-    }
-  }
+  //     if (username == "Xulio" && password == "admin")
+  //       break;
+  //     else
+  //       std::cout << "\nWrong Credentials.\n";
+  //   }
+  // }
 
   // menu system
   while (true)
   {
-    std::array<std::string, 99> orderName;
-    std::array<int, 99> orderPrice;
-    std::array<int, 99> orderQuantity;
+    std::vector<std::string> orderName;
+    std::vector<int> orderPrice;
+    std::vector<int> orderQuantity;
     int i = 0;
     // the array will hold the orders;
-    do
+    while (true)
     {
       int order, qty;
       while (true)
@@ -108,96 +109,94 @@ int main()
           continue;
         }
         else
-        {
           break;
-        }
       }
 
       switch (order)
       {
       case 1:
-        orderName.at(i) = "Ham & Cheese    ";
-        orderPrice.at(i) = 55;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Ham & Cheese    ");
+        orderPrice.push_back(55);
+        orderQuantity.push_back(qty);
         break;
       case 2:
-        orderName.at(i) = "Burger          ";
-        orderPrice.at(i) = 60;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Burger          ");
+        orderPrice.push_back(60);
+        orderQuantity.push_back(qty);
         break;
       case 3:
-        orderName.at(i) = "Clubhouse       ";
-        orderPrice.at(i) = 85;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Clubhouse       ");
+        orderPrice.push_back(85);
+        orderQuantity.push_back(qty);
         break;
       case 4:
-        orderName.at(i) = "Tune            ";
-        orderPrice.at(i) = 50;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Tune            ");
+        orderPrice.push_back(50);
+        orderQuantity.push_back(qty);
         break;
       case 5:
-        orderName.at(i) = "Spaghetti       ";
-        orderPrice.at(i) = 85;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Spaghetti       ");
+        orderPrice.push_back(85);
+        orderQuantity.push_back(qty);
         break;
       case 6:
-        orderName.at(i) = "Carbonara       ";
-        orderPrice.at(i) = 85;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Carbonara       ");
+        orderPrice.push_back(85);
+        orderQuantity.push_back(qty);
         break;
       case 7:
-        orderName.at(i) = "Lasagna         ";
-        orderPrice.at(i) = 90;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Lasagna         ");
+        orderPrice.push_back(90);
+        orderQuantity.push_back(qty);
         break;
       case 8:
-        orderName.at(i) = "Baked Mac       ";
-        orderPrice.at(i) = 90;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Baked Mac       ");
+        orderPrice.push_back(90);
+        orderQuantity.push_back(qty);
         break;
       case 9:
-        orderName.at(i) = "Friend Chiken   ";
-        orderPrice.at(i) = 110;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Friend Chiken   ");
+        orderPrice.push_back(110);
+        orderQuantity.push_back(qty);
         break;
       case 10:
-        orderName.at(i) = "Pork Chop       ";
-        orderPrice.at(i) = 115;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Pork Chop       ");
+        orderPrice.push_back(115);
+        orderQuantity.push_back(qty);
         break;
       case 11:
-        orderName.at(i) = "Steak           ";
-        orderPrice.at(i) = 150;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Steak           ");
+        orderPrice.push_back(150);
+        orderQuantity.push_back(qty);
         break;
       case 12:
-        orderName.at(i) = "Fish Fillet     ";
-        orderPrice.at(i) = 140;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Fish Fillet     ");
+        orderPrice.push_back(140);
+        orderQuantity.push_back(qty);
         break;
       case 13:
-        orderName.at(i) = "Soda            ";
-        orderPrice.at(i) = 20;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Soda            ");
+        orderPrice.push_back(20);
+        orderQuantity.push_back(qty);
         break;
       case 14:
-        orderName.at(i) = "Iced Tea        ";
-        orderPrice.at(i) = 25;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Iced Tea        ");
+        orderPrice.push_back(25);
+        orderQuantity.push_back(qty);
         break;
       case 15:
-        orderName.at(i) = "Orange Juice    ";
-        orderPrice.at(i) = 25;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Orange Juice    ");
+        orderPrice.push_back(25);
+        orderQuantity.push_back(qty);
         break;
       case 16:
-        orderName.at(i) = "Coffer          ";
-        orderPrice.at(i) = 30;
-        orderQuantity.at(i) = qty;
+        orderName.push_back("Coffer          ");
+        orderPrice.push_back(30);
+        orderQuantity.push_back(qty);
         break;
       }
-      std::cout << std::endl;
-      for (size_t x{0}; x <= i; x++)
+      std::cout << "\n";
+      for (size_t x = 0; x <= i; x++)
       {
         std::cout << "Item " << x << " : " << orderName.at(x)
                   << " | Quantity : " << orderQuantity.at(x)
@@ -210,10 +209,13 @@ int main()
           << "\nDo you want to order again?\n('Y' for Yes | 'any' for No) : ";
       std::cin >> respond;
 
-      if (!(respond == "Y" || respond == "y"))
+      if (respond == "Y" || respond == "y")
+        continue;
+      else
         break;
+
       i++;
-    } while (true);
+    }
 
     std::cout << "\nReceipt : \n";
     std::cout << "Cashier : " << username << std::endl;
@@ -260,9 +262,7 @@ int main()
     std::cin >> respond;
 
     if (!(respond == "Y" || respond == "y"))
-    {
       break;
-    }
   }
   std::cout << "\nOkay have a nice day!";
   return 0;

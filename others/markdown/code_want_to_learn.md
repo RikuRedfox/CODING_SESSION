@@ -1,5 +1,6 @@
 >**TIP: Code atleast 1-2 hrs.**
-<!-- # WebDev
+<!-- 
+# WebDev
 ## Front-End
 1. HTML
 1. CSS -> SCSS (BULMA or BOOTSTRP)
@@ -13,7 +14,8 @@
 >- [_CSS_](https://css-tricks.com/)
 >- [_JavaScript_](https://javascript.info/)
 >- [_React JS_](https://react-tutorial.app/)
->- [_API_](https://rapidapi.com/learn) -->
+>- [_API_](https://rapidapi.com/learn)
+-->
 
 # Programming
 1. C/C++ ( GameDev, OS, Embedded Sys) -> MingW(gdb, g++, clang)

@@ -8,33 +8,39 @@
 
 std::string respond;
 
-int main() {
+int main()
+{
+  // cashier credentials
+  std::string username;
+  {
+    std::string password;
+    while (true)
+    {
+      std::cout << "Enter Username: ";
+      std::cin >> username;
+      std::cout << "Enter Password: ";
+      std::cin >> password;
 
-// cashier credentials
-  std::string username, password;
-  while (true) {
-    std::cout << "Enter Username: ";
-    std::cin >> username;
-    std::cout << "Enter Password: ";
-    std::cin >> password;
-
-    if (username == "Xulio" && password == "admin") {
-      break;
-    } else {
-      std::cout << "\nWrong Credentials.\n";
+      if (username == "Xulio" && password == "admin")
+        break;
+      else
+        std::cout << "\nWrong Credentials.\n";
     }
   }
 
   // menu system
-  while (true) {
+  while (true)
+  {
     std::array<std::string, 99> orderName;
     std::array<int, 99> orderPrice;
     std::array<int, 99> orderQuantity;
     int i = 0;
     // the array will hold the orders;
-    do {
+    do
+    {
       int order, qty;
-      while (true) {
+      while (true)
+      {
         std::cout << "\n\tSandwiches" << std::setw(50)
                   << "\t\t\tMain Dish w/ Rice\n";
         std::cout << "[1] Ham & Cheese\t - - - - Php 55\t\t\t" << std::setw(20)
@@ -61,7 +67,8 @@ int main() {
         std::cout << "Quantity: "; // qty
         std::cin >> qty;
 
-        while (std::cin.fail()) {
+        while (std::cin.fail())
+        {
           std::cin.clear(); // clearning the buffer if there is a string input
           std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
           std::cerr
@@ -95,15 +102,19 @@ int main() {
           std::cin >> qty;
         }
 
-        if (order > 16 || order < 1) {
+        if (order > 16 || order < 1)
+        {
           std::cout << "We're sorry, Ma'am/Sir, but it's not on the menu.";
           continue;
-        } else {
+        }
+        else
+        {
           break;
         }
       }
 
-      switch (order) {
+      switch (order)
+      {
       case 1:
         orderName.at(i) = "Ham & Cheese    ";
         orderPrice.at(i) = 55;
@@ -186,7 +197,8 @@ int main() {
         break;
       }
       std::cout << std::endl;
-      for (size_t x{0}; x <= i; x++) {
+      for (size_t x{0}; x <= i; x++)
+      {
         std::cout << "Item " << x << " : " << orderName.at(x)
                   << " | Quantity : " << orderQuantity.at(x)
                   << " | Unit Price : " << orderPrice.at(x)
@@ -198,9 +210,8 @@ int main() {
           << "\nDo you want to order again?\n('Y' for Yes | 'any' for No) : ";
       std::cin >> respond;
 
-      if (!(respond == "Y" || respond == "y")) {
+      if (!(respond == "Y" || respond == "y"))
         break;
-      }
       i++;
     } while (true);
 
@@ -209,7 +220,8 @@ int main() {
     int total{0}, cash, amount;
 
     std::cout << std::endl;
-    for (size_t x{0}; x <= i; x++) {
+    for (size_t x{0}; x <= i; x++)
+    {
       amount = (orderPrice.at(x) * orderQuantity.at(x));
       total += amount;
       std::cout << "Item " << x << " : " << orderName.at(x)
@@ -219,11 +231,13 @@ int main() {
                 << (orderPrice.at(x) * orderQuantity.at(x)) << std::endl;
     }
     std::cout << "\nTotal: " << total << std::endl;
-    while (true) {
+    while (true)
+    {
       std::cout << "Enter Cash : ";
       std::cin >> cash;
 
-      while (std::cin.fail()) {
+      while (std::cin.fail())
+      {
         std::cin.clear(); // clearning the buffer if there is a string input
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cerr
@@ -245,11 +259,11 @@ int main() {
                  "('Y' for yes | 'any' for any) : ";
     std::cin >> respond;
 
-    if (!(respond == "Y" || respond == "y")) {
+    if (!(respond == "Y" || respond == "y"))
+    {
       break;
     }
   }
   std::cout << "\nOkay have a nice day!";
-
   return 0;
 }

@@ -18,9 +18,9 @@
 -->
 
 # Programming
-1. C/C++ ( GameDev, OS, Embedded Sys) -> MingW(gdb, g++, clang)
-1. Flutter && Dart (Web & App Dev) >> PHP (BackEnd)
-1. C# (GameDev) -> GoDot(Game Engine)
+1. C/C++ (Game Dev, OS, Embedded Sys) -> MingW(gdb, g++, clang)
+1. C# (GameDev) -> GoDot & Unity(Game Engine)
+1. Flutter & Dart (Web & App Dev) -> 
 1. Java (Still thinking about this.) -> JDK(JRE, JVM)
 
 ### Consider to learn.

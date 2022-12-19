@@ -4,8 +4,10 @@
 #include <limits>
 #include <sstream>
 #include <string>
+#include <cstdlib>
 
-class Scales {
+class Scales
+{
 private:
   double m_current_scale{}, m_total{65.};
   int m_user_scale;
@@ -13,7 +15,8 @@ private:
   std::array<std::array<std::string, 3>, 13> questions;
 
 public:
-  inline void Love() {
+  inline void Love()
+  {
     std::cout << "\n\tLOVE SCALE!\n\n";
     m_current_scale = 0;
     std::cin.get();
@@ -42,9 +45,13 @@ public:
     std::getline(std::cin, m_lName);
     std::cout << std::endl;
     // i for rows
-    for (size_t i{0}; i < questions.size(); i++) { // j for column
-      for (size_t j{0}; j < questions.at(i).size(); j++) {
-        while (1) {
+    for (size_t i{0}; i < questions.size(); i++)
+    { // j for column
+      for (size_t j{0}; j < questions.at(i).size(); j++)
+      {
+        system("CLS");
+        while (1)
+        {
           std::cin.clear(); // clearning the buffer if there is a string input
           std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
           // code here call the array value each iteration
@@ -54,32 +61,35 @@ public:
           std::cout << questions.at(i).at(j);
           j++;
           // call this array if the iteration met the condition
-          if (questions.at(i).at(j) == questions.at(5).at(2)) {
+          if (questions.at(i).at(j) == questions.at(5).at(2))
+          {
             std::cout << m_lName << questions.at(i).at(j);
           }
-          try {
+          try
+          {
             std::cout << "Your scale: ";
             std::cin >> m_user_scale;
             // input for scale 1-5
-            if (m_user_scale > 5 || m_user_scale < 1) {
+            if (m_user_scale > 5 || m_user_scale < 1)
+            {
               j -= 2;
               throw 1;
-            } else {
-              break;
             }
-          } catch (const int &e) {
+            else
+              break;
+          }
+          catch (const int &e)
+          {
+            system("CLS");
             std::cerr << "\nERROR: 1 to 5 only! Retry your input. ErrorCode : "
                       << &e << "\n\n";
           }
         }
         // current scale + user scale
         m_current_scale += m_user_scale;
-        // show the current points
-        std::cout << "\nCurrent score: " << m_current_scale << "/" << m_total
-                  << std::endl
-                  << std::endl;
       }
     }
+    system("CLS");
     // print the total/final point.
     std::cout << "The final score: " << m_current_scale << "/" << m_total
               << std::endl;
@@ -87,7 +97,9 @@ public:
     std::cout << result << "% That is you're inlove with " << m_lName
               << std::endl;
   }
-  inline void Like() {
+
+  inline void Like()
+  {
     std::cout << "\n\tLIKE SCALE. Goodluck!\n\n";
     m_current_scale = 0;
     std::cin.get();
@@ -116,14 +128,19 @@ public:
     std::getline(std::cin, m_lName);
     std::cout << std::endl;
     // i for rows
-    for (size_t i{0}; i < questions.size(); i++) { // j for column
-      for (size_t j{0}; j < questions.at(i).size(); j++) {
-        while (1) {
+    for (size_t i{0}; i < questions.size(); i++)
+    { // j for column
+      for (size_t j{0}; j < questions.at(i).size(); j++)
+      {
+        system("CLS");
+        while (1)
+        {
           std::cin.clear(); // clearning the buffer if there is a string input
           std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
           // call this array if the iteration met the condition
           if (questions.at(i).at(j) == questions.at(11).at(1) ||
-              questions.at(i).at(j) == questions.at(12).at(1)) {
+              questions.at(i).at(j) == questions.at(12).at(1))
+          {
             std::cout << m_lName << questions.at(i).at(j);
           }
           // increment j to call next column in same row
@@ -131,29 +148,31 @@ public:
           j++;
           std::cout << questions.at(i).at(j);
           j++;
-          try {
+          try
+          {
             std::cout << "Your scale: ";
             std::cin >> m_user_scale;
             // input for scale 1-5
-            if (m_user_scale > 5 || m_user_scale < 1) {
+            if (m_user_scale > 5 || m_user_scale < 1)
+            {
               j -= 2;
               throw 1;
-            } else {
-              break;
             }
-          } catch (const int &x) {
+            else
+              break;
+          }
+          catch (const int &x)
+          {
+            system("CLS");
             std::cerr << "\nERROR: 1 to 5 only! Retry your input. ErrorCode : "
                       << &x << "\n\n";
           }
         }
         // current scale + user scale
         m_current_scale += m_user_scale;
-        // show the current points
-        std::cout << "\nCurrent score: " << m_current_scale << "/" << m_total
-                  << std::endl
-                  << std::endl;
       }
     }
+    system("CLS");
     // print the m_total/final point.
     std::cout << "The final score: " << m_current_scale << "/" << m_total
               << std::endl;
@@ -162,7 +181,9 @@ public:
   }
 };
 
-int main() {
+int main()
+{
+  system("CLS");
   std::cout << "\tLOVE AND LIKE SCALE\n\nThis quiz are for fun only.\n";
   std::cout << "This scale are originally a research paper\nf";
   std::cout << "rom 1970 by Zick Rubin.\n\n";
@@ -170,64 +191,92 @@ int main() {
   std::cout << "Press enter to continue . . . ";
   std::cin.get();
 
-  std::string name, gender, respond;
-  size_t age;
+  std::string respond;
+  {
+    system("CLS");
+    std::string name, gender;
+    size_t age;
 
-  std::cout << "\nWhat is your name? : ";
-  std::getline(std::cin, name);
+    std::cout << "What is your name? : ";
+    std::getline(std::cin, name);
 
-  std::cout << "How old are you? : ";
-  std::cin >> age;
-  std::cout << "What is your sex? \n";
-  std::cout << "(Press 'M' for Male | 'F' for Female) : ";
-  std::cin >> respond;
+    std::cout << "How old are you? : ";
+    std::cin >> age;
+    while (std::cin.fail())
+    {
+      std::cin.clear(); // clearning the buffer if there is a string input
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-  gender = (respond == "M" || respond == "m")   ? "Male."
-           : (respond == "F" || respond == "f") ? "Female."
-                                                : "Unknown?";
-  std::cout << "Your sex is . . . " << gender << std::endl;
+      std::cout << "How old are you? : ";
+      std::cin >> age;
+    }
 
-  std::cout << "\nDIRECTION: Scale it from 1-5 otherwise the scaling will "
-               "fail/error.\n\n";
-  std::cout << "Are you ready to take the survey? " << name
-            << ". \n(type 'Y' for yes | 'any' for exit) : ";
-  std::cin >> respond;
+    std::cout << "What is your sex? \n";
+    std::cout << "(Press 'M' for Male | 'F' for Female) : ";
+    std::cin >> respond;
 
-  if (respond == "Y" || respond == "y") {
+    gender = (respond == "M" || respond == "m")   ? "Male."
+             : (respond == "F" || respond == "f") ? "Female."
+                                                  : "Unknown?";
+    std::cout << "Your sex is . . . " << gender << std::endl;
+
+    std::cout << "\nDIRECTION: Scale it from 1-5 otherwise the scaling will "
+                 "fail/error.\n\n";
+    std::cout << "Are you ready to take the survey? " << name
+              << ". \n(type 'Y' for yes | 'any' for exit) : ";
+    std::cin >> respond;
+  }
+
+  if (respond == "Y" || respond == "y")
+  {
+    system("CLS");
     Scales scale;
-    std::cout << "\n\tI'm glad! q(≧▽≦q)";
-    while (true) {
-      while (true) {
+    std::cout << "\n\tI'm glad!";
+    while (true)
+    {
+      while (true)
+      {
         std::cout << "\nNow pick between the survey.\n"
                   << "(Type 'LOVE' for love survey | 'LIKE' for like survey.)\n"
                      "Respond : ";
         std::cin >> respond;
         std::for_each(respond.begin(), respond.end(),
-                      [](char &c) { c = ::tolower(c); });
-        if (respond == "love") {
+                      [](char &c)
+                      { c = ::tolower(c); });
+        if (respond == "love")
+        {
+          system("CLS");
           scale.Love();
           break;
-        } else if (respond == "like") {
+        }
+        else if (respond == "like")
+        {
+          system("CLS");
           scale.Like();
           break;
-        } else {
+        }
+        else
+        {
+          system("CLS");
           std::cerr << "\nERROR: The inputs are incompatible. Try again.\n";
           continue;
         }
       }
-
       std::cout << "\n\nDo you want to try it again or try the other one?\n"
                    "(Press 'Y for try again(other) | 'any' for exit) : ";
       std::cin >> respond;
       if (respond == "Y" || respond == "y")
         continue;
-      else {
+      else
+      {
         break;
       }
     }
-    std::cout << "\nThank you trying this survey. ヾ(≧▽≦*)o";
+    system("CLS");
+    std::cout << "\nThank you trying this survey.";
     return 0;
   }
-  std::cout << "\n\nOh. . . Okay. (っ °Д °;)っ" << std::endl;
+  system("CLS");
+  std::cout << "\n\nOh. . . Okay." << std::endl;
   return 0;
 }

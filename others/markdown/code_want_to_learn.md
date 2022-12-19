@@ -16,7 +16,7 @@
 >- [_API_](https://rapidapi.com/learn) -->
 
 # Programming
-1. C/C++ (Dunno where) -> MingW(gdb, g++, clang)
+1. C/C++ ( GameDev, OS, Embedded Sys) -> MingW(gdb, g++, clang)
 1. Flutter && Dart (Web & App Dev) >> PHP (BackEnd)
 1. C# (GameDev) -> GoDot(Game Engine)
 1. Java (Still thinking about this.) -> JDK(JRE, JVM)

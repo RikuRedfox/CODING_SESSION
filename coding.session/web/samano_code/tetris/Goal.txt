@@ -1,0 +1,20 @@
+Goals:
+
+Make the layout:
+ > Visualize the blocks (10 by 20 blocks) - DONE
+ > Add Splash images for design - DONE
+
+Store block patterns in 3d array - DONE
+
+Implement user inputs:
+ > Arrow Keys:
+    > Left and Right (Movements) - DONE
+    > Up (Rotate) - DONE
+    > Down (Speeds up the falling block) - DOME
+ > Space (Place down the block) - DONE
+
+When the row/s is/are filled, Clear the row and let the blocks fall and add score - DONE
+
+When the blocks are placed less than 0, the game will be over - DONE (Not pretty much xD)
+
+Restart Game button (Clears everything By refresing the webpage) - DONE

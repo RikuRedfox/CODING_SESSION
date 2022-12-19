@@ -1,0 +1,554 @@
+<html>
+<head>
+	<title>1942 Game</title>
+
+<style type="text/css">
+	*{padding: 0; margin: 0; box-sizing: border-box;}
+	body{
+		background-color:black;
+	}
+	#container{
+		position: absolute;
+		background: url('background.png') no-repeat;
+		background-size: 500px 6000px;
+		background-position: center -5400px;
+		width: 500px;
+		height: 600px;
+		border: 2px solid white;
+		overflow: hidden;
+	}
+	#container div{
+		/*transform: scale(1.5);*/
+	}
+	#hero{
+		background: url('1942.gif') no-repeat -34px -10px;
+		width: 23px;
+		height: 16px;
+		position:absolute;
+		/*border: 2px solid red;*/
+	}
+	.enemy1{
+		background: url('1942.gif') no-repeat -90px -315px;
+		width: 14px;
+		height: 14px;
+		position:absolute;
+		transform-origin: center center;
+	}
+	.enemy2{
+		background: url('1942.gif') no-repeat -86px -234px;
+		width: 23px;
+		height: 21px;
+		position:absolute;
+		transform-origin: center center;
+
+		filter: hue-rotate(200deg);
+	}
+	.enemy3{
+		background: url('1942.gif') no-repeat -42px -111px;
+		width: 47px;
+		height: 40px;
+		position:absolute;
+		transform: rotate(180deg);
+
+		filter: hue-rotate(150deg);
+	}
+	.power{
+		background: url('1942.gif') no-repeat -90px -420px;
+		width: 16px;
+		height: 16px;
+		position:absolute;
+
+		-webkit-filter: drop-shadow(0px 0px 20px pink);
+         filter: drop-shadow(0px 0px 20px pink);
+	}
+
+	.bullet{
+		background: url('1942.gif') no-repeat -58px -429px;
+		width: 2px;
+		height: 7px;
+		position: absolute;
+		transform: scale(1.2) !important;
+	}
+	#score{
+		position:absolute;
+		border:3px solid red;
+		top:60px;
+		left:520px;
+		background-color:white;
+		text-align: center;
+		width: 160px;
+		padding: 4px 10px;
+		font-size:30px;
+		font-family: verdana;
+		border-radius: 20px;	
+	}
+	#score:before{
+		position: absolute;
+		width: 100%; height: 100%;
+		top: -30px; left: 0;
+		text-align: left;
+		content: "SCORE";
+
+		color: white;
+		font-size: 20px;
+
+	}
+</style>
+</head>
+<body>
+	<div id='container'>
+		<div id='hero' style='top:300px; left:300px;'></div>
+		<div id='enemies'></div>
+		<div id='bullets'></div>
+		<div id='explosion'></div>	
+		<div id='powerup'></div>
+	</div>
+
+	<div id='score'>0</div>
+
+<script>
+	/// Room
+	var backgroundScroll = -5400;
+	var score = 0;
+
+	// Sounds
+	var sounds = [];
+
+	/// Inputs
+	var scInputs = {
+		up: false,
+		down: false,
+		left: false,
+		right: false,
+		space: false
+	}
+
+	/// Custom Sprite Composer
+	var sprComposer = {
+		explosion: {
+			frames: {
+				0: {x: -8, y: -398, w: 16, h: 16},
+				1: {x: -30, y: -398, w: 16, h: 16},
+				2: {x: -53, y: -398, w: 16, h: 16},
+				3: {x: -77, y: -398, w: 16, h: 16},
+				4: {x: -100, y: -398, w: 16, h: 16},
+				5: {x: -125, y: -402, w: 12, h: 12},
+				6: {x: -142, y: -404, w: 10, h: 10},
+				7: {x: -156, y: -402, w: 13, h: 12},
+				8: {x: -174, y: -404, w: 10, h: 10},
+				9: {x: -188, y: -406, w: 8, h: 8}
+			}
+		}
+	}
+
+	/// Objects
+	// Player
+	var objPlayer = {
+		x: (500/2)-(23/2),
+		y: 600-50,
+		speed: 4,
+		mode: 0,
+		rapid: 20,
+		canShoot: true
+	}
+	var objPowerUps = [];
+
+	// Enemies
+	var enemies = [];
+	var enemyType = ["small", "medium", "big"];
+	var explosion = [];
+
+	// Projectiles
+	var bulletsP = [];
+	var bulletsE = [];
+
+	/// Functions
+	function updateScore(){
+		document.querySelector("#score").innerHTML = score;
+	}
+
+	function updateBackground(){
+		backgroundScroll += .3;
+		// window.getComputedStyle(document.getElementById("container"), null).getPropertyValue("background-position");
+		document.getElementById("container").style.backgroundPosition = "50% "+(backgroundScroll)+"px";
+	}
+
+	function updatePlayer(){
+		var p = document.getElementById("hero");
+		p.style.top = objPlayer.y+"px";
+		p.style.left = objPlayer.x+"px";
+	}
+
+	function shootBullets(){
+		if (scInputs.space == true && objPlayer.canShoot){
+			objPlayer.canShoot = false;
+			if (objPlayer.mode == 0){
+				bulletsP.push({x: objPlayer.x+11, y: objPlayer.y-4});
+			}
+			else if (objPlayer.mode == 1){
+				bulletsP.push({x: objPlayer.x+6, y: objPlayer.y-4});
+				bulletsP.push({x: objPlayer.x+16, y: objPlayer.y-4});
+			}
+			else if (objPlayer.mode == 2){
+				bulletsP.push({x: objPlayer.x+3, y: objPlayer.y-4});
+				bulletsP.push({x: objPlayer.x+11, y: objPlayer.y-4});
+				bulletsP.push({x: objPlayer.x+19, y: objPlayer.y-4});
+			}
+
+			setTimeout(()=>{objPlayer.canShoot = true}, objPlayer.rapid*10);
+		}
+	}
+
+	function updateBullet(){
+		// Recreate Bullets
+		var output = "";
+		for(var i = 0; i < bulletsP.length; i++){
+			output += `<div class='bullet' style='top: ${bulletsP[i].y}px; left: ${bulletsP[i].x}px;'></div>`;
+		}
+		document.getElementById("bullets").innerHTML = output;
+
+		// Move Bullets and check if they are beyond the container
+		for(var i = 0; i < bulletsP.length; i++){
+			bulletsP[i].y -= 8;
+
+			if (bulletsP[i].y < 0){
+				bulletsP[i] = bulletsP[bulletsP.length-1];
+				bulletsP.pop();
+				// console.log(bulletsP);
+			}
+		}
+	}
+
+	// Generate Enemies
+	function generateEnemy(num){
+		// If 'num' number has values
+		if (num != null){
+			for (var i = 0; i < num; i++){
+				var type = enemyType[Math.floor(Math.random()*enemyType.length)];
+				
+				switch(type){
+					case "small":
+						enemies.push({x: Math.random()*450, y: 0, type: 1, speed: 2, hp: 5});
+					break;
+
+					case "medium":
+						enemies.push({x: Math.random()*450, y: 0, type: 2, speed: 3, hp: 10});
+					break;
+
+					case "big":
+						enemies.push({x: Math.random()*450, y: 0, type: 3, speed: 1, hp: 20});
+					break;
+				}
+			}
+
+			return;
+		}
+
+		// 7 Enemies when 'num' doesnt have value
+		for (var i = 0; i < 7; i++){
+			var type = enemyType[Math.floor(Math.random()*enemyType.length)];
+
+			switch(type){
+				case "small":
+					enemies.push({x: Math.random()*450, y: 0, type: 1, speed: 2, hp: 5});
+				break;
+
+				case "medium":
+					enemies.push({x: Math.random()*450, y: 0, type: 2, speed: 3, hp: 10});
+				break;
+
+				case "big":
+					enemies.push({x: Math.random()*450, y: 0, type: 3, speed: 1, hp: 20});
+				break;
+			}
+		}
+	}
+
+	// Update Enemy
+	function updateEnemy(){
+		var output = "";
+		for (var i = 0; i < enemies.length; i++){
+			output += `<div class='enemy${enemies[i].type}' style='top: ${enemies[i].y}px; left: ${enemies[i].x}px;'></div>`;
+		}
+		document.getElementById("enemies").innerHTML = output;
+
+		// Move enemies Downward
+		for (var i = 0; i < enemies.length; i++){
+			enemies[i].y += enemies[i].speed;
+		}
+
+		// Check if they are beyond height of the container
+		for (var i = 0; i < enemies.length; i++){
+			if (enemies[i].y >= 590){
+				enemies[i].x = Math.random()*450;
+				enemies[i].y = 0;
+			}
+		}
+	}
+
+	function collisions(){
+		// Player to enemy
+		for (var i = 0; i < enemies.length; i++){
+			if (Math.abs(enemies[i].x - objPlayer.x) < 18 && Math.abs(enemies[i].y - objPlayer.y) < 15){
+				score -= 500; // :< sad
+				if (objPlayer.mode !== 0) objPlayer.mode--;
+
+				// Remove Enemy from the array
+				addExplosion(i);
+				sounds.push({isPlaying: false, audio: new Audio("explode.wav")});
+				enemies[i] = enemies[enemies.length-1];
+				enemies.pop();
+
+				// Replace the enemy by generating.
+				generateEnemy(1);
+			}
+		}
+
+		// Bullets to enemy
+		for (var i = 0; i < enemies.length; i++){
+			for (var j = 0; j < bulletsP.length; j++){
+				var w;
+				if (enemies[i].type == 1){
+					w = 14;
+				}
+				else if (enemies[i].type == 2){
+					w = 23;
+				}
+				else if (enemies[i].type == 3){
+					w = 47;
+				}
+
+				if (enemies[i].type == 3 && Math.abs((enemies[i].x+(w/2)) - bulletsP[j].x) < 47/2 && Math.abs(enemies[i].y - bulletsP[j].y) < 18){
+					hitEnemy(i, j);
+				}
+				else if (enemies[i].type == 2 && Math.abs((enemies[i].x+(w/2)) - bulletsP[j].x) < 23/2 && Math.abs(enemies[i].y - bulletsP[j].y) < 18){
+					hitEnemy(i, j);
+				}
+				else if (enemies[i].type == 1 && Math.abs((enemies[i].x+(w/2)) - bulletsP[j].x) < 14/2 && Math.abs(enemies[i].y - bulletsP[j].y) < 18){
+					hitEnemy(i, j);
+				}
+			}
+		}
+
+		// Player to Power Up
+		for (var i = 0; i < objPowerUps.length; i++){
+			if (Math.abs(objPowerUps[i].x - objPlayer.x) < 15 && Math.abs(objPowerUps[i].y - objPlayer.y) < 15){
+				if (objPlayer.mode !== 2){objPlayer.mode++}
+				console.log(objPlayer.mode);
+				score += 20;
+
+				// Spawn sound and remove the powerup in array
+				sounds.push({isPlaying: false, audio: new Audio("powerUp.wav")});
+				objPowerUps[i] = objPowerUps[objPowerUps.length-1];
+				objPowerUps.pop();
+			}
+		}
+	}
+
+	function hitEnemy(i, j){
+		bulletsP[j] = bulletsP[bulletsP.length-1];
+		bulletsP.pop();
+
+		if (enemies[i].hp <= 2){
+			addExplosion(i);
+
+			sounds.push({isPlaying: false, audio: new Audio("explode.wav")});
+			enemies[i] = enemies[enemies.length-1];
+			enemies.pop();
+
+			generateEnemy(1);
+			score += 10;
+			return;
+		}
+
+		enemies[i].hp -= 2;
+		sounds.push({isPlaying: false, audio: new Audio("hit.wav")});
+	}
+
+	function addExplosion(i){
+		// Add Explosion Element
+		var w, h;
+		if (enemies[i].type == 1){
+			w = parseInt(window.getComputedStyle(document.querySelector(".enemy1"), null).getPropertyValue("width").replace("px", ""));
+			h = parseInt(window.getComputedStyle(document.querySelector(".enemy1"), null).getPropertyValue("height").replace("px", ""));
+		}
+		else if (enemies[i].type == 2){
+			w = parseInt(window.getComputedStyle(document.querySelector(".enemy2"), null).getPropertyValue("width").replace("px", ""));
+			h = parseInt(window.getComputedStyle(document.querySelector(".enemy2"), null).getPropertyValue("height").replace("px", ""));
+		}
+		else if (enemies[i].type == 3){
+			w = parseInt(window.getComputedStyle(document.querySelector(".enemy3"), null).getPropertyValue("width").replace("px", ""));
+			h = parseInt(window.getComputedStyle(document.querySelector(".enemy3"), null).getPropertyValue("height").replace("px", ""));
+		}
+
+		console.log(w, h);
+
+		explosion.push({
+			x: enemies[i].x+(w/3), 
+			y: enemies[i].y+(h/2), 
+			size: enemies[i].type, 
+			frame: 0, 
+			id: i,
+			isAnimating: false,
+			animate: function(){
+				var timeline = setInterval(()=>{
+					// console.log("called");
+					if (this.frame == 9){
+						clearInterval(timeline);
+						document.querySelector(".explode"+this.id).remove();
+						return;
+					}
+					document.querySelector(".explode"+this.id).style.background = `url(./1942.gif) ${sprComposer.explosion.frames[this.frame].x}px ${sprComposer.explosion.frames[this.frame].y}px no-repeat`;
+					document.querySelector(".explode"+this.id).style.width = `${sprComposer.explosion.frames[this.frame].w}px`;
+					document.querySelector(".explode"+this.id).style.height = `${sprComposer.explosion.frames[this.frame].h}px`;
+					document.querySelector(".explode"+this.id).style.top = `${this.y}px`;
+					document.querySelector(".explode"+this.id).style.left = `${this.x}px`;
+					document.querySelector(".explode"+this.id).style.position = `absolute`;
+
+					this.frame+=1;
+				}, 100);
+			}
+		});
+
+		var output = `<div class='explode${i}' style='background: '></div>`;
+		document.getElementById("explosion").innerHTML += output;
+
+		// Random generate powerups for player
+		var level = 0;
+		var chance = Math.floor(Math.random()*20);
+
+		if (objPlayer.mode === 0) {level = 5}
+		else if (objPlayer.mode === 1) {level = 10}
+		else if (objPlayer.mode === 2) {level = 15}
+
+		if (chance > level){
+			objPowerUps.push({
+				x: Math.floor(Math.random()*480)+10,
+				y: 0,
+				speed: 2
+			});
+		}
+	}
+
+	function updateExplosion(){
+		for(var i = 0; i < explosion.length; i++){
+			if (!explosion[i].isAnimating){
+				explosion[i].isAnimating = true;
+				explosion[i].animate();
+			}
+		}
+	}
+
+	function updatePowerup(){
+		var output = "";
+		for (var i = 0; i < objPowerUps.length; i++){
+			output += `<div class='power power${i}' style='top: ${objPowerUps[i].y}px; left: ${objPowerUps[i].x}px;'></div>`;
+		}
+		document.getElementById("powerup").innerHTML = output;
+
+		// Move power downward
+		for (var i = 0; i < objPowerUps.length; i++){
+			objPowerUps[i].y += objPowerUps[i].speed;
+		}
+
+		// If powerUp is out beyond canvas
+		for (var i = 0; i < objPowerUps.length; i++){
+			if (objPowerUps[i].y >= 590){
+				objPowerUps[i] = objPowerUps[objPowerUps.length-1];
+				objPowerUps.pop();
+			}
+		}
+	}
+
+	function checkInputs(){
+		// Player Movement
+		var top = parseInt(document.querySelector("#hero").style.top.replace("px", ""));
+		var left = parseInt(document.querySelector("#hero").style.left.replace("px", ""));
+		var padding = 10;
+
+		if (scInputs.up && top > 0+padding){
+			objPlayer.y -= objPlayer.speed;
+		}
+		if (scInputs.down && top <= 600-(4*padding)){
+			objPlayer.y += objPlayer.speed;
+		}
+		if (scInputs.left && left > 0+padding){
+			objPlayer.x -= objPlayer.speed;
+		}
+		if (scInputs.right && left <= 500-(padding*5)){
+			objPlayer.x += objPlayer.speed;
+		}
+
+		updatePlayer();
+	}
+
+	function checkSounds(){
+		for (var i = 0; i < sounds.length; i++){
+			if (!sounds[i].isPlaying){
+				sounds[i].isPlaying = true;
+				sounds[i].audio.play();
+			}
+
+			sounds[i].audio.onended = function(e){
+				sounds[i] = sounds[sounds.length-1];
+				sounds.pop();
+			}
+		}
+	}
+
+	/// Game Loop
+	function gameLoop(){
+		// Call Update Functions
+		checkInputs();
+		updateBackground();
+		updateBullet();
+		updateEnemy();
+		updateScore();
+		collisions();
+		updateExplosion();
+		checkSounds();
+		updatePowerup();
+		shootBullets();
+	}
+	window.setInterval(gameLoop, 20);
+	generateEnemy();
+
+	// Event Listener
+	document.onkeydown = function(e){
+		if (e.keyCode == 37){
+			scInputs.left = true;
+		}
+		if (e.keyCode == 38){
+			scInputs.up = true;
+		}
+		if (e.keyCode == 39){
+			scInputs.right = true;
+		}
+		if (e.keyCode == 40){
+			scInputs.down = true;
+		}
+		if (e.keyCode == 32){
+			scInputs.space = true;
+		}
+	}
+	document.onkeyup = function(e){
+		if (e.keyCode == 37){
+			scInputs.left = false;
+		}
+		if (e.keyCode == 38){
+			scInputs.up = false;
+		}
+		if (e.keyCode == 39){
+			scInputs.right = false;
+		}
+		if (e.keyCode == 40){
+			scInputs.down = false;
+		}
+		if (e.keyCode == 32){
+			scInputs.space = false;
+		}
+	}
+</script>
+
+</body>
+</html>

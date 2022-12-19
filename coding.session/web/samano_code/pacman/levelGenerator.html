@@ -1,0 +1,348 @@
+<html>
+  <head>
+    <style type="text/css">
+    	.selected{
+    		background: lightblue;
+    	}
+
+    	button.selected{
+    		border:  none;
+    	}
+
+    	.button{
+    		min-width: 22px;
+    		min-height: 20px;
+    		max-width: 22px;
+    		max-height: 20px;
+    		width: 22px;
+    		height: 20px;
+    		padding: 5px;
+    		margin: 0;
+    		border: 1px solid black;
+
+    		user-select: none;
+    	}
+
+    	.default{
+    		background: white;
+    		color: black;
+    	}
+
+    	.player{
+    		background: yellow;
+    		color: black;
+    	}
+
+    	.wall{
+    		background: #222034;
+    		color:  white;
+    	}
+
+    	.coin{
+    		background: gold;
+    		color: black;
+    	}
+
+    	.cherry{
+    		background: pink;
+    		color: black;
+    	}
+
+    	.ghost{
+    		background: red;
+    		color: black;
+    	}
+
+    	.modal{
+    		position: absolute;
+    		width: 50%; height: 70%;
+    		left: 50%; top: 50%;
+    		background: white;
+    		border: 5px solid black;
+    		z-index: 99;
+
+    		transform: translate(-50%, -50%);
+    		border-radius:  40px;
+
+    		display: none;
+    	}
+
+    	.modal .head{
+    		position:  relative;
+    		border-radius:  40px 40px 0 0;
+    		height:  40px;
+    		background: palegoldenrod;
+    		padding:  5px;
+
+    		display:  flex;
+    		justify-content: space-around;
+    		align-items:  center;
+
+    		font-family: verdana;
+    	}
+
+    	.modal .body{
+    		position:  relative;
+    		top: 10px;
+    		width: 80%;
+    		height:  450px;
+    		margin:  auto;
+    		overflow:  auto;
+    	}
+
+    	.modal .body textarea{
+    		position: relative;
+    		width: 100%; height: 100%;
+    		resize: none;
+    	}
+    </style>
+  </head>
+  <body class="body">
+  	<div class="modal">
+  		<div class="head">
+  			<h3>GENERATED ARRAY:</h3>
+  			<div>
+  				<button onclick="copy()">COPY</button>
+  				<button onclick="closeResult()">CLOSE</button>
+  			</div>
+  		</div>
+  		<div class="body">
+  			<textarea disabled class="textResult"></textarea>
+  		</div>
+  	</div>
+
+  	<button onclick="setObj('Empty', this)" class="selected">Empty (0)</button>
+  	<button onclick="setObj('Walls', this)">Walls (1)</button>
+  	<button onclick="setObj('Coins', this)">Coins (2)</button>
+  	<button onclick="setObj('Cherry', this)">Cherry (3)</button>
+  	<button onclick="setObj('Player', this)">Player (4)</button>
+  	<button onclick="setObj('Ghost', this)">Ghost (5)</button>
+  	<button onclick="clearTile()">Clear Tile</button>
+  	<button onclick="result()">Get Array</button>
+  	<button onclick="loadMap()">Load Tile</button>
+  	<br><br>
+  </body>
+
+  <script type="text/javascript">
+  	// Tiles:
+  	// 0 = Empty
+  	// 1 = Walls
+  	// 2 = Coins
+  	// 3 = Cherry
+  	// 4 = Player
+  	// 5 = Ghost
+
+  	var row = prompt("Hi! Please enter the amount of rows you want");
+  	var column = prompt("Now enter the column to set up the editor");
+
+	var isPressing = false;
+	setInterval(()=>{
+		document.onmousedown = function (e){
+			isPressing = true;
+		}
+		document.onmouseup = function (e){
+			isPressing = false;
+		}
+	}, 5);
+
+
+  	var body = document.querySelector(".body");
+	var tile = [];
+	var output = "";
+	var object = "Empty";
+	var map = "";
+
+	output += "<div class='container'>";
+	for (var i = 0; i < row; i++){
+			tile.push([]);
+			for (var j = 0; j < column; j++){
+		  	output += "<button onmouseover='set("+i+", "+j+", this)' class='default button' id='i"+i+"j"+j+"'>O</button>";
+		    tile[i][j] = 0; 
+	  	}
+	  	output += "<br>";
+	}
+	output += "</div>";
+
+	body.innerHTML += output;
+
+	// For setting up the tileset array
+	function set(i, j, obj){
+		// j is the x, i is the y
+		if (!isPressing) {return;}
+
+		obj.className = "";
+		obj.classList.add("button");
+
+	  	switch(object){
+	  		case "Empty":
+	  			tile[i][j] = 0;
+	  			obj.innerText = "O";
+	  			obj.classList.add("default");
+	  		break;
+	  		case "Walls":
+	  			tile[i][j] = 1;
+	  			obj.innerText = "1";
+	  			obj.classList.add("wall");
+	  		break;
+	  		case "Coins":
+	  			tile[i][j] = 2;
+	  			obj.innerText = "2";
+	  			obj.classList.add("coin");
+	  		break;
+	  		case "Cherry":
+	  			tile[i][j] = 3;	
+	  			obj.innerText = "3";
+	  			obj.classList.add("cherry");
+	  		break;
+	  		case "Player":
+	  			tile[i][j] = 4;	
+	  			obj.innerText = "4";
+	  			obj.classList.add("player");
+	  		break;
+	  		case "Ghost":
+	  			tile[i][j] = 5;
+	  			obj.innerText = "5";
+	  			obj.classList.add("ghost");
+	  		break;
+	  		default:
+	  			tile[i][j] = 0;	 
+	  			obj.innerText = "O"; 	
+	  			obj.classList.add("default");
+	  	}
+	}
+
+	// Selecting objects
+	function setObj(mode, obj){
+	  	document.querySelector(".selected").classList.remove("selected");
+	  	obj.classList.add("selected");
+
+	  	switch(mode){
+	  		case "Empty":
+	  			object = "Empty";	
+	  		break;
+	  		case "Walls":
+	  			object = "Walls";	
+	  		break;
+	  		case "Coins":
+	  			object = "Coins";	
+	  		break;
+	  		case "Cherry":
+	  			object = "Cherry";	
+	  		break;
+	  		case "Player":
+	  			object = "Player";	
+	  		break;
+	  		case "Ghost":
+	  			object = "Ghost";	
+	  		break;
+	  		default:
+	  			object = "Empty";	  	
+	  	}
+	}
+
+	// Clearing all tiles
+	function clearTile() {
+		console.log("Clearing");
+		for (var i = 0; i < tile.length; i++){
+			for (var j = 0; j < tile[i].length; j++){
+				tile[i][j] = 0;
+				document.getElementById(`i${i}j${j}`).className = "";
+	  			document.getElementById(`i${i}j${j}`).innerText = "O"; 	
+				document.getElementById(`i${i}j${j}`).classList.add("button");
+	  			document.getElementById(`i${i}j${j}`).classList.add("default");
+			}
+		}
+	};
+
+	// Get Array REsult Tile
+	function result(){
+
+		map += "[ \n";
+		for (let i = 0; i < row; i++){
+		    map += "\t[";
+		    for (let j = 0; j < column; j++){
+		        if (j == column-1){
+		            map += tile[i][j];
+		        } else {
+		            map += tile[i][j]+", ";
+		        }
+		    }
+		    if (i == row-1){
+		        map += "]";
+		    } else {
+		        map += "], \n";
+		    }
+		}
+		map += "\n];";
+
+		document.querySelector(".textResult").innerHTML = map;
+		document.querySelector(".modal").style.display = "block";
+	};
+
+	// Copy to clipboard
+	function copy(){
+		  var text = document.querySelector(".textResult");
+
+		  text.select();
+		  text.setSelectionRange(0, 99999);
+
+		  navigator.clipboard.writeText(text.value);
+
+		  alert("Copied!");
+	};
+
+	// Clsoe Result
+	function closeResult(){
+		  document.querySelector(".modal").style.display = "none";
+	};
+
+
+	// Load Map
+	function loadMap(){
+		var map = prompt("Enter the Array: ");
+		if (map.length <= 0){alert("Must enter an array"); return;}
+		var con = document.querySelector(".container");
+		con.remove();
+		map = eval(map.replaceAll("\r", "").replaceAll("\n", "").replaceAll("\t", "").replaceAll(" ", ""));
+		tile = map;
+
+
+		setTimeout(()=>{
+			output = "";
+			output += "<div class='container'>";
+			row = map.length; column = map[0].length;
+			for (var i = 0; i < map.length; i++){
+				for (var j = 0; j < map[i].length; j++){
+					switch(map[i][j]){
+				  		case 0:
+				  			output += "<button onmouseover='set("+i+", "+j+", this)' class='default button' id='i"+i+"j"+j+"'>O</button>";
+				  		break;
+				  		case 1:
+				  			output += "<button onmouseover='set("+i+", "+j+", this)' class='wall button' id='i"+i+"j"+j+"'>1</button>";
+				  		break;
+				  		case 2:
+				  			output += "<button onmouseover='set("+i+", "+j+", this)' class='coin button' id='i"+i+"j"+j+"'>2</button>";
+				  		break;
+				  		case 3:
+				  			output += "<button onmouseover='set("+i+", "+j+", this)' class='cherry button' id='i"+i+"j"+j+"'>3</button>";
+				  		break;
+				  		case 4:
+				  			output += "<button onmouseover='set("+i+", "+j+", this)' class='player button' id='i"+i+"j"+j+"'>4</button>";
+				  		break;
+				  		case 5:
+				  			output += "<button onmouseover='set("+i+", "+j+", this)' class='ghost button' id='i"+i+"j"+j+"'>5</button>";
+				  		break;
+				  		default:
+				  			output += "<button onmouseover='set("+i+", "+j+", this)' class='default button' id='i"+i+"j"+j+"'>O</button>";
+				  	}
+			  	}
+			  	output += "<br>";
+			}
+			output += "</div>";
+
+			body.innerHTML += output;
+		}, 1000);
+		return;
+	};
+  </script>
+</html>

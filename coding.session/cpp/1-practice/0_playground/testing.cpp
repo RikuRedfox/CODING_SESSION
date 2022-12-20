@@ -13,7 +13,7 @@ int intRespond1 = 1, intRespond2 = 1;
 
 int main(void)
 {
-    long double result, value, in, ft, yd, mi, ac, ha, mm, cm, m, km;
+    long double result, value;
     std::array<std::string, 10> choice{"Square inch (in)", "Square foot (ft)", "Square yard (yd)", "Square mile (mi)", "acre (ac)", "hectare (ha)", "Square millimeter (mm)", "Square centimeter (cm)", "Square meter (m)", "Square kilometer (km)"};
     std::cout << "Press enter.";
     while (true)

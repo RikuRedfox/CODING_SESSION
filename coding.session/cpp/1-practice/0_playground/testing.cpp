@@ -223,7 +223,7 @@ int main(void) {
     system("CLS");
     std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
     std::cout << "\nHeight: " << heightValue1 << " " << height.at(3);
-    std::cout << "\nBMI: " << (weightValue / ((heightValue1)*2));
+    std::cout << "\nBMI: " << (weightValue / (heightValue1 * heightValue1));
     std::cin.get();
   }
 }

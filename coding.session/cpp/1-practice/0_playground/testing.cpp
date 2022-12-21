@@ -9,10 +9,9 @@
 
 int main(void) {
   std::string respond = "";
-  int intFor{0}, intGender{0}, intAgeY{0}, intAgeM{0}, intWeight{0},
-      intHeight{0};
+  int intWeight{0}, intHeight{0};
   // int ageYear, ageMonths;
-  double weightValue{0}, heightValue{0};
+  double weightValue{0}, heightValue1{0}, heightValue2{0};
   std::array<std::string, 2> age{"2-19 yrs old", "20+ yrs old"};
   std::array<std::string, 2> gender{"Male", "Female"};
   std::array<std::string, 2> weight{"pounds", "kilograms"};
@@ -23,146 +22,12 @@ int main(void) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     int i;
-    while (true) { // Age Range check
-      system("CLS");
-      i = 1;
-      std::cout << "\tAGE RANGE\n";
-      for (auto a : age)
-        std::cout << "[" << i++ << "] " << a << "\n";
 
-      std::cout << "\nBMI for: ";
-      std::cin >> respond;
-      std::transform(respond.begin(), respond.end(), respond.begin(),
-                     ::tolower);
-      if (respond == "exit")
-        return 0;
-      else {
-        try {
-          intFor = std::stoi(respond);
-          age.at(--intFor);
-        } catch (...) {
-          continue;
-        }
-      }
-      break;
-    }
-
-    if (age.at(intFor) == age.at(0)) {
-      while (true) {
-        system("CLS");
-        i = 1;
-        std::cout << "BMI For " << age.at(intFor);
-        std::cout << "\n\n\tGENDER\n";
-        for (auto a : gender)
-          std::cout << "[" << i++ << "] " << a << "\n";
-
-        std::cout << "Gender: ";
-        std::cin >> respond;
-        std::transform(respond.begin(), respond.end(), respond.begin(),
-                       ::tolower);
-        if (respond == "exit")
-          return 0;
-        else {
-          try {
-            intGender = std::stoi(respond);
-            gender.at(--intGender);
-          } catch (...) {
-            continue;
-          }
-        }
-        break;
-      } // Gender
-
-      while (true) {
-        while (true) {
-          system("CLS");
-          std::cout << "BMI For " << age.at(intFor);
-          std::cout << "\nGender: " << gender.at(intGender);
-          std::cout << "\n\n\tAge: year + month\n";
-          std::cout << "Year old: ";
-          std::cin >> respond;
-          std::transform(respond.begin(), respond.end(), respond.begin(),
-                         ::tolower);
-          if (respond == "exit")
-            return 0;
-          else {
-            try {
-              intAgeY = std::stoi(respond);
-              if (intAgeY >= 2 && intAgeY <= 19)
-                break;
-              else {
-                std::cout << "The age range is 2 - 19, and it can't be greater "
-                             "than. \n\t(Press Enter)";
-                std::cin.get();
-                std::cin.get();
-                continue;
-              }
-            } catch (...) {
-              continue;
-            }
-          }
-        } // Year old
-        while (true) {
-          system("CLS");
-          std::cout << "BMI For " << age.at(intFor);
-          std::cout << "\nGender: " << gender.at(intGender);
-          std::cout << "\n\n\tAge: year + month";
-          std::cout << "\nYear old: " << intAgeY;
-          std::cout << "\nMonth old: ";
-          std::cin >> respond;
-          std::transform(respond.begin(), respond.end(), respond.begin(),
-                         ::tolower);
-          if (respond == "exit")
-            return 0;
-          else {
-            try {
-              intAgeM = std::stoi(respond);
-              if (intAgeM >= 1 && intAgeM <= 12)
-                break;
-              if (intAgeM > 12) {
-                std::cout << "It can't be greater than 12. "
-                             "\n\nWant to re-enter the month? "
-                             "otherwise the value wiil be 12.\n"
-                             "(Enter 'Y' change | 'any' to set 12)\n>> ";
-                std::cin >> respond;
-                std::transform(respond.begin(), respond.end(), respond.begin(),
-                               ::tolower);
-                if (respond == "y") {
-                  continue;
-                } else {
-                  intAgeM = 12;
-                  break;
-                }
-              } else if (intAgeM < 1) {
-                std::cout << "It can't be less than 1. "
-                             "\n\nWant to re-enter the month? "
-                             "otherwise the value wiil be 1.\n"
-                             "(Enter 'Y' change | 'any' to set 1)\n>> ";
-                std::cin >> respond;
-                std::transform(respond.begin(), respond.end(), respond.begin(),
-                               ::tolower);
-                if (respond == "y") {
-                  continue;
-                } else {
-                  intAgeM = 1;
-                  break;
-                }
-              }
-            } catch (...) {
-              continue;
-            }
-          }
-        } // Month old
-        break;
-      } // Yr old + Month old
-
+    while (true) {
       while (true) {
         i = 1;
         system("CLS");
-        std::cout << "BMI For " << age.at(intFor);
-        std::cout << "\nGender: " << gender.at(intGender);
-        std::cout << "\nAge: " << intAgeY << " Year old & " << intAgeM
-                  << " Month old\n\n";
+        std::cout << "\tWeight\n";
 
         for (auto a : weight)
           std::cout << "[" << i++ << "] " << a << "\n";
@@ -181,6 +46,13 @@ int main(void) {
             continue;
           }
         }
+        break;
+      } // Weight type
+      while (true) {
+        system("CLS");
+        std::cout << "\tWeight";
+        std::cout << "\nWeight (" << weight.at(intWeight) << ") "
+                  << "\n";
         std::cout << "Weight Value: ";
         std::cin >> respond;
         std::transform(respond.begin(), respond.end(), respond.begin(),
@@ -190,14 +62,22 @@ int main(void) {
         else {
           try {
             weightValue = std::stod(respond);
+            if (weight.at(intWeight) == weight.at(0))
+              weightValue /= 2.20462262;
           } catch (...) {
             continue;
           }
         }
         break;
-      }
-
+      } // Weight Value
+      break;
+    } // Weight
+    while (true) {
       while (true) {
+        system("CLS");
+        std::cout << "Weight: " << weightValue << " " << weight.at(1);
+        std::cout << "\n\n\tHeight\n";
+
         i = 1;
         for (auto a : height)
           std::cout << "[" << i++ << "] " << a << "\n";
@@ -217,11 +97,133 @@ int main(void) {
           }
         }
         break;
-      }
-    }
-    if (age.at(intFor) == age.at(1)) {
-      std::cout << "Hello world muna (Press Enter)";
-      std::cin.get();
-    }
+      } // Height type
+      while (true) {
+        system("CLS");
+        std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+        std::cout << "\n\n\tHeight\n";
+        std::cout << "Height (" << height.at(intHeight) << ") ";
+
+        if (height.at(intHeight) == height.at(0)) { // ft and in
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\nHeight Value (ft): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return 0;
+            else {
+              try {
+                heightValue1 = stod(respond);
+                heightValue1 /= 3.2808399;
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          } // feet value
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ") ";
+            std::cout << "\nHeight Value (ft): " << heightValue1;
+            std::cout << "\nHeight Value (in): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return 0;
+            else {
+              try {
+                heightValue2 = stod(respond);
+                if (heightValue2 < 1 || heightValue2 > 12) {
+                  std::cerr << "Must be between 1 and 12 (Press Enter)";
+                  std::cin.get();
+                  std::cin.get();
+                  continue;
+                }
+                heightValue1 += heightValue2 /= 39.3700787;
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          } // inches value | foot and inches
+        } else if (height.at(intHeight) == height.at(1)) { // in
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\nHeight Value (in): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return 0;
+            else {
+              try {
+                heightValue1 = stod(respond);
+                heightValue1 /= 39.3700787;
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          }                                                // inches
+        } else if (height.at(intHeight) == height.at(2)) { // cm
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\nHeight Value (cm): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return 0;
+            else {
+              try {
+                heightValue1 = stod(respond);
+                heightValue1 /= 100;
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          }                                                // cm
+        } else if (height.at(intHeight) == height.at(3)) { // meters
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\nHeight Value (cm): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return 0;
+            else {
+              try {
+                heightValue1 = stod(respond);
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          } // m
+        }
+        break;
+      } // height value
+      break;
+    } // Height
+    // BMI = weight in kg / height in meters
+    system("CLS");
+    std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+    std::cout << "\nHeight: " << heightValue1 << " " << height.at(3);
+    std::cout << "\nBMI: " << (weightValue / ((heightValue1)*2));
+    std::cin.get();
   }
 }

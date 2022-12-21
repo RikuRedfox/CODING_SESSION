@@ -55,5 +55,6 @@
         "xtr1common": "cpp",
         "xutility": "cpp"
     },
-    "livePreview.defaultPreviewPath": "d:\\CODE\\2_1_WEBSITE\\PRACTICE\\1_HI3_imitate\\index.html"
+    "livePreview.defaultPreviewPath": "d:\\CODE\\2_1_WEBSITE\\PRACTICE\\1_HI3_imitate\\index.html",
+    "cmake.configureOnOpen": false
 }

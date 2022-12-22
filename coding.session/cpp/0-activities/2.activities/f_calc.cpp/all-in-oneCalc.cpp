@@ -22,6 +22,12 @@ public:
   } simpleCalc;
 
   class BMI {
+    std::string respond = "";
+    int intWeight, intHeight;
+    double weightValue, heightValue1, heightValue2;
+    std::array<std::string, 2> weight;
+    std::array<std::string, 4> height;
+
   public:
     inline void _bmi();
   } bmi;
@@ -33,6 +39,7 @@ public:
     std::string strRespond;
     int intRespond1 = 1, intRespond2 = 1;
     long double result, value;
+    std::array<std::string, 10> choice;
 
   public:
     inline void _area(void);
@@ -50,13 +57,18 @@ int main(void) {
 inline void mainMenu() {
   std::string str_respond;
   short unsigned int int_respond;
-  std::array<std::string, 12> choice{
-      "Simple Calculator", "Area",
-      "BMI [ONG]",         "Data [ONG]",
-      "Discount [ONG]",    "Length [ONG]",
-      "Mass [ONG]",        "Numerical System [ONG]",
-      "Speed [ONG]",       "Temperature [ONG]",
-      "Time [ONG]",        "Volume [ONG]"};
+  std::array<std::string, 12> choice{"Simple Calculator",
+                                     "Area",
+                                     "BMI",
+                                     "Data [ONG]",
+                                     "Discount [ONG]",
+                                     "Length [ONG]",
+                                     "Mass [ONG]",
+                                     "Numerical System [ONG]",
+                                     "Speed [ONG]",
+                                     "Temperature [ONG]",
+                                     "Time [ONG]",
+                                     "Volume [ONG]"};
   do {
     std::cout << "\n\tCHOICE WHAT TO CALCULATE\n";
     size_t i = 1;
@@ -102,6 +114,7 @@ inline void mainMenu() {
     conv.area._area();
     break;
   case 3:
+    calc.bmi._bmi();
     break;
   case 4:
     break;
@@ -191,28 +204,260 @@ void Calc::SimpleCalc::_simple_calc() {
   }
 }
 
+inline void Calc::BMI::_bmi() {
+  weight = {"pounds", "kilograms"};
+  height = {"feet", "inches", "centimeters", "meters"};
+
+  std::cout << "Press Enter";
+  while (true) {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    int i;
+
+    while (true) {
+      while (true) {
+        i = 1;
+        system("CLS");
+        std::cout << "\tWeight\n";
+
+        for (auto a : weight)
+          std::cout << "[" << i++ << "] " << a << "\n";
+
+        std::cout << "Weight: ";
+        std::cin >> respond;
+        std::transform(respond.begin(), respond.end(), respond.begin(),
+                       ::tolower);
+        if (respond == "exit")
+          return mainMenu();
+        else {
+          try {
+            intWeight = std::stoi(respond);
+            weight.at(--intWeight);
+          } catch (...) {
+            continue;
+          }
+        }
+        break;
+      } // Weight type
+      while (true) {
+        system("CLS");
+        std::cout << "\tWeight";
+        std::cout << "\nWeight (" << weight.at(intWeight) << ") "
+                  << "\n";
+        std::cout << "Weight Value: ";
+        std::cin >> respond;
+        std::transform(respond.begin(), respond.end(), respond.begin(),
+                       ::tolower);
+        if (respond == "exit")
+          return mainMenu();
+        else {
+          try {
+            weightValue = std::stod(respond);
+            if (weight.at(intWeight) == weight.at(0))
+              weightValue /= 2.20462262;
+          } catch (...) {
+            continue;
+          }
+        }
+        break;
+      } // Weight Value
+      break;
+    } // Weight
+    while (true) {
+      while (true) {
+        system("CLS");
+        std::cout << "Weight: " << weightValue << " " << weight.at(1);
+        std::cout << "\n\n\tHeight\n";
+
+        i = 1;
+        for (auto a : height)
+          std::cout << "[" << i++ << "] " << a << "\n";
+
+        std::cout << "Height: ";
+        std::cin >> respond;
+        std::transform(respond.begin(), respond.end(), respond.begin(),
+                       ::tolower);
+        if (respond == "exit")
+          return mainMenu();
+        else {
+          try {
+            intHeight = std::stoi(respond);
+            height.at(--intHeight);
+          } catch (...) {
+            continue;
+          }
+        }
+        break;
+      } // Height type
+      while (true) {
+        system("CLS");
+        std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+        std::cout << "\n\n\tHeight\n";
+        std::cout << "Height (" << height.at(intHeight) << ") ";
+
+        if (height.at(intHeight) == height.at(0)) { // ft and in
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\nHeight Value (ft): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return mainMenu();
+            else {
+              try {
+                heightValue1 = stod(respond);
+                heightValue1 /= 3.2808399;
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          } // feet value
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ") ";
+            std::cout << "\nHeight Value (ft): " << heightValue1;
+            std::cout << "\nHeight Value (in): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return mainMenu();
+            else {
+              try {
+                heightValue2 = stod(respond);
+                if (heightValue2 < 1 || heightValue2 > 12) {
+                  std::cerr << "Must be between 1 and 12 (Press Enter)";
+                  std::cin.get();
+                  std::cin.get();
+                  continue;
+                }
+                heightValue1 += heightValue2 /= 39.3700787;
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          } // inches value | foot and inches
+        } else if (height.at(intHeight) == height.at(1)) { // in
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\nHeight Value (in): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return mainMenu();
+            else {
+              try {
+                heightValue1 = stod(respond);
+                heightValue1 /= 39.3700787;
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          }                                                // inches
+        } else if (height.at(intHeight) == height.at(2)) { // cm
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\nHeight Value (cm): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return mainMenu();
+            else {
+              try {
+                heightValue1 = stod(respond);
+                heightValue1 /= 100;
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          }                                                // cm
+        } else if (height.at(intHeight) == height.at(3)) { // meters
+          while (true) {
+            system("CLS");
+            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\nHeight Value (cm): ";
+            std::cin >> respond;
+            std::transform(respond.begin(), respond.end(), respond.begin(),
+                           ::tolower);
+            if (respond == "exit")
+              return mainMenu();
+            else {
+              try {
+                heightValue1 = stod(respond);
+              } catch (...) {
+                continue;
+              }
+            }
+            break;
+          } // m
+        }
+        break;
+      } // height value
+      break;
+    } // Height
+    // BMI = weight in kg / height ^ 2 in meters
+    system("CLS");
+    std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
+    std::cout << "\nHeight: " << heightValue1 << " " << height.at(3);
+
+    ((weightValue / (heightValue1 * heightValue1)) <= 18.4)
+        ? std::cout << "\nBMI: "
+                    << (weightValue / (heightValue1 * heightValue1))
+                    << " (Underweight)"
+    : ((weightValue / (heightValue1 * heightValue1)) >= 18.5 &&
+       (weightValue / (heightValue1 * heightValue1)) <= 24.9)
+        ? std::cout << "\nBMI: "
+                    << (weightValue / (heightValue1 * heightValue1))
+                    << " (Normal)"
+    : ((weightValue / (heightValue1 * heightValue1)) >= 25.0 &&
+       (weightValue / (heightValue1 * heightValue1)) <= 39.9)
+        ? std::cout << "\nBMI: "
+                    << (weightValue / (heightValue1 * heightValue1))
+                    << " (Overweight)"
+    : ((weightValue / (heightValue1 * heightValue1)) >= 40.0)
+        ? std::cout << "\nBMI: "
+                    << (weightValue / (heightValue1 * heightValue1))
+                    << " (Obese)"
+        : std::cout << "\nBMI: "
+                    << (weightValue / (heightValue1 * heightValue1))
+                    << " (ERROR!)";
+
+    std::cout << "\n(Press enter to continue.)";
+    std::cin.get();
+  }
+}
+
 void Conv::Area::_area() {
-  std::array<std::string, 10> choice{"Square inch (in)",
-                                     "Square foot (ft)",
-                                     "Square yard (yd)",
-                                     "Square mile (mi)",
-                                     "acre (ac)",
-                                     "hectare (ha)",
-                                     "Square millimeter (mm)",
-                                     "Square centimeter (cm)",
-                                     "Square meter (m)",
-                                     "Square kilometer (km)"};
+  choice = {"Square inch (in)",
+            "Square foot (ft)",
+            "Square yard (yd)",
+            "Square mile (mi)",
+            "acre (ac)",
+            "hectare (ha)",
+            "Square millimeter (mm)",
+            "Square centimeter (cm)",
+            "Square meter (m)",
+            "Square kilometer (km)"};
   std::cout << "Press enter.";
   while (true) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     system("CLS");
-    if (intRespond1 < 1 || intRespond1 > 10 || intRespond2 < 1 ||
-        intRespond2 > 10) {
-      std::cerr << "ERROR: Did not match. Only 1 - 10, please try again. "
-                   "(Press Enter to continue)";
-      std::cin.get();
-    }
 
     size_t i = 1;
     system("CLS");
@@ -371,64 +616,3 @@ void Conv::Area::_area() {
     std::cin.get();
   }
 }
-
-void Calc::BMI::_bmi() {
-  std::string resFor, resGender, resAgeY, resAgeM, resWeight, resHeight;
-  int intFor, intGender, intAgeY, intAgeM;
-  double intWeight, intHeight;
-  std::array<std::string, 2> age{"2-19", "20+"};
-  std::array<std::string, 2> gender{"Male", "Female"};
-  std::array<std::string, 2> weight{"pounds", "kilograms"};
-  std::array<std::string, 4> Height{"feet", "inches", "centimeters", "meters"};
-  int ageYear, ageMonths;
-  while (true) {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    int i = 1;
-    for (auto a : age)
-      std::cout << "[" << i++ << "] " << a << "\n";
-
-    std::cout << "BMI for: ";
-    std::cin >> resFor;
-    std::transform(resFor.begin(), resFor.end(), resFor.begin(), ::tolower);
-    if (resFor == "exit")
-      return mainMenu();
-    else {
-      try {
-        intFor = std::stoi(resFor);
-      } catch (...) {
-        continue;
-      }
-    }
-
-    i = 1;
-    for (auto a : gender)
-      std::cout << "[" << i++ << "] " << a << "\n";
-
-    std::cout << "Gender: ";
-    std::cin >> resGender;
-    std::transform(resGender.begin(), resGender.end(), resGender.begin(),
-                   ::tolower);
-    if (resGender == "exit")
-      return mainMenu();
-    else {
-      try {
-        intGender = std::stoi(resGender);
-      } catch (...) {
-        continue;
-      }
-    }
-    std::cout << "Enter year old: ";
-    std::cin >> resAgeY;
-    std::transform(resAgeY.begin(), resAgeY.end(), resAgeY.begin(),
-                   ::tolower);
-    if (resAgeY == "exit")
-      return mainMenu();
-    else {
-      try {
-        intAgeY = std::stoi(resAgeY);
-      } catch (...) {
-        continue;
-      }
-    }
-  }

@@ -52,14 +52,15 @@ void std_setw(){
     std::cout << std::setw(10) << "Josh" << std::setw(10) << "Ball" << std::setw(10) << "21" << std::endl;
     std::cout << std::right;
 
-    std::cout << std::endl << std::left;
+    std::cout << std::endl << std::internal;
     int colW[]{5, 10, 15, 20};
     std::cout << std::setfill('.');
     std::cout << "Formatted table with vars" << std::endl;
-    std::cout << std::setw(colW[2]) << "First name" << std::setw(colW[2]) << "Last name" << std::setw(colW[0]) << "Age" << std::endl;
-    std::cout << std::setw(colW[2]) << "Daniel" << std::setw(colW[2]) << "Gray" << std::setw(colW[0]) << "25" << std::endl;
-    std::cout << std::setw(colW[2]) << "Stanley" << std::setw(colW[2]) << "Woods" << std::setw(colW[0]) << "33" << std::endl;
-    std::cout << std::setw(colW[2]) << "Josh" << std::setw(colW[2]) << "Ball" << std::setw(colW[0]) << "21" << std::endl;
+    std::cout << std::setw(colW[2]) << "First name" << std::setw(colW[2]) << "Last name" << std::setw(colW[1]) << "Age" << std::endl;
+    std::cout << std::internal;
+    std::cout << std::setw(colW[1]) << "Daniel" << std::setw(colW[1]) << "Gray" << std::setw(colW[0]) << "25" << std::endl;
+    std::cout << std::setw(colW[1]) << "Stanley" << std::setw(colW[1]) << "Woods" << std::setw(colW[0]) << "33" << std::endl;
+    std::cout << std::setw(colW[1]) << "Josh" << std::setw(colW[1]) << "Ball" << std::setw(colW[0]) << "21" << std::endl;
 }
 
 void std_boolalpha(){

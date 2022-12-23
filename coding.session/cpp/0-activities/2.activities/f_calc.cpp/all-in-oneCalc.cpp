@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include <limits>
 #include <sstream>
@@ -8,9 +9,10 @@
 #include <vector>
 
 class Calc {
+private:
 public:
   class SimpleCalc {
-    std::string str1, str2;
+  private:
     char op;
     long double num1, num2;
     long double t_num = 0;
@@ -22,7 +24,7 @@ public:
   } simpleCalc;
 
   class BMI {
-    std::string respond = "";
+  private:
     int intWeight, intHeight;
     double weightValue, heightValue1, heightValue2;
     std::array<std::string, 2> weight;
@@ -34,9 +36,10 @@ public:
 } calc;
 
 class Conv {
+private:
 public:
   class Area {
-    std::string strRespond;
+  private:
     int intRespond1 = 1, intRespond2 = 1;
     long double result, value;
     std::array<std::string, 10> choice;
@@ -44,19 +47,32 @@ public:
   public:
     inline void _area(void);
   } area;
+  class Data {
+  private:
+  public:
+    inline void _data();
+  } data;
 } conv;
 
 inline void mainMenu();
 
+std::string strRespond1, strRespond2;
+size_t i;
+
 int main(void) {
+#if 0
   mainMenu();
+#elif 1
+  conv.data._data();
+#else
+  conv.area._area();
+#endif
   return 0;
 }
 
 // Acting like a main func
 inline void mainMenu() {
-  std::string str_respond;
-  short unsigned int int_respond;
+  short unsigned int intRespond;
   std::array<std::string, 12> choice{"Simple Calculator",
                                      "Area",
                                      "BMI",
@@ -70,13 +86,23 @@ inline void mainMenu() {
                                      "Time [ONG]",
                                      "Volume [ONG]"};
   do {
-    std::cout << "\n\tCHOICE WHAT TO CALCULATE\n";
-    size_t i = 1;
+    system("CLS");
+    std::cout << "\tCommands:"
+                 "\n'e' to exit program.";
+    std::cout << "\n\n\tCALCULATOR / CONVERTOR\n";
+    i = 1;
     for (auto a : choice)
       std::cout << "[" << i++ << "] " << a << "\n";
 
     std::cout << "\nType a number to enter one of the calculator: ";
-    std::cin >> int_respond;
+    std::cin >> strRespond1;
+    if (strRespond1 == "e")
+      return;
+    try {
+      intRespond = stoi(strRespond1);
+    } catch (...) {
+      continue;
+    }
 
     while (std::cin.fail()) {
       system("CLS");
@@ -85,17 +111,25 @@ inline void mainMenu() {
       std::cerr << "\nERROR: String input. (Press Enter)";
       std::cin.get();
       system("CLS");
-      std::cout << "\n\tCHOICE WHAT TO CALCULATE\n";
-      int i = 1;
-      for (auto a : choice) {
+      std::cout << "\tCommands:"
+                   "\n'e' to exit program.";
+      std::cout << "\n\n\tCALCULATOR / CONVERTOR\n";
+      i = 1;
+      for (auto a : choice)
         std::cout << "[" << i++ << "] " << a << "\n";
-      }
 
-      std::cout << "\nType a number to enter one of the calculator : ";
-      std::cin >> int_respond;
+      std::cout << "\nType a number to enter one of the calculator: ";
+      std::cin >> strRespond1;
+      if (strRespond1 == "e")
+        return;
+      try {
+        intRespond = stoi(strRespond1);
+      } catch (...) {
+        continue;
+      }
     }
 
-    if (int_respond < 1 || int_respond > 12) {
+    if (intRespond < 1 || intRespond > 12) {
       system("CLS");
       std::cerr << "\nERROR: Out of range. (Press Enter)";
       std::cin.get();
@@ -106,7 +140,7 @@ inline void mainMenu() {
       break;
   } while (true);
 
-  switch (int_respond) {
+  switch (intRespond) {
   case 1:
     calc.simpleCalc._simple_calc();
     break;
@@ -137,62 +171,64 @@ inline void mainMenu() {
   }
 }
 
-void Calc::SimpleCalc::_simple_calc() {
+inline void Calc::SimpleCalc::_simple_calc() {
   while (true) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     system("CLS");
     std::cout << "\tCommands:"
-                 "\n'e x t' Exits the program"
+                 "\n'e' Back to main menu"
                  "\n\n\tAvailable Operators:"
                  "\n'+' Addition"
                  "\n'-' Subtraction"
                  "\n'*' Multiplication"
                  "\n'/' Division"
                  "\n'%' Modulo";
+
     if (op == '+' || op == '-' || op == '*' || op == '/')
       std::cout << "\n\nLast result: " << t_num;
     if (op == '%')
       std::cout << "\n\nLast result: " << m_num;
-    std::cout << "\n\n\t[Ex. Format: 1 + 2]\n>> ";
-    std::cin >> str1 >> op >> str2;
 
-    if (str1 == "e" || str1 == "E") {
-      std::transform(str1.begin(), str1.end(), str1.begin(), ::tolower);
-      if (op == 'x' || op == 'X') {
-        op = tolower(op);
-        if (str2 == "t" || str2 == "T") {
-          std::transform(str2.begin(), str2.end(), str2.begin(), ::tolower);
-          if (str1 == "e" && op == 'x' && str2 == "t")
-            return mainMenu();
-        } // str2
-      }   // op
-    }     // str1
+    std::cout << "\n\n\t[Ex. Format: 1 + 2]\n>> ";
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
+                   ::tolower);
+    if (strRespond1 == "e")
+      return mainMenu();
+
+    std::cin >> op;
+    std::tolower(op);
+    if (op == 'e')
+      return mainMenu();
+
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
+                   ::tolower);
+    if (strRespond2 == "e")
+      return mainMenu();
+
+    try {
+      num1 = stold(strRespond1);
+      num2 = stold(strRespond2);
+    } catch (...) {
+      continue;
+    }
 
     switch (op) {
     case '+':
-      num1 = stold(str1);
-      num2 = stold(str2);
       t_num = num1 + num2;
       break;
     case '-':
-      num1 = stold(str1);
-      num2 = stold(str2);
       t_num = num1 - num2;
       break;
     case '*':
-      num1 = stold(str1);
-      num2 = stold(str2);
       t_num = num1 * num2;
       break;
     case '/':
-      num1 = stold(str1);
-      num2 = stold(str2);
       t_num = num1 / num2;
       break;
     case '%':
-      num1 = stold(str1);
-      num2 = stold(str2);
       m_num1 = num1;
       m_num2 = num2;
       m_num = m_num1 % m_num2;
@@ -212,26 +248,27 @@ inline void Calc::BMI::_bmi() {
   while (true) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    int i;
 
     while (true) {
       while (true) {
         i = 1;
         system("CLS");
-        std::cout << "\tWeight\n";
+        std::cout << "\tCommands:"
+                     "\n'e' Back to main menu"
+                     "\n\n\tWeight\n";
 
         for (auto a : weight)
           std::cout << "[" << i++ << "] " << a << "\n";
 
         std::cout << "Weight: ";
-        std::cin >> respond;
-        std::transform(respond.begin(), respond.end(), respond.begin(),
-                       ::tolower);
-        if (respond == "exit")
+        std::cin >> strRespond1;
+        std::transform(strRespond1.begin(), strRespond1.end(),
+                       strRespond1.begin(), ::tolower);
+        if (strRespond1 == "e")
           return mainMenu();
         else {
           try {
-            intWeight = std::stoi(respond);
+            intWeight = std::stoi(strRespond1);
             weight.at(--intWeight);
           } catch (...) {
             continue;
@@ -241,18 +278,20 @@ inline void Calc::BMI::_bmi() {
       } // Weight type
       while (true) {
         system("CLS");
-        std::cout << "\tWeight";
+        std::cout << "\tCommands:"
+                     "\n'e' Back to main menu"
+                     "\n\n\tWeight";
         std::cout << "\nWeight (" << weight.at(intWeight) << ") "
                   << "\n";
         std::cout << "Weight Value: ";
-        std::cin >> respond;
-        std::transform(respond.begin(), respond.end(), respond.begin(),
-                       ::tolower);
-        if (respond == "exit")
+        std::cin >> strRespond1;
+        std::transform(strRespond1.begin(), strRespond1.end(),
+                       strRespond1.begin(), ::tolower);
+        if (strRespond1 == "e")
           return mainMenu();
         else {
           try {
-            weightValue = std::stod(respond);
+            weightValue = std::stod(strRespond1);
             if (weight.at(intWeight) == weight.at(0))
               weightValue /= 2.20462262;
           } catch (...) {
@@ -266,22 +305,23 @@ inline void Calc::BMI::_bmi() {
     while (true) {
       while (true) {
         system("CLS");
-        std::cout << "Weight: " << weightValue << " " << weight.at(1);
-        std::cout << "\n\n\tHeight\n";
+        std::cout << "\tCommands:\n'e' Back to main menu"
+                     "\n\nWeight: "
+                  << weightValue << " " << weight.at(1) << "\n\n\tHeight\n";
 
         i = 1;
         for (auto a : height)
           std::cout << "[" << i++ << "] " << a << "\n";
 
         std::cout << "Height: ";
-        std::cin >> respond;
-        std::transform(respond.begin(), respond.end(), respond.begin(),
-                       ::tolower);
-        if (respond == "exit")
+        std::cin >> strRespond1;
+        std::transform(strRespond1.begin(), strRespond1.end(),
+                       strRespond1.begin(), ::tolower);
+        if (strRespond1 == "e")
           return mainMenu();
         else {
           try {
-            intHeight = std::stoi(respond);
+            intHeight = std::stoi(strRespond1);
             height.at(--intHeight);
           } catch (...) {
             continue;
@@ -291,24 +331,27 @@ inline void Calc::BMI::_bmi() {
       } // Height type
       while (true) {
         system("CLS");
-        std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
-        std::cout << "\n\n\tHeight\n";
-        std::cout << "Height (" << height.at(intHeight) << ") ";
+        std::cout << "\tCommands:\n'e' Back to main menu"
+                     "\n\nWeight: "
+                  << weightValue << " " << weight.at(1) << "\n\n\tHeight:";
+        std::cout << "\nHeight (" << height.at(intHeight) << ") ";
 
         if (height.at(intHeight) == height.at(0)) { // ft and in
           while (true) {
             system("CLS");
-            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
-            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\tCommands:\n'e' Back to main menu"
+                         "\nWeight: "
+                      << weightValue << " " << weight.at(1)
+                      << "\n\n\tHeight: " << height.at(intHeight);
             std::cout << "\nHeight Value (ft): ";
-            std::cin >> respond;
-            std::transform(respond.begin(), respond.end(), respond.begin(),
-                           ::tolower);
-            if (respond == "exit")
+            std::cin >> strRespond1;
+            std::transform(strRespond1.begin(), strRespond1.end(),
+                           strRespond1.begin(), ::tolower);
+            if (strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue1 = stod(respond);
+                heightValue1 = stod(strRespond1);
                 heightValue1 /= 3.2808399;
               } catch (...) {
                 continue;
@@ -318,18 +361,21 @@ inline void Calc::BMI::_bmi() {
           } // feet value
           while (true) {
             system("CLS");
-            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
-            std::cout << "\nHeight (" << height.at(intHeight) << ") ";
-            std::cout << "\nHeight Value (ft): " << heightValue1;
+            std::cout << "\tCommands:\n'e' Back to main menu"
+                         "\nWeight: "
+                      << weightValue << " " << weight.at(1)
+                      << "\n\n\tHeight: " << height.at(intHeight);
+            std::cout << "\nHeight Value (ft) - " << heightValue1 << " "
+                      << height.at(3);
             std::cout << "\nHeight Value (in): ";
-            std::cin >> respond;
-            std::transform(respond.begin(), respond.end(), respond.begin(),
-                           ::tolower);
-            if (respond == "exit")
+            std::cin >> strRespond1;
+            std::transform(strRespond1.begin(), strRespond1.end(),
+                           strRespond1.begin(), ::tolower);
+            if (strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue2 = stod(respond);
+                heightValue2 = stod(strRespond1);
                 if (heightValue2 < 1 || heightValue2 > 12) {
                   std::cerr << "Must be between 1 and 12 (Press Enter)";
                   std::cin.get();
@@ -346,17 +392,19 @@ inline void Calc::BMI::_bmi() {
         } else if (height.at(intHeight) == height.at(1)) { // in
           while (true) {
             system("CLS");
-            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
-            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\tCommands:\n'e' Back to main menu"
+                         "\nWeight: "
+                      << weightValue << " " << weight.at(1)
+                      << "\n\n\tHeight: " << height.at(intHeight);
             std::cout << "\nHeight Value (in): ";
-            std::cin >> respond;
-            std::transform(respond.begin(), respond.end(), respond.begin(),
-                           ::tolower);
-            if (respond == "exit")
+            std::cin >> strRespond1;
+            std::transform(strRespond1.begin(), strRespond1.end(),
+                           strRespond1.begin(), ::tolower);
+            if (strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue1 = stod(respond);
+                heightValue1 = stod(strRespond1);
                 heightValue1 /= 39.3700787;
               } catch (...) {
                 continue;
@@ -367,17 +415,19 @@ inline void Calc::BMI::_bmi() {
         } else if (height.at(intHeight) == height.at(2)) { // cm
           while (true) {
             system("CLS");
-            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
-            std::cout << "\nHeight (" << height.at(intHeight) << ")";
+            std::cout << "\tCommands:\n'e' Back to main menu"
+                         "\nWeight: "
+                      << weightValue << " " << weight.at(1)
+                      << "\n\n\tHeight: " << height.at(intHeight);
             std::cout << "\nHeight Value (cm): ";
-            std::cin >> respond;
-            std::transform(respond.begin(), respond.end(), respond.begin(),
-                           ::tolower);
-            if (respond == "exit")
+            std::cin >> strRespond1;
+            std::transform(strRespond1.begin(), strRespond1.end(),
+                           strRespond1.begin(), ::tolower);
+            if (strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue1 = stod(respond);
+                heightValue1 = stod(strRespond1);
                 heightValue1 /= 100;
               } catch (...) {
                 continue;
@@ -388,17 +438,19 @@ inline void Calc::BMI::_bmi() {
         } else if (height.at(intHeight) == height.at(3)) { // meters
           while (true) {
             system("CLS");
-            std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
-            std::cout << "\nHeight (" << height.at(intHeight) << ")";
-            std::cout << "\nHeight Value (cm): ";
-            std::cin >> respond;
-            std::transform(respond.begin(), respond.end(), respond.begin(),
-                           ::tolower);
-            if (respond == "exit")
+            std::cout << "\tCommands:\n'e' Back to main menu"
+                         "\nWeight: "
+                      << weightValue << " " << weight.at(1)
+                      << "\n\n\tHeight: " << height.at(intHeight);
+            std::cout << "\nHeight Value (m): ";
+            std::cin >> strRespond1;
+            std::transform(strRespond1.begin(), strRespond1.end(),
+                           strRespond1.begin(), ::tolower);
+            if (strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue1 = stod(respond);
+                heightValue1 = stod(strRespond1);
               } catch (...) {
                 continue;
               }
@@ -442,7 +494,7 @@ inline void Calc::BMI::_bmi() {
   }
 }
 
-void Conv::Area::_area() {
+inline void Conv::Area::_area() {
   choice = {"Square inch (in)",
             "Square foot (ft)",
             "Square yard (yd)",
@@ -459,23 +511,23 @@ void Conv::Area::_area() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     system("CLS");
 
-    size_t i = 1;
+    i = 1;
     system("CLS");
     std::cout << "\tCommands:"
-                 "\n'exit' Exit the conversion\n\n";
+                 "\n'e' Back to main menu\n\n";
 
     for (auto a : choice)
       std::cout << "[" << i++ << "] " << a << "\n";
 
     std::cout << "\nFrom: ";
-    std::cin >> strRespond;
-    std::transform(strRespond.begin(), strRespond.end(), strRespond.begin(),
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
-    if (strRespond == "exit")
+    if (strRespond1 == "e")
       return mainMenu();
     else {
       try {
-        intRespond1 = stold(strRespond);
+        intRespond1 = stoi(strRespond1);
       } catch (...) {
         continue;
       }
@@ -484,19 +536,34 @@ void Conv::Area::_area() {
       continue;
 
     std::cout << "To: ";
-    try {
-      std::cin >> intRespond2;
-    } catch (...) {
-      continue;
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
+                   ::tolower);
+    if (strRespond1 == "e")
+      return mainMenu();
+    else {
+      try {
+        intRespond2 = stoi(strRespond1);
+      } catch (...) {
+        continue;
+      }
     }
+
     if (intRespond2 < 1 || intRespond2 > 10)
       continue;
 
-    try {
-      std::cout << "Value to Convert: ";
-      std::cin >> value;
-    } catch (...) {
-      continue;
+    std::cout << "Value to Convert: ";
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
+                   ::tolower);
+    if (strRespond1 == "e")
+      return mainMenu();
+    else {
+      try {
+        value = stold(strRespond1);
+      } catch (...) {
+        continue;
+      }
     }
 
     result =                                                              // -in
@@ -616,3 +683,5 @@ void Conv::Area::_area() {
     std::cin.get();
   }
 }
+
+inline void Conv::Data::_data() {}

@@ -9,50 +9,47 @@
 #include <vector>
 
 class Calc {
-private:
 public:
   class SimpleCalc {
+  public:
+    inline void _simple_calc();
+
   private:
     char op;
     long double num1, num2;
     long double t_num = 0;
     int m_num1, m_num2;
     int m_num = 0;
-
-  public:
-    inline void _simple_calc();
   } simpleCalc;
 
   class BMI {
+  public:
+    inline void _bmi();
+
   private:
     int intWeight, intHeight;
     double weightValue, heightValue1, heightValue2;
     std::array<std::string, 2> weight;
     std::array<std::string, 4> height;
-
-  public:
-    inline void _bmi();
   } bmi;
 } calc;
 
 class Conv {
-private:
 public:
-  class Area {
-  private:
-    int intRespond1 = 1, intRespond2 = 1;
-    long double result, value;
-    std::array<std::string, 10> choice;
-
-  public:
-    inline void _area(void);
-  } area;
-  class Data {
-  private:
-  public:
-    inline void _data();
-  } data;
+  int intRespond1, intRespond2;
+  long double result, value;
+  std::vector<std::string> unit;
 } conv;
+
+class Area : public Conv {
+public:
+  inline void _area(void);
+} area;
+
+class Data : public Conv {
+public:
+  inline void _data();
+} data;
 
 inline void mainMenu();
 
@@ -63,7 +60,7 @@ int main(void) {
 #if 0
   mainMenu();
 #elif 1
-  conv.data._data();
+  data._data();
 #else
   conv.area._area();
 #endif
@@ -145,7 +142,7 @@ inline void mainMenu() {
     calc.simpleCalc._simple_calc();
     break;
   case 2:
-    conv.area._area();
+    area._area();
     break;
   case 3:
     calc.bmi._bmi();
@@ -494,17 +491,17 @@ inline void Calc::BMI::_bmi() {
   }
 }
 
-inline void Conv::Area::_area() {
-  choice = {"Square inch (in)",
-            "Square foot (ft)",
-            "Square yard (yd)",
-            "Square mile (mi)",
-            "acre (ac)",
-            "hectare (ha)",
-            "Square millimeter (mm)",
-            "Square centimeter (cm)",
-            "Square meter (m)",
-            "Square kilometer (km)"};
+inline void Area::_area() {
+  unit = {"Square inch (in)",
+          "Square foot (ft)",
+          "Square yard (yd)",
+          "Square mile (mi)",
+          "acre (ac)",
+          "hectare (ha)",
+          "Square millimeter (mm)",
+          "Square centimeter (cm)",
+          "Square meter (m)",
+          "Square kilometer (km)"};
   std::cout << "Press enter.";
   while (true) {
     std::cin.clear();
@@ -516,7 +513,7 @@ inline void Conv::Area::_area() {
     std::cout << "\tCommands:"
                  "\n'e' Back to main menu\n\n";
 
-    for (auto a : choice)
+    for (auto a : unit)
       std::cout << "[" << i++ << "] " << a << "\n";
 
     std::cout << "\nFrom: ";
@@ -678,10 +675,10 @@ inline void Conv::Area::_area() {
         : (intRespond1 == 10 && intRespond2 == 10) ? value * 1             // km
                                                    : value *= 0;
 
-    std::cout << "\nResult: " << result << " " << choice.at(--intRespond2)
+    std::cout << "\nResult: " << result << " " << unit.at(--intRespond2)
               << "\n\n(Press Enter to continue)";
     std::cin.get();
   }
 }
 
-inline void Conv::Data::_data() {}
+inline void Data::_data() {}

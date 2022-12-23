@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-class Calc {
+class  Calc {
 public:
   class SimpleCalc {
   public:
@@ -681,4 +681,7 @@ inline void Area::_area() {
   }
 }
 
-inline void Data::_data() {}
+inline void Data::_data() {
+  unit = {"","","","","","","","","","",""};
+
+}

@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Another",
+            "request": "launch",
+            "mainClass": "src.PracticeUtil.Another",
+            "projectName": "coding.session_523e3134"
+        },
+        {
+            "type": "java",
             "name": "Launch labsMain",
             "request": "launch",
             "mainClass": "src.labs5.labsMain",

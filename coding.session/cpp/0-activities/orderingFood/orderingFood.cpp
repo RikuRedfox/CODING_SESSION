@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <memory>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
@@ -8,19 +9,18 @@
 
 int main(void) {
   std::string respond;
-  for (unsigned short int i = 0; true;) {
+  for (unsigned short int i = 0; true; i = 0) {
     std::vector<std::string> orderName;
     std::vector<int> orderPrice;
     std::vector<int> orderQty;
-    int order{};
-    int qty{};
-    // int amount{};
-    int total{};
-    int cash{};
-    i = 0;
+    unsigned short int order{};
+    unsigned short int qty{};
+    unsigned short int cash{};
+    unsigned short int total{};
 
-    while (true) {
-      do {
+    std::cout << sizeof(unsigned short int);
+    do {
+      while (true) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         system("CLS");
@@ -130,7 +130,7 @@ int main(void) {
           orderQty.emplace_back(qty);
           break;
         case 16:
-          orderName.emplace_back("Coffer          ");
+          orderName.emplace_back("Coffee          ");
           orderPrice.emplace_back(30);
           orderQty.emplace_back(qty);
           break;
@@ -139,10 +139,10 @@ int main(void) {
           break;
         }
         break;
-      } while (true);
+      }
       std::cout << "\n";
 
-      for (unsigned int j{}; j <= i; j++) {
+      for (unsigned short int j{}; j <= i; j++) {
         std::cout << "Item " << j << " : " << orderName.at(j)
                   << " | Quantity: " << orderQty.at(j)
                   << " | Unit Price: " << orderPrice.at(j)
@@ -159,11 +159,11 @@ int main(void) {
         break;
 
       i++;
-    }
+    } while (true);
     system("CLS");
     std::cout << "\nReceipt: \n";
 
-    for (unsigned int j{}; j <= i; j++) {
+    for (unsigned short int j{}; j <= i; j++) {
       total += (orderPrice.at(j) * orderQty.at(j));
       std::cout << "Item " << j << " : " << orderName.at(j)
                 << " | Quantity: " << orderQty.at(j)
@@ -171,7 +171,7 @@ int main(void) {
                 << " | Total Price: " << (orderPrice.at(j) * orderQty.at(j))
                 << "\n";
     }
-    // std::cout << "\nTotal: " << total;
+
     while (true) {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -195,5 +195,6 @@ int main(void) {
     if (!(respond == "y"))
       break;
   }
+  std::cout << "\nThank you for your patronage!" << std::endl;
   return 0;
 }

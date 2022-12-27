@@ -2,12 +2,11 @@
 #include <string>
 #include <vector>
 
-
 class Calc {
 public:
   class SimpleCalc {
   public:
-    inline void _simple_calc();
+    void _simple_calc();
 
   private:
     char op;
@@ -19,13 +18,22 @@ public:
 
   class BMI {
   public:
-    inline void _bmi();
+    void _bmi();
 
   private:
     int intWeight, intHeight;
     double weightValue, heightValue1, heightValue2;
     std::array<std::string, 2> weight;
     std::array<std::string, 4> height;
+  };
+
+  class Discount {
+  public:
+    void _discount();
+
+  private:
+    long double origPrice, finalPrice;
+    float Percentage;
   };
 };
 
@@ -38,10 +46,10 @@ public:
 
 class Area : public Conv {
 public:
-  inline void _area(void);
+  void _area(void);
 };
 
 class Data : public Conv {
 public:
-  inline void _data();
+  void _data();
 };

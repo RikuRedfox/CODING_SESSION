@@ -1,6 +1,4 @@
 #include <algorithm>
-#include <memory>
-#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -13,12 +11,12 @@ int main(void) {
     std::vector<std::string> orderName;
     std::vector<int> orderPrice;
     std::vector<int> orderQty;
-    unsigned short int order{};
-    unsigned short int qty{};
-    unsigned short int cash{};
-    unsigned short int total{};
+    unsigned short order{};
+    unsigned short qty{};
+    unsigned short cash{};
+    unsigned short total{};
 
-    std::cout << sizeof(unsigned short int);
+    printf("Press Enter");
     do {
       while (true) {
         std::cin.clear();

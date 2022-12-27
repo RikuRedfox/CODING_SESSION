@@ -1,74 +1,34 @@
 #include <algorithm>
-#include <array>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <limits>
 #include <sstream>
-#include <string>
-#include <vector>
 
-class  Calc {
-public:
-  class SimpleCalc {
-  public:
-    inline void _simple_calc();
-
-  private:
-    char op;
-    long double num1, num2;
-    long double t_num = 0;
-    int m_num1, m_num2;
-    int m_num = 0;
-  } simpleCalc;
-
-  class BMI {
-  public:
-    inline void _bmi();
-
-  private:
-    int intWeight, intHeight;
-    double weightValue, heightValue1, heightValue2;
-    std::array<std::string, 2> weight;
-    std::array<std::string, 4> height;
-  } bmi;
-} calc;
-
-class Conv {
-public:
-  int intRespond1, intRespond2;
-  long double result, value;
-  std::vector<std::string> unit;
-} conv;
-
-class Area : public Conv {
-public:
-  inline void _area(void);
-} area;
-
-class Data : public Conv {
-public:
-  inline void _data();
-} data;
+#include "_class.hpp"
 
 inline void mainMenu();
 
 std::string strRespond1, strRespond2;
-size_t i;
+unsigned short i;
 
 int main(void) {
+
 #if 0
   mainMenu();
 #elif 1
+  Data data;
   data._data();
 #else
-  conv.area._area();
+  Area area;
+  area._area();
 #endif
   return 0;
 }
 
 // Acting like a main func
 inline void mainMenu() {
+
   short unsigned int intRespond;
   std::array<std::string, 12> choice{"Simple Calculator",
                                      "Area",
@@ -83,6 +43,14 @@ inline void mainMenu() {
                                      "Time [ONG]",
                                      "Volume [ONG]"};
   do {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    if (std::cin.fail()) {
+      system("CLS");
+      std::cerr << "\nERROR: String input. (Press Enter)";
+      std::cin.get();
+    }
+
     system("CLS");
     std::cout << "\tCommands:"
                  "\n'e' to exit program.";
@@ -101,31 +69,6 @@ inline void mainMenu() {
       continue;
     }
 
-    while (std::cin.fail()) {
-      system("CLS");
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cerr << "\nERROR: String input. (Press Enter)";
-      std::cin.get();
-      system("CLS");
-      std::cout << "\tCommands:"
-                   "\n'e' to exit program.";
-      std::cout << "\n\n\tCALCULATOR / CONVERTOR\n";
-      i = 1;
-      for (auto a : choice)
-        std::cout << "[" << i++ << "] " << a << "\n";
-
-      std::cout << "\nType a number to enter one of the calculator: ";
-      std::cin >> strRespond1;
-      if (strRespond1 == "e")
-        return;
-      try {
-        intRespond = stoi(strRespond1);
-      } catch (...) {
-        continue;
-      }
-    }
-
     if (intRespond < 1 || intRespond > 12) {
       system("CLS");
       std::cerr << "\nERROR: Out of range. (Press Enter)";
@@ -137,17 +80,23 @@ inline void mainMenu() {
       break;
   } while (true);
 
+  Calc::SimpleCalc simplecalc;
+  Area area;
+  Calc::BMI bmi;
+  Data data;
+
   switch (intRespond) {
   case 1:
-    calc.simpleCalc._simple_calc();
+    simplecalc._simple_calc();
     break;
   case 2:
     area._area();
     break;
   case 3:
-    calc.bmi._bmi();
+    bmi._bmi();
     break;
   case 4:
+    data._data();
     break;
   case 5:
     break;
@@ -506,7 +455,6 @@ inline void Area::_area() {
   while (true) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    system("CLS");
 
     i = 1;
     system("CLS");
@@ -682,6 +630,467 @@ inline void Area::_area() {
 }
 
 inline void Data::_data() {
-  unit = {"","","","","","","","","","",""};
+  unit = {"Bit (b)",       "Kilobit (kb)",   "Megabit (Mb)",  "Gigabit (Gb)",
+          "Terabit (Tb)",  "Petabit (Pb)",   "Exabit (Eb)",   "Zettabit (Zb)",
+          "Yottabit (Yb)", "Nibble ()",      "Byte (B)",      "Kilobyte (kB)",
+          "Megabyte (MB)", "Gigabyte (GB)",  "Terabyte (TB)", "Petabyte (PB)",
+          "Exabyte (EB)",  "Zettabyte (ZB)", "Yottabyte (YB)"};
+  std::cout << "Press enter.";
+  while (true) {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
+    i = 1;
+    system("CLS");
+    std::cout << "\tCommands:"
+                 "\n'e' Back to main menu\n\n";
+    for (auto a : unit)
+      std::cout << "[" << i++ << "] " << a << "\n";
+
+    std::cout << "\nFrom: ";
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
+                   ::tolower);
+    if (strRespond1 == "e")
+      return mainMenu();
+    else {
+      try {
+        intRespond1 = std::stoi(strRespond1);
+      } catch (...) {
+        continue;
+      }
+    }
+    if (intRespond1 < 1 || intRespond1 > 19)
+      continue;
+
+    std::cout << "To: ";
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
+                   ::tolower);
+    if (strRespond1 == "e")
+      return mainMenu();
+    else {
+      try {
+        intRespond2 = std::stoi(strRespond1);
+      } catch (...) {
+        continue;
+      }
+    }
+    if (intRespond2 < 1 || intRespond2 > 19)
+      continue;
+
+    std::cout << "Value to Convert: ";
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
+                   ::tolower);
+    if (strRespond1 == "e")
+      return mainMenu();
+    else {
+      try {
+        value = std::stoi(strRespond1);
+      } catch (...) {
+        continue;
+      }
+    }
+
+    // "Bit (b)",         1
+    // "Kilobit (kb)",    2
+    // "Megabit (Mb)",    3
+    // "Gigabit (Gb)",    4
+    // "Terabit (Tb)",    5
+    // "Petabit (Pb)",    6
+    // "Exabit (Eb)",     7
+    // "Zettabit (Zb)",   8
+    // "Yottabit (Yb)",   9
+    // "Nibble ()",       10
+    // "Byte (B)",        11
+    // "Kilobyte (kB)",   12
+    // "Megabyte (MB)",   13
+    // "Gigabyte (GB)",   14
+    // "Terabyte (TB)",   15
+    // "Petabyte (PB)",   16
+    // "Exabyte (EB)",    17
+    // "Zettabyte (ZB)",  18
+    // "Yottabyte (YB)"   19
+
+    result = (intRespond1 == 1 && intRespond2 == 1)    ? value * 1
+             : (intRespond1 == 1 && intRespond2 == 2)  ? value / 1000
+             : (intRespond1 == 1 && intRespond2 == 3)  ? value / 1000000
+             : (intRespond1 == 1 && intRespond2 == 4)  ? value / 1.0000e+9
+             : (intRespond1 == 1 && intRespond2 == 5)  ? value / 1.0000e+12
+             : (intRespond1 == 1 && intRespond2 == 6)  ? value / 1.0000e+15
+             : (intRespond1 == 1 && intRespond2 == 7)  ? value / 1.0000e+18
+             : (intRespond1 == 1 && intRespond2 == 8)  ? value / 1.0000e+21
+             : (intRespond1 == 1 && intRespond2 == 9)  ? value / 1.0000e+24
+             : (intRespond1 == 1 && intRespond2 == 10) ? value / 4
+             : (intRespond1 == 1 && intRespond2 == 11) ? value / 8
+             : (intRespond1 == 1 && intRespond2 == 12) ? value / 8000
+             : (intRespond1 == 1 && intRespond2 == 13) ? value / 8000000
+             : (intRespond1 == 1 && intRespond2 == 14) ? value / 8.0000e+9
+             : (intRespond1 == 1 && intRespond2 == 15) ? value / 8.0000e+12
+             : (intRespond1 == 1 && intRespond2 == 16) ? value / 8.0000e+15
+             : (intRespond1 == 1 && intRespond2 == 17) ? value / 8.0000e+18
+             : (intRespond1 == 1 && intRespond2 == 18) ? value / 8.0000e+21
+             : (intRespond1 == 1 && intRespond2 == 19) ? value / 8.0000e+24
+             : (intRespond1 == 2 && intRespond2 == 1)  ? value * 1000
+             : (intRespond1 == 2 && intRespond2 == 2)  ? value * 1
+             : (intRespond1 == 2 && intRespond2 == 3)  ? value / 1000
+             : (intRespond1 == 2 && intRespond2 == 4)  ? value / 1000000
+             : (intRespond1 == 2 && intRespond2 == 5)  ? value / 1.0000e+9
+             : (intRespond1 == 2 && intRespond2 == 6)  ? value / 1.0000e+12
+             : (intRespond1 == 2 && intRespond2 == 7)  ? value / 1.0000e+15
+             : (intRespond1 == 2 && intRespond2 == 8)  ? value / 1.0000e+18
+             : (intRespond1 == 2 && intRespond2 == 9)  ? value / 1.0000e+21
+             : (intRespond1 == 2 && intRespond2 == 10) ? value * 250
+             : (intRespond1 == 2 && intRespond2 == 11) ? value * 125
+             : (intRespond1 == 2 && intRespond2 == 12) ? value / 8
+             : (intRespond1 == 2 && intRespond2 == 13) ? value / 8000
+             : (intRespond1 == 2 && intRespond2 == 14) ? value / 8000000
+             : (intRespond1 == 2 && intRespond2 == 15) ? value / 8.0000e+9
+             : (intRespond1 == 2 && intRespond2 == 16) ? value / 8.0000e+12
+             : (intRespond1 == 2 && intRespond2 == 17) ? value / 8.0000e+15
+             : (intRespond1 == 2 && intRespond2 == 18) ? value / 8.0000e+18
+             : (intRespond1 == 2 && intRespond2 == 19) ? value / 8.0000e+21
+             : (intRespond1 == 3 && intRespond2 == 1)  ? value * 1000000
+             : (intRespond1 == 3 && intRespond2 == 2)  ? value * 1000
+             : (intRespond1 == 3 && intRespond2 == 3)  ? value * 1
+             : (intRespond1 == 3 && intRespond2 == 4)  ? value / 1000
+             : (intRespond1 == 3 && intRespond2 == 5)  ? value / 1000000
+             : (intRespond1 == 3 && intRespond2 == 6)  ? value / 1.0000E+9
+             : (intRespond1 == 3 && intRespond2 == 7)  ? value / 1.0000E+12
+             : (intRespond1 == 3 && intRespond2 == 8)  ? value / 1.0000E+15
+             : (intRespond1 == 3 && intRespond2 == 9)  ? value / 1.0000E+18
+             : (intRespond1 == 3 && intRespond2 == 10) ? value * 250000
+             : (intRespond1 == 3 && intRespond2 == 11) ? value * 125000
+             : (intRespond1 == 3 && intRespond2 == 12) ? value * 125
+             : (intRespond1 == 3 && intRespond2 == 13) ? value / 8
+             : (intRespond1 == 3 && intRespond2 == 14) ? value / 8000
+             : (intRespond1 == 3 && intRespond2 == 15) ? value / 8000000
+             : (intRespond1 == 3 && intRespond2 == 16) ? value / 8.0000E+9
+             : (intRespond1 == 3 && intRespond2 == 17) ? value / 8.0000E+12
+             : (intRespond1 == 3 && intRespond2 == 18) ? value / 8.0000E+15
+             : (intRespond1 == 3 && intRespond2 == 19) ? value / 8.0000E+18
+             : (intRespond1 == 4 && intRespond2 == 1)  ? value * 1.0000E+9
+             : (intRespond1 == 4 && intRespond2 == 2)  ? value * 1000000
+             : (intRespond1 == 4 && intRespond2 == 3)  ? value * 1000
+             : (intRespond1 == 4 && intRespond2 == 4)  ? value * 1
+             : (intRespond1 == 4 && intRespond2 == 5)  ? value / 1000
+             : (intRespond1 == 4 && intRespond2 == 6)  ? value / 1000000
+             : (intRespond1 == 4 && intRespond2 == 7)  ? value / 1.0000E+9
+             : (intRespond1 == 4 && intRespond2 == 8)  ? value / 1.0000E+12
+             : (intRespond1 == 4 && intRespond2 == 9)  ? value / 1.0000E+15
+             : (intRespond1 == 4 && intRespond2 == 10) ? value * 250000000
+             : (intRespond1 == 4 && intRespond2 == 11) ? value * 125000000
+             : (intRespond1 == 4 && intRespond2 == 12) ? value * 125000
+             : (intRespond1 == 4 && intRespond2 == 13) ? value * 125
+             : (intRespond1 == 4 && intRespond2 == 14) ? value / 8
+             : (intRespond1 == 4 && intRespond2 == 15) ? value / 8000
+             : (intRespond1 == 4 && intRespond2 == 16) ? value / 8000000
+             : (intRespond1 == 4 && intRespond2 == 17) ? value / 8.0000E+9
+             : (intRespond1 == 4 && intRespond2 == 18) ? value / 8.0000E+12
+             : (intRespond1 == 4 && intRespond2 == 19) ? value / 8.0000E+15
+             : (intRespond1 == 5 && intRespond2 == 1)  ? value * 1.0000E+12
+             : (intRespond1 == 5 && intRespond2 == 2)  ? value * 1.0000E+9
+             : (intRespond1 == 5 && intRespond2 == 3)  ? value * 1000000
+             : (intRespond1 == 5 && intRespond2 == 4)  ? value * 1000
+             : (intRespond1 == 5 && intRespond2 == 5)  ? value * 1
+             : (intRespond1 == 5 && intRespond2 == 6)  ? value / 1000
+             : (intRespond1 == 5 && intRespond2 == 7)  ? value / 1000000
+             : (intRespond1 == 5 && intRespond2 == 8)  ? value / 1.0000E+9
+             : (intRespond1 == 5 && intRespond2 == 9)  ? value / 1.0000E+12
+             : (intRespond1 == 5 && intRespond2 == 10) ? value * 2.5000E+11
+             : (intRespond1 == 5 && intRespond2 == 11) ? value * 1.2500E+11
+             : (intRespond1 == 5 && intRespond2 == 12) ? value * 125000000
+             : (intRespond1 == 5 && intRespond2 == 13) ? value * 125000
+             : (intRespond1 == 5 && intRespond2 == 14) ? value * 125
+             : (intRespond1 == 5 && intRespond2 == 15) ? value / 8
+             : (intRespond1 == 5 && intRespond2 == 16) ? value / 8000
+             : (intRespond1 == 5 && intRespond2 == 17) ? value / 8000000
+             : (intRespond1 == 5 && intRespond2 == 18) ? value / 8.0000E+9
+             : (intRespond1 == 5 && intRespond2 == 19) ? value / 8.0000E+12
+             : (intRespond1 == 6 && intRespond2 == 1)  ? value * 1.0000E+15
+             : (intRespond1 == 6 && intRespond2 == 2)  ? value * 1.0000E+12
+             : (intRespond1 == 6 && intRespond2 == 3)  ? value * 1.0000E+9
+             : (intRespond1 == 6 && intRespond2 == 4)  ? value * 1000000
+             : (intRespond1 == 6 && intRespond2 == 5)  ? value * 1000
+             : (intRespond1 == 6 && intRespond2 == 6)  ? value * 1
+             : (intRespond1 == 6 && intRespond2 == 7)  ? value / 1000
+             : (intRespond1 == 6 && intRespond2 == 8)  ? value / 1000000
+             : (intRespond1 == 6 && intRespond2 == 9)  ? value / 1.0000E+9
+             : (intRespond1 == 6 && intRespond2 == 10) ? value * 2.5000E+14
+             : (intRespond1 == 6 && intRespond2 == 11) ? value * 1.2500E+14
+             : (intRespond1 == 6 && intRespond2 == 12) ? value * 1.2500E+11
+             : (intRespond1 == 6 && intRespond2 == 13) ? value * 125000000
+             : (intRespond1 == 6 && intRespond2 == 14) ? value * 125000
+             : (intRespond1 == 6 && intRespond2 == 15) ? value * 125
+             : (intRespond1 == 6 && intRespond2 == 16) ? value / 8
+             : (intRespond1 == 6 && intRespond2 == 17) ? value / 8000
+             : (intRespond1 == 6 && intRespond2 == 18) ? value / 8000000
+             : (intRespond1 == 6 && intRespond2 == 19) ? value / 8.0000E+9
+
+             : (intRespond1 == 7 && intRespond2 == 1)  ? value * 1.0000E+18
+             : (intRespond1 == 7 && intRespond2 == 2)  ? value * 1.0000E+15
+             : (intRespond1 == 7 && intRespond2 == 3)  ? value * 1.0000E+12
+             : (intRespond1 == 7 && intRespond2 == 4)  ? value * 1.0000E+9
+             : (intRespond1 == 7 && intRespond2 == 5)  ? value * 1000000
+             : (intRespond1 == 7 && intRespond2 == 6)  ? value * 1000
+             : (intRespond1 == 7 && intRespond2 == 7)  ? value * 1
+             : (intRespond1 == 7 && intRespond2 == 8)  ? value / 1000
+             : (intRespond1 == 7 && intRespond2 == 9)  ? value / 1000000
+             : (intRespond1 == 7 && intRespond2 == 10) ? value * 2.5000E+17
+             : (intRespond1 == 7 && intRespond2 == 11) ? value * 1.2500E+17
+             : (intRespond1 == 7 && intRespond2 == 12) ? value * 1.2500E+14
+             : (intRespond1 == 7 && intRespond2 == 13) ? value * 1.2500E+11
+             : (intRespond1 == 7 && intRespond2 == 14) ? value * 125000000
+             : (intRespond1 == 7 && intRespond2 == 15) ? value * 125000
+             : (intRespond1 == 7 && intRespond2 == 16) ? value * 125
+             : (intRespond1 == 7 && intRespond2 == 17) ? value * 8
+             : (intRespond1 == 7 && intRespond2 == 18) ? value / 8000
+             : (intRespond1 == 7 && intRespond2 == 19) ? value / 8000000
+
+             : (intRespond1 == 8 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 8)  ? value * 1
+             : (intRespond1 == 8 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 8 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 9 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 9)  ? value * 1
+             : (intRespond1 == 9 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 9 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 10 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 10) ? value * 1
+             : (intRespond1 == 10 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 10 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 11 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 11) ? value * 1
+             : (intRespond1 == 11 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 11 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 12 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 12) ? value * 1
+             : (intRespond1 == 12 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 12 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 13 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 13) ? value * 1
+             : (intRespond1 == 13 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 13 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 14 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 14) ? value * 1
+             : (intRespond1 == 14 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 14 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 15 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 15) ? value * 1
+             : (intRespond1 == 15 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 15 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 16 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 16) ? value * 1
+             : (intRespond1 == 16 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 16 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 17 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 17) ? value * 1
+             : (intRespond1 == 17 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 17 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 18 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 18 && intRespond2 == 18) ? value * 1
+             : (intRespond1 == 18 && intRespond2 == 19) ? value * 0
+
+             : (intRespond1 == 19 && intRespond2 == 1)  ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 2)  ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 3)  ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 4)  ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 5)  ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 6)  ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 7)  ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 8)  ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 9)  ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 10) ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 11) ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 12) ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 13) ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 14) ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 15) ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 16) ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 17) ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 18) ? value * 0
+             : (intRespond1 == 19 && intRespond2 == 19) ? value * 1
+                                                        : value * 0;
+
+    std::cout << "\nResult: " << result << " " << unit.at(--intRespond2)
+              << "\n\n(Press enter to continue)";
+    std::cin.get();
+  }
 }

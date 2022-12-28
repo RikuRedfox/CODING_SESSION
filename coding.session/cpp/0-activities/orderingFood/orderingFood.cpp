@@ -5,9 +5,11 @@
 #include <string>
 #include <vector>
 
+#define LOG_CLEAR std::cout << "\033[2J\033[1;1H";
+
 int main(void) {
   std::string respond;
-  for (unsigned short int i = 0; true; i = 0) {
+  for (unsigned short i = 0; true; i = 0) {
     std::vector<std::string> orderName;
     std::vector<int> orderPrice;
     std::vector<int> orderQty;
@@ -21,7 +23,8 @@ int main(void) {
       while (true) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        system("CLS");
+        LOG_CLEAR;
+        
         std::cout << "\n\tSandwiches" << std::setw(50)
                   << "\t\t\tMain Dish w/ Rice\n";
         std::cout << "[1] Ham & Cheese\t - - - - Php 55\t\t\t" << std::setw(20)
@@ -45,6 +48,8 @@ int main(void) {
         try {
           std::cout << "\nOrder: ";
           std::cin >> order;
+          if (order < 1 || order > 16)
+            continue;
           std::cout << "Quantity: ";
           std::cin >> qty;
         } catch (...) {
@@ -158,7 +163,7 @@ int main(void) {
 
       i++;
     } while (true);
-    system("CLS");
+    LOG_CLEAR;
     std::cout << "\nReceipt: \n";
 
     for (unsigned short int j{}; j <= i; j++) {
@@ -185,6 +190,11 @@ int main(void) {
 
       std::cout << "Unsufficient funds.\n";
     }
+    // clear all elements inside of vector
+    orderName.clear();
+    orderPrice.clear();
+    orderQty.clear();
+
     std::cout << "\nChange: " << (cash - total);
     std::cout << "\nDo you want to make another order?"
                  "\n('Y' for yes | 'any key' to exit) > ";

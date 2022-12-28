@@ -1,6 +1,6 @@
 #include <iostream>
  
-inline float percentage_value(float initial_value, float percentage) {
+inline float percentage_value(float &initial_value, float &percentage) {
   float breakdown{initial_value * percentage};
   return initial_value + breakdown;
 }

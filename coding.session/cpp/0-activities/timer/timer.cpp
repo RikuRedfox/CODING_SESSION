@@ -7,7 +7,7 @@
 
 int main()
 {
-  unsigned short int sec, min, hr;
+  unsigned short sec, min, hr;
 
   std::cout << "\tTIMER \n";
   std::cout << "Enter sec : ";

@@ -10,7 +10,7 @@
 #define LOG_CLEAR std::cout << "\033[2J\033[1;1H";
 #define RELEASE 1
 
-void mainMenu();
+void mainMenu(void);
 
 std::string strRespond1, strRespond2;
 unsigned short i;
@@ -19,14 +19,13 @@ int main(void) {
 #if RELEASE // RELEASE
   mainMenu();
 #else // DEBUGGING
-  Calc::Discount discount;
-  discount._discount();
+  //
 #endif
   return 0;
 }
 
 // Acting like a main func
-void mainMenu() {
+void mainMenu(void) {
   short unsigned int iRespond;
   std::array<std::string, 12> choice{
       "Simple Calculator",      "Convert: Area",
@@ -38,11 +37,6 @@ void mainMenu() {
   do {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    if (std::cin.fail()) {
-      LOG_CLEAR;
-      std::cerr << "\nERROR: String input. (Press Enter)";
-      std::cin.get();
-    }
 
     LOG_CLEAR;
     std::cout << "\tCommands:"
@@ -57,46 +51,54 @@ void mainMenu() {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e")
-      return;
+      break;
     try {
       iRespond = stoi(strRespond1);
+
+
+      if (iRespond == 1) {
+        Calc::SimpleCalc simplecalc;
+        simplecalc._simple_calc();
+        break;
+      } else if (iRespond == 2) {
+        Area area;
+        area._area();
+        break;
+      } else if (iRespond == 3) {
+        Calc::BMI bmi;
+        bmi._bmi();
+        break;
+      } else if (iRespond == 4) {
+        Data data;
+        data._data();
+        break;
+      } else if (iRespond == 5) {
+        Calc::Discount discount;
+        discount._discount();
+        break;
+      } else if (iRespond == 6) {
+        continue;
+      } else if (iRespond == 7) {
+        continue;
+      } else if (iRespond == 8) {
+        continue;
+      } else if (iRespond == 9) {
+        continue;
+      } else if (iRespond == 10) {
+        continue;
+      } else if (iRespond == 11) {
+        continue;
+      } else if (iRespond == 12) {
+        continue;
+      } else {
+        continue;
+      }
     } catch (...) {
       continue;
     }
-
-    if (iRespond == 1) {
-      Calc::SimpleCalc simplecalc;
-      simplecalc._simple_calc();
-    } else if (iRespond == 2) {
-      Area area;
-      area._area();
-    } else if (iRespond == 3) {
-      Calc::BMI bmi;
-      bmi._bmi();
-    } else if (iRespond == 4) {
-      Data data;
-      data._data();
-    } else if (iRespond == 5) {
-      Calc::Discount discount;
-      discount._discount();
-    } else if (iRespond == 6) {
-      continue;
-    } else if (iRespond == 7) {
-      continue;
-    } else if (iRespond == 8) {
-      continue;
-    } else if (iRespond == 9) {
-      continue;
-    } else if (iRespond == 10) {
-      continue;
-    } else if (iRespond == 11) {
-      continue;
-    } else if (iRespond == 12) {
-      continue;
-    } else {
-      continue;
-    }
+    // break; // force to exit
   } while (true);
+  return;
 }
 
 void Calc::SimpleCalc::_simple_calc(void) {
@@ -466,7 +468,7 @@ void Calc::Discount::_discount(void) {
   }
 }
 
-void Area::_area() {
+void Area::_area(void) {
   unit = {"Square inch (in)",
           "Square foot (ft)",
           "Square yard (yd)",
@@ -495,6 +497,8 @@ void Area::_area() {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
+      Conv();
+      // deleteUnit();
       return mainMenu();
     } else {
       try {
@@ -511,6 +515,8 @@ void Area::_area() {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
+      Conv();
+      // deleteUnit();
       return mainMenu();
     } else {
       try {
@@ -528,6 +534,8 @@ void Area::_area() {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
+      Conv();
+      // deleteUnit();
       return mainMenu();
     } else {
       try {
@@ -536,6 +544,8 @@ void Area::_area() {
         continue;
       }
     }
+
+    
 
     result =                                                              // -in
         (intRespond1 == 1 && intRespond2 == 1)    ? value * 1             // in
@@ -655,7 +665,7 @@ void Area::_area() {
   }
 }
 
-void Data::_data() {
+void Data::_data(void) {
   unit = {"Bit (b)",       "Kilobit (kb)",   "Megabit (Mb)",  "Gigabit (Gb)",
           "Terabit (Tb)",  "Petabit (Pb)",   "Exabit (Eb)",   "Zettabit (Zb)",
           "Yottabit (Yb)", "Nibble ()",      "Byte (B)",      "Kilobyte (kB)",
@@ -678,6 +688,8 @@ void Data::_data() {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
+      Conv();
+      // deleteUnit();
       return mainMenu();
     } else {
       try {
@@ -694,6 +706,8 @@ void Data::_data() {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
+      Conv();
+      // deleteUnit();
       return mainMenu();
     } else {
       try {
@@ -710,6 +724,8 @@ void Data::_data() {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
+      Conv();
+      // deleteUnit();
       return mainMenu();
     } else {
       try {

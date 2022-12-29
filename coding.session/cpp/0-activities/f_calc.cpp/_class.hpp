@@ -4,8 +4,18 @@
 
 class Calc {
 public:
+  ~Calc() {
+    static unsigned short i = 0;
+    ++i;
+    printf("\nCalc: %i Times have been destoryed.", i);
+  }
   class SimpleCalc {
   public:
+    ~SimpleCalc() {
+      static unsigned short i = 0;
+      ++i;
+      printf("\nSimCalc: %i Times have been destoryed.", i);
+    }
     void _simple_calc(void);
 
   private:
@@ -19,6 +29,11 @@ public:
   class BMI {
   public:
     void _bmi(void);
+    ~BMI() {
+      static unsigned short i = 0;
+      ++i;
+      printf("\nBMI: %i Times have been destoryed.", i);
+    }
 
   private:
     int intWeight, intHeight;
@@ -30,6 +45,11 @@ public:
   class Discount {
   public:
     void _discount(void);
+    ~Discount() {
+      static unsigned short i = 0;
+      ++i;
+      printf("\nDis: %i Times have been destoryed.", i);
+    }
 
   private:
     long double origPrice, finalPrice;
@@ -38,28 +58,26 @@ public:
 };
 
 class Conv {
-public:
+protected:
   int intRespond1, intRespond2;
   long double result, value;
   std::vector<std::string> unit;
+
+public:
+  Conv() { unit.clear(); }
+  ~Conv() {
+    static unsigned short i = 0;
+    ++i;
+    printf("\nConv: %i Times have been destoryed.", i);
+  }
 };
 
-class Area : public Conv {
+class Area : protected Conv {
 public:
-  ~Area() {
-    std::cout << "Deconstractor made";
-    std::cin.get();
-    unit.clear();
-  }
-  void _area();
+  void _area(void);
 };
 
-class Data : public Conv {
+class Data : protected Conv {
 public:
-  ~Data() {
-    std::cout << "Deconstractor made";
-    std::cin.get();
-    unit.clear();
-  }
-  void _data();
+  void _data(void);
 };

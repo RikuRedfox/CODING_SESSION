@@ -7,6 +7,7 @@
 
 #include "_class.hpp"
 
+#define LOG_CLEAR std::cout << "\033[2J\033[1;1H";
 #define RELEASE 1
 
 void mainMenu();
@@ -26,11 +27,10 @@ int main(void) {
 
 // Acting like a main func
 void mainMenu() {
-
-  short unsigned int intRespond;
+  short unsigned int iRespond;
   std::array<std::string, 12> choice{
       "Simple Calculator",      "Convert: Area",
-      "Calculator: BMI",        "Conver: Data",
+      "Calculator: BMI",        "Convert: Data",
       "Calculator: Discount",   "Converter: Length [ONG]",
       "Converter: Mass [ONG]",  "Converter: Numerical System [ONG]",
       "Converter: Speed [ONG]", "Converter: Temperature [ONG]",
@@ -39,12 +39,12 @@ void mainMenu() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     if (std::cin.fail()) {
-      system("CLS");
+      LOG_CLEAR;
       std::cerr << "\nERROR: String input. (Press Enter)";
       std::cin.get();
     }
 
-    system("CLS");
+    LOG_CLEAR;
     std::cout << "\tCommands:"
                  "\n'e' to exit program.";
     std::cout << "\n\n\tCALCULATOR / CONVERTER\n";
@@ -59,66 +59,51 @@ void mainMenu() {
     if (strRespond1 == "e")
       return;
     try {
-      intRespond = stoi(strRespond1);
+      iRespond = stoi(strRespond1);
     } catch (...) {
       continue;
     }
 
-    if (intRespond < 1 || intRespond > 12) {
-      system("CLS");
-      std::cerr << "\nERROR: Out of range. (Press Enter)";
-      std::cin.get();
-      std::cin.get();
-      system("CLS");
+    if (iRespond == 1) {
+      Calc::SimpleCalc simplecalc;
+      simplecalc._simple_calc();
+    } else if (iRespond == 2) {
+      Area area;
+      area._area();
+    } else if (iRespond == 3) {
+      Calc::BMI bmi;
+      bmi._bmi();
+    } else if (iRespond == 4) {
+      Data data;
+      data._data();
+    } else if (iRespond == 5) {
+      Calc::Discount discount;
+      discount._discount();
+    } else if (iRespond == 6) {
       continue;
-    } else
-      break;
+    } else if (iRespond == 7) {
+      continue;
+    } else if (iRespond == 8) {
+      continue;
+    } else if (iRespond == 9) {
+      continue;
+    } else if (iRespond == 10) {
+      continue;
+    } else if (iRespond == 11) {
+      continue;
+    } else if (iRespond == 12) {
+      continue;
+    } else {
+      continue;
+    }
   } while (true);
-
-  Calc::SimpleCalc simplecalc;
-  Area area;
-  Calc::BMI bmi;
-  Data data;
-  Calc::Discount discount;
-
-  switch (intRespond) {
-  case 1:
-    simplecalc._simple_calc();
-    break;
-  case 2:
-    area._area();
-    break;
-  case 3:
-    bmi._bmi();
-    break;
-  case 4:
-    data._data();
-    break;
-  case 5:
-    discount._discount();
-    break;
-  case 6:
-    break;
-  case 7:
-    break;
-  case 8:
-    break;
-  case 9:
-    break;
-  case 10:
-    break;
-  case 11:
-    break;
-  case 12:
-    break;
-  }
 }
 
-void Calc::SimpleCalc::_simple_calc() {
+void Calc::SimpleCalc::_simple_calc(void) {
   while (true) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    system("CLS");
+    LOG_CLEAR;
     std::cout << "\tCommands:"
                  "\n'e' Back to main menu"
                  "\n\n\tAvailable Operators:"
@@ -181,7 +166,7 @@ void Calc::SimpleCalc::_simple_calc() {
   }
 }
 
-void Calc::BMI::_bmi() {
+void Calc::BMI::_bmi(void) {
   weight = {"pounds", "kilograms"};
   height = {"feet", "inches", "centimeters", "meters"};
 
@@ -193,7 +178,7 @@ void Calc::BMI::_bmi() {
     while (true) {
       while (true) {
         i = 1;
-        system("CLS");
+        LOG_CLEAR;
         std::cout << "\tCommands:"
                      "\n'e' Back to main menu"
                      "\n\n\tWeight\n";
@@ -218,7 +203,7 @@ void Calc::BMI::_bmi() {
         break;
       } // Weight type
       while (true) {
-        system("CLS");
+        LOG_CLEAR;
         std::cout << "\tCommands:"
                      "\n'e' Back to main menu"
                      "\n\n\tWeight";
@@ -245,7 +230,7 @@ void Calc::BMI::_bmi() {
     } // Weight
     while (true) {
       while (true) {
-        system("CLS");
+        LOG_CLEAR;
         std::cout << "\tCommands:\n'e' Back to main menu"
                      "\n\nWeight: "
                   << weightValue << " " << weight.at(1) << "\n\n\tHeight\n";
@@ -271,7 +256,7 @@ void Calc::BMI::_bmi() {
         break;
       } // Height type
       while (true) {
-        system("CLS");
+        LOG_CLEAR;
         std::cout << "\tCommands:\n'e' Back to main menu"
                      "\n\nWeight: "
                   << weightValue << " " << weight.at(1) << "\n\n\tHeight:";
@@ -279,7 +264,7 @@ void Calc::BMI::_bmi() {
 
         if (height.at(intHeight) == height.at(0)) { // ft and in
           while (true) {
-            system("CLS");
+            LOG_CLEAR;
             std::cout << "\tCommands:\n'e' Back to main menu"
                          "\nWeight: "
                       << weightValue << " " << weight.at(1)
@@ -301,7 +286,7 @@ void Calc::BMI::_bmi() {
             break;
           } // feet value
           while (true) {
-            system("CLS");
+            LOG_CLEAR;
             std::cout << "\tCommands:\n'e' Back to main menu"
                          "\nWeight: "
                       << weightValue << " " << weight.at(1)
@@ -332,7 +317,7 @@ void Calc::BMI::_bmi() {
           } // inches value | foot and inches
         } else if (height.at(intHeight) == height.at(1)) { // in
           while (true) {
-            system("CLS");
+            LOG_CLEAR;
             std::cout << "\tCommands:\n'e' Back to main menu"
                          "\nWeight: "
                       << weightValue << " " << weight.at(1)
@@ -355,7 +340,7 @@ void Calc::BMI::_bmi() {
           }                                                // inches
         } else if (height.at(intHeight) == height.at(2)) { // cm
           while (true) {
-            system("CLS");
+            LOG_CLEAR;
             std::cout << "\tCommands:\n'e' Back to main menu"
                          "\nWeight: "
                       << weightValue << " " << weight.at(1)
@@ -378,7 +363,7 @@ void Calc::BMI::_bmi() {
           }                                                // cm
         } else if (height.at(intHeight) == height.at(3)) { // meters
           while (true) {
-            system("CLS");
+            LOG_CLEAR;
             std::cout << "\tCommands:\n'e' Back to main menu"
                          "\nWeight: "
                       << weightValue << " " << weight.at(1)
@@ -404,7 +389,7 @@ void Calc::BMI::_bmi() {
       break;
     } // Height
     // BMI = weight in kg / height ^ 2 in meters
-    system("CLS");
+    LOG_CLEAR;
     std::cout << "\nWeight: " << weightValue << " " << weight.at(1);
     std::cout << "\nHeight: " << heightValue1 << " " << height.at(3);
 
@@ -435,12 +420,12 @@ void Calc::BMI::_bmi() {
   }
 }
 
-void Calc::Discount::_discount() {
+void Calc::Discount::_discount(void) {
   std::cout << "Press enter.";
   while (true) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    system("CLS");
+    LOG_CLEAR;
     std::cout << "\tCommands:"
                  "\n'e' Back to main menu\n\n";
     // Original Price
@@ -472,7 +457,7 @@ void Calc::Discount::_discount() {
         continue;
       }
     }
-    system("CLS");
+    LOG_CLEAR;
     std::cout << "You save: Php" << Percentage * origPrice << "\n";
     finalPrice = origPrice - (Percentage * origPrice);
     std::cout << "Final Price: Php" << finalPrice
@@ -498,7 +483,7 @@ void Area::_area() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     i = 1;
-    system("CLS");
+    LOG_CLEAR;
     std::cout << "\tCommands:"
                  "\n'e' Back to main menu\n\n";
 
@@ -509,9 +494,9 @@ void Area::_area() {
     std::cin >> strRespond1;
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
-    if (strRespond1 == "e")
+    if (strRespond1 == "e") {
       return mainMenu();
-    else {
+    } else {
       try {
         intRespond1 = stoi(strRespond1);
       } catch (...) {
@@ -525,9 +510,9 @@ void Area::_area() {
     std::cin >> strRespond1;
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
-    if (strRespond1 == "e")
+    if (strRespond1 == "e") {
       return mainMenu();
-    else {
+    } else {
       try {
         intRespond2 = stoi(strRespond1);
       } catch (...) {
@@ -542,9 +527,9 @@ void Area::_area() {
     std::cin >> strRespond1;
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
-    if (strRespond1 == "e")
+    if (strRespond1 == "e") {
       return mainMenu();
-    else {
+    } else {
       try {
         value = stold(strRespond1);
       } catch (...) {
@@ -682,7 +667,7 @@ void Data::_data() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     i = 1;
-    system("CLS");
+    LOG_CLEAR;
     std::cout << "\tCommands:"
                  "\n'e' Back to main menu\n\n";
     for (auto a : unit)
@@ -692,9 +677,9 @@ void Data::_data() {
     std::cin >> strRespond1;
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
-    if (strRespond1 == "e")
+    if (strRespond1 == "e") {
       return mainMenu();
-    else {
+    } else {
       try {
         intRespond1 = std::stoi(strRespond1);
       } catch (...) {
@@ -708,9 +693,9 @@ void Data::_data() {
     std::cin >> strRespond1;
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
-    if (strRespond1 == "e")
+    if (strRespond1 == "e") {
       return mainMenu();
-    else {
+    } else {
       try {
         intRespond2 = std::stoi(strRespond1);
       } catch (...) {
@@ -724,9 +709,9 @@ void Data::_data() {
     std::cin >> strRespond1;
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
-    if (strRespond1 == "e")
+    if (strRespond1 == "e") {
       return mainMenu();
-    else {
+    } else {
       try {
         value = std::stoi(strRespond1);
       } catch (...) {

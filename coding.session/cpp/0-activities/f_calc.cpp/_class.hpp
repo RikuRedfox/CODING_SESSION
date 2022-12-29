@@ -6,7 +6,7 @@ class Calc {
 public:
   class SimpleCalc {
   public:
-    void _simple_calc();
+    void _simple_calc(void);
 
   private:
     char op;
@@ -18,7 +18,7 @@ public:
 
   class BMI {
   public:
-    void _bmi();
+    void _bmi(void);
 
   private:
     int intWeight, intHeight;
@@ -29,7 +29,7 @@ public:
 
   class Discount {
   public:
-    void _discount();
+    void _discount(void);
 
   private:
     long double origPrice, finalPrice;
@@ -46,10 +46,20 @@ public:
 
 class Area : public Conv {
 public:
-  void _area(void);
+  ~Area() {
+    std::cout << "Deconstractor made";
+    std::cin.get();
+    unit.clear();
+  }
+  void _area();
 };
 
 class Data : public Conv {
 public:
+  ~Data() {
+    std::cout << "Deconstractor made";
+    std::cin.get();
+    unit.clear();
+  }
   void _data();
 };

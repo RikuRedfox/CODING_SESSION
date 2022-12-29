@@ -10,22 +10,26 @@
 #define LOG_CLEAR std::cout << "\033[2J\033[1;1H";
 #define RELEASE 1
 
-void mainMenu(void);
+void mainMenu();
 
 std::string strRespond1, strRespond2;
 unsigned short i;
 
-int main(void) {
-#if RELEASE // RELEASE
+int main() {
+#if RELEASE == 1 // RELEASE
   mainMenu();
 #else // DEBUGGING
-  //
+
 #endif
   return 0;
 }
-
 // Acting like a main func
-void mainMenu(void) {
+void mainMenu() {
+  Conv *conv = new Conv;
+  SimpleCalc *simplecalc = new SimpleCalc;
+  BMI *bmi = new BMI;
+  Discount *discount = new Discount;
+
   short unsigned int iRespond;
   std::array<std::string, 12> choice{
       "Simple Calculator",      "Convert: Area",
@@ -34,6 +38,7 @@ void mainMenu(void) {
       "Converter: Mass [ONG]",  "Converter: Numerical System [ONG]",
       "Converter: Speed [ONG]", "Converter: Temperature [ONG]",
       "Converter: Time [ONG]",  "Converter: Volume [ONG]"};
+
   do {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -50,58 +55,73 @@ void mainMenu(void) {
     std::cin >> strRespond1;
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
-    if (strRespond1 == "e")
+    if (strRespond1 == "e") {
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv;
       break;
+    }
+
     try {
       iRespond = stoi(strRespond1);
-
-
-      if (iRespond == 1) {
-        Calc::SimpleCalc simplecalc;
-        simplecalc._simple_calc();
-        break;
-      } else if (iRespond == 2) {
-        Area area;
-        area._area();
-        break;
-      } else if (iRespond == 3) {
-        Calc::BMI bmi;
-        bmi._bmi();
-        break;
-      } else if (iRespond == 4) {
-        Data data;
-        data._data();
-        break;
-      } else if (iRespond == 5) {
-        Calc::Discount discount;
-        discount._discount();
-        break;
-      } else if (iRespond == 6) {
-        continue;
-      } else if (iRespond == 7) {
-        continue;
-      } else if (iRespond == 8) {
-        continue;
-      } else if (iRespond == 9) {
-        continue;
-      } else if (iRespond == 10) {
-        continue;
-      } else if (iRespond == 11) {
-        continue;
-      } else if (iRespond == 12) {
-        continue;
-      } else {
-        continue;
-      }
     } catch (...) {
       continue;
     }
-    // break; // force to exit
+
+    if (iRespond == 1) {
+      // delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv;
+      simplecalc->simpleCalc();
+    } else if (iRespond == 2) {
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      // delete conv;
+      conv->area();
+    } else if (iRespond == 3) {
+      delete simplecalc;
+      // delete bmi;
+      delete discount;
+      delete conv;
+      bmi->bmi();
+    } else if (iRespond == 4) {
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      // delete conv;
+      conv->data();
+    } else if (iRespond == 5) {
+      delete simplecalc;
+      delete bmi;
+      // delete discount;
+      delete conv;
+      discount->discount();
+    } else if (iRespond == 6) {
+      continue;
+    } else if (iRespond == 7) {
+      continue;
+    } else if (iRespond == 8) {
+      continue;
+    } else if (iRespond == 9) {
+      continue;
+    } else if (iRespond == 10) {
+      continue;
+    } else if (iRespond == 11) {
+      continue;
+    } else if (iRespond == 12) {
+      continue;
+    } else {
+      continue;
+    }
+
+    break; // force to exit
   } while (true);
-  return;
 }
 
-void Calc::SimpleCalc::_simple_calc(void) {
+void SimpleCalc::simpleCalc() {
   while (true) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -114,7 +134,7 @@ void Calc::SimpleCalc::_simple_calc(void) {
                  "\n'*' Multiplication"
                  "\n'/' Division"
                  "\n'%' Modulo";
-
+    
     if (op == '+' || op == '-' || op == '*' || op == '/')
       std::cout << "\n\nLast result: " << t_num;
     else if (op == '%')
@@ -168,7 +188,7 @@ void Calc::SimpleCalc::_simple_calc(void) {
   }
 }
 
-void Calc::BMI::_bmi(void) {
+void BMI::bmi() {
   weight = {"pounds", "kilograms"};
   height = {"feet", "inches", "centimeters", "meters"};
 
@@ -422,7 +442,7 @@ void Calc::BMI::_bmi(void) {
   }
 }
 
-void Calc::Discount::_discount(void) {
+void Discount::discount() {
   std::cout << "Press enter.";
   while (true) {
     std::cin.clear();
@@ -439,7 +459,7 @@ void Calc::Discount::_discount(void) {
       return mainMenu();
     else {
       try {
-        origPrice = stold(strRespond1);
+        origPrice = stof(strRespond1);
       } catch (...) {
         continue;
       }
@@ -453,27 +473,30 @@ void Calc::Discount::_discount(void) {
       return mainMenu();
     else {
       try {
-        Percentage = stoi(strRespond1);
+        Percentage = stof(strRespond1);
         Percentage *= .01;
       } catch (...) {
         continue;
       }
     }
     LOG_CLEAR;
-    std::cout << "You save: Php" << Percentage * origPrice << "\n";
-    finalPrice = origPrice - (Percentage * origPrice);
-    std::cout << "Final Price: Php" << finalPrice
+    std::cout << "You save: Php" << Percentage * origPrice;
+    std::cout << "\nFinal Price: Php" << (origPrice - (Percentage * origPrice))
               << "\n(Press enter to continue)";
     std::cin.get();
   }
 }
 
-void Area::_area(void) {
+#define CONV_CLEAR                                                             \
+  unit.clear();                                                                \
+  return mainMenu();
+
+void Conv::area() {
   unit = {"Square inch (in)",
           "Square foot (ft)",
           "Square yard (yd)",
           "Square mile (mi)",
-          "acre (ac)",
+          "acr)",
           "hectare (ha)",
           "Square millimeter (mm)",
           "Square centimeter (cm)",
@@ -497,17 +520,15 @@ void Area::_area(void) {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
-      Conv();
-      // deleteUnit();
-      return mainMenu();
+      CONV_CLEAR
     } else {
       try {
-        intRespond1 = stoi(strRespond1);
+        iConv1 = stoi(strRespond1);
       } catch (...) {
         continue;
       }
     }
-    if (intRespond1 < 1 || intRespond1 > 10)
+    if (iConv1 < 1 || iConv1 > 10)
       continue;
 
     std::cout << "To: ";
@@ -515,28 +536,24 @@ void Area::_area(void) {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
-      Conv();
-      // deleteUnit();
-      return mainMenu();
+      CONV_CLEAR
     } else {
       try {
-        intRespond2 = stoi(strRespond1);
+        iConv2 = stoi(strRespond1);
       } catch (...) {
         continue;
       }
     }
 
-    if (intRespond2 < 1 || intRespond2 > 10)
+    if (iConv2 < 1 || iConv2 > 10)
       continue;
 
-    std::cout << "Value to Convert: ";
+    std::cout << "Value of " << unit.at(--iConv1) << ": ";
     std::cin >> strRespond1;
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
-      Conv();
-      // deleteUnit();
-      return mainMenu();
+      CONV_CLEAR;
     } else {
       try {
         value = stold(strRespond1);
@@ -545,127 +562,115 @@ void Area::_area(void) {
       }
     }
 
-    
+    result = (iConv1 == 1 && iConv2 == 1)    ? value * 1
+             : (iConv1 == 1 && iConv2 == 2)  ? value / 144
+             : (iConv1 == 1 && iConv2 == 3)  ? value / 1296
+             : (iConv1 == 1 && iConv2 == 4)  ? value / 4014000000
+             : (iConv1 == 1 && iConv2 == 5)  ? value / 6273000
+             : (iConv1 == 1 && iConv2 == 6)  ? value / 15500000
+             : (iConv1 == 1 && iConv2 == 7)  ? value * 645.2
+             : (iConv1 == 1 && iConv2 == 8)  ? value * 6.452
+             : (iConv1 == 1 && iConv2 == 9)  ? value / 1550
+             : (iConv1 == 1 && iConv2 == 10) ? value / 1550000000
+             : (iConv1 == 2 && iConv2 == 1)  ? value * 144
+             : (iConv1 == 2 && iConv2 == 2)  ? value * 1
+             : (iConv1 == 2 && iConv2 == 3)  ? value / 9
+             : (iConv1 == 2 && iConv2 == 4)  ? value / 27880000
+             : (iConv1 == 2 && iConv2 == 5)  ? value / 43560
+             : (iConv1 == 2 && iConv2 == 6)  ? value / 107600
+             : (iConv1 == 2 && iConv2 == 7)  ? value * 92900
+             : (iConv1 == 2 && iConv2 == 8)  ? value * 929
+             : (iConv1 == 2 && iConv2 == 9)  ? value / 10.76
+             : (iConv1 == 2 && iConv2 == 10) ? value / 10760000
+             : (iConv1 == 3 && iConv2 == 1)  ? value * 1296
+             : (iConv1 == 3 && iConv2 == 2)  ? value * 9
+             : (iConv1 == 3 && iConv2 == 3)  ? value * 1
+             : (iConv1 == 3 && iConv2 == 4)  ? value / 3098000
+             : (iConv1 == 3 && iConv2 == 5)  ? value / 4840
+             : (iConv1 == 3 && iConv2 == 6)  ? value / 11960
+             : (iConv1 == 3 && iConv2 == 7)  ? value * 836100
+             : (iConv1 == 3 && iConv2 == 8)  ? value * 8361
+             : (iConv1 == 3 && iConv2 == 9)  ? value * 1.196
+             : (iConv1 == 3 && iConv2 == 10) ? value / 1196000
+             : (iConv1 == 4 && iConv2 == 1)  ? value * 4014000000
+             : (iConv1 == 4 && iConv2 == 2)  ? value * 27880000
+             : (iConv1 == 4 && iConv2 == 3)  ? value * 3098000
+             : (iConv1 == 4 && iConv2 == 4)  ? value * 1
+             : (iConv1 == 4 && iConv2 == 5)  ? value * 640
+             : (iConv1 == 4 && iConv2 == 6)  ? value * 259
+             : (iConv1 == 4 && iConv2 == 7)  ? value * 2590000000000
+             : (iConv1 == 4 && iConv2 == 8)  ? value * 25900000000
+             : (iConv1 == 4 && iConv2 == 9)  ? value * 2590000
+             : (iConv1 == 4 && iConv2 == 10) ? value * 2.59
+             : (iConv1 == 5 && iConv2 == 1)  ? value * 6273000
+             : (iConv1 == 5 && iConv2 == 2)  ? value * 43560
+             : (iConv1 == 5 && iConv2 == 3)  ? value * 4840
+             : (iConv1 == 5 && iConv2 == 4)  ? value / 640
+             : (iConv1 == 5 && iConv2 == 5)  ? value * 1
+             : (iConv1 == 5 && iConv2 == 6)  ? value / 2.471
+             : (iConv1 == 5 && iConv2 == 7)  ? value * 4047000000
+             : (iConv1 == 5 && iConv2 == 8)  ? value * 40470000
+             : (iConv1 == 5 && iConv2 == 9)  ? value * 4047
+             : (iConv1 == 5 && iConv2 == 10) ? value * 247.1
+             : (iConv1 == 6 && iConv2 == 1)  ? value * 15500000
+             : (iConv1 == 6 && iConv2 == 2)  ? value * 107600
+             : (iConv1 == 6 && iConv2 == 3)  ? value * 11960
+             : (iConv1 == 6 && iConv2 == 4)  ? value / 259
+             : (iConv1 == 6 && iConv2 == 5)  ? value * 2.471
+             : (iConv1 == 6 && iConv2 == 6)  ? value * 1
+             : (iConv1 == 6 && iConv2 == 7)  ? value * 10000000000
+             : (iConv1 == 6 && iConv2 == 8)  ? value * 100000000
+             : (iConv1 == 6 && iConv2 == 9)  ? value * 10000
+             : (iConv1 == 6 && iConv2 == 10) ? value / 100
+             : (iConv1 == 7 && iConv2 == 1)  ? value / 645.2
+             : (iConv1 == 7 && iConv2 == 2)  ? value / 92900
+             : (iConv1 == 7 && iConv2 == 3)  ? value / 836100
+             : (iConv1 == 7 && iConv2 == 4)  ? value / 2590000000000
+             : (iConv1 == 7 && iConv2 == 5)  ? value / 4047000000
+             : (iConv1 == 7 && iConv2 == 6)  ? value / 10000000000
+             : (iConv1 == 7 && iConv2 == 7)  ? value * 1
+             : (iConv1 == 7 && iConv2 == 8)  ? value / 100
+             : (iConv1 == 7 && iConv2 == 9)  ? value / 1000000
+             : (iConv1 == 7 && iConv2 == 10) ? value / 1000000000000
+             : (iConv1 == 8 && iConv2 == 1)  ? value / 6.452
+             : (iConv1 == 8 && iConv2 == 2)  ? value / 929
+             : (iConv1 == 8 && iConv2 == 3)  ? value / 8361
+             : (iConv1 == 8 && iConv2 == 4)  ? value / 25900000000
+             : (iConv1 == 8 && iConv2 == 5)  ? value / 40470000
+             : (iConv1 == 8 && iConv2 == 6)  ? value / 100000000
+             : (iConv1 == 8 && iConv2 == 7)  ? value * 100
+             : (iConv1 == 8 && iConv2 == 8)  ? value * 1
+             : (iConv1 == 8 && iConv2 == 9)  ? value / 10000
+             : (iConv1 == 8 && iConv2 == 10) ? value / 10000000000
+             : (iConv1 == 9 && iConv2 == 1)  ? value * 1550
+             : (iConv1 == 9 && iConv2 == 2)  ? value * 10.76
+             : (iConv1 == 9 && iConv2 == 3)  ? value * 1.196
+             : (iConv1 == 9 && iConv2 == 4)  ? value / 2590000
+             : (iConv1 == 9 && iConv2 == 5)  ? value / 4047
+             : (iConv1 == 9 && iConv2 == 6)  ? value / 10000
+             : (iConv1 == 9 && iConv2 == 7)  ? value * 1000000
+             : (iConv1 == 9 && iConv2 == 8)  ? value * 10000
+             : (iConv1 == 9 && iConv2 == 9)  ? value * 1
+             : (iConv1 == 9 && iConv2 == 10) ? value / 1000000
+             : (iConv1 == 10 && iConv2 == 1)  ? value * 1550000000
+             : (iConv1 == 10 && iConv2 == 2)  ? value * 10760000
+             : (iConv1 == 10 && iConv2 == 3)  ? value * 1196000
+             : (iConv1 == 10 && iConv2 == 4)  ? value / 2.59
+             : (iConv1 == 10 && iConv2 == 5)  ? value * 247.1
+             : (iConv1 == 10 && iConv2 == 6)  ? value * 100
+             : (iConv1 == 10 && iConv2 == 7)  ? value * 1000000000000
+             : (iConv1 == 10 && iConv2 == 8)  ? value * 10000000000
+             : (iConv1 == 10 && iConv2 == 9)  ? value * 1000000
+             : (iConv1 == 10 && iConv2 == 10) ? value * 1
+                                              : value * 0;
 
-    result =                                                              // -in
-        (intRespond1 == 1 && intRespond2 == 1)    ? value * 1             // in
-        : (intRespond1 == 1 && intRespond2 == 2)  ? value / 144           // ft
-        : (intRespond1 == 1 && intRespond2 == 3)  ? value / 1296          // yd
-        : (intRespond1 == 1 && intRespond2 == 4)  ? value / 4014000000    // mi
-        : (intRespond1 == 1 && intRespond2 == 5)  ? value / 6273000       // ac
-        : (intRespond1 == 1 && intRespond2 == 6)  ? value / 15500000      // ha
-        : (intRespond1 == 1 && intRespond2 == 7)  ? value * 645.2         // mm
-        : (intRespond1 == 1 && intRespond2 == 8)  ? value * 6.452         // cm
-        : (intRespond1 == 1 && intRespond2 == 9)  ? value / 1550          // m
-        : (intRespond1 == 1 && intRespond2 == 10) ? value / 1550000000    // km
-                                                                          // -ft
-        : (intRespond1 == 2 && intRespond2 == 1)  ? value * 144           // in
-        : (intRespond1 == 2 && intRespond2 == 2)  ? value * 1             // ft
-        : (intRespond1 == 2 && intRespond2 == 3)  ? value / 9             // yd
-        : (intRespond1 == 2 && intRespond2 == 4)  ? value / 27880000      // mi
-        : (intRespond1 == 2 && intRespond2 == 5)  ? value / 43560         // ac
-        : (intRespond1 == 2 && intRespond2 == 6)  ? value / 107600        // ha
-        : (intRespond1 == 2 && intRespond2 == 7)  ? value * 92900         // mm
-        : (intRespond1 == 2 && intRespond2 == 8)  ? value * 929           // cm
-        : (intRespond1 == 2 && intRespond2 == 9)  ? value / 10.76         // m
-        : (intRespond1 == 2 && intRespond2 == 10) ? value / 10760000      // km
-                                                                          // -yd
-        : (intRespond1 == 3 && intRespond2 == 1)  ? value * 1296          // in
-        : (intRespond1 == 3 && intRespond2 == 2)  ? value * 9             // ft
-        : (intRespond1 == 3 && intRespond2 == 3)  ? value * 1             // yd
-        : (intRespond1 == 3 && intRespond2 == 4)  ? value / 3098000       // mi
-        : (intRespond1 == 3 && intRespond2 == 5)  ? value / 4840          // ac
-        : (intRespond1 == 3 && intRespond2 == 6)  ? value / 11960         // ha
-        : (intRespond1 == 3 && intRespond2 == 7)  ? value * 836100        // mm
-        : (intRespond1 == 3 && intRespond2 == 8)  ? value * 8361          // cn
-        : (intRespond1 == 3 && intRespond2 == 9)  ? value * 1.196         // m
-        : (intRespond1 == 3 && intRespond2 == 10) ? value / 1196000       // km
-                                                                          // -mi
-        : (intRespond1 == 4 && intRespond2 == 1)  ? value * 4014000000    // in
-        : (intRespond1 == 4 && intRespond2 == 2)  ? value * 27880000      // ft
-        : (intRespond1 == 4 && intRespond2 == 3)  ? value * 3098000       // yd
-        : (intRespond1 == 4 && intRespond2 == 4)  ? value * 1             // mi
-        : (intRespond1 == 4 && intRespond2 == 5)  ? value * 640           // ac
-        : (intRespond1 == 4 && intRespond2 == 6)  ? value * 259           // ha
-        : (intRespond1 == 4 && intRespond2 == 7)  ? value * 2590000000000 // mm
-        : (intRespond1 == 4 && intRespond2 == 8)  ? value * 25900000000   // cm
-        : (intRespond1 == 4 && intRespond2 == 9)  ? value * 2590000       // m
-        : (intRespond1 == 4 && intRespond2 == 10) ? value * 2.59          // km
-                                                                          // -ac
-        : (intRespond1 == 5 && intRespond2 == 1)  ? value * 6273000       // in
-        : (intRespond1 == 5 && intRespond2 == 2)  ? value * 43560         // ft
-        : (intRespond1 == 5 && intRespond2 == 3)  ? value * 4840          // yd
-        : (intRespond1 == 5 && intRespond2 == 4)  ? value / 640           // mi
-        : (intRespond1 == 5 && intRespond2 == 5)  ? value * 1             // ac
-        : (intRespond1 == 5 && intRespond2 == 6)  ? value / 2.471         // ha
-        : (intRespond1 == 5 && intRespond2 == 7)  ? value * 4047000000    // mm
-        : (intRespond1 == 5 && intRespond2 == 8)  ? value * 40470000      // cm
-        : (intRespond1 == 5 && intRespond2 == 9)  ? value * 4047          // m
-        : (intRespond1 == 5 && intRespond2 == 10) ? value * 247.1         // km
-                                                                          // -ha
-        : (intRespond1 == 6 && intRespond2 == 1)  ? value * 15500000      // in
-        : (intRespond1 == 6 && intRespond2 == 2)  ? value * 107600        // ft
-        : (intRespond1 == 6 && intRespond2 == 3)  ? value * 11960         // yd
-        : (intRespond1 == 6 && intRespond2 == 4)  ? value / 259           // mi
-        : (intRespond1 == 6 && intRespond2 == 5)  ? value * 2.471         // ac
-        : (intRespond1 == 6 && intRespond2 == 6)  ? value * 1             // ha
-        : (intRespond1 == 6 && intRespond2 == 7)  ? value * 10000000000   // mm
-        : (intRespond1 == 6 && intRespond2 == 8)  ? value * 100000000     // cm
-        : (intRespond1 == 6 && intRespond2 == 9)  ? value * 10000         // m
-        : (intRespond1 == 6 && intRespond2 == 10) ? value / 100           // km
-                                                                          // -mm
-        : (intRespond1 == 7 && intRespond2 == 1)  ? value / 645.2         // in
-        : (intRespond1 == 7 && intRespond2 == 2)  ? value / 92900         // ft
-        : (intRespond1 == 7 && intRespond2 == 3)  ? value / 836100        // yd
-        : (intRespond1 == 7 && intRespond2 == 4)  ? value / 2590000000000 // mi
-        : (intRespond1 == 7 && intRespond2 == 5)  ? value / 4047000000    // ac
-        : (intRespond1 == 7 && intRespond2 == 6)  ? value / 10000000000   // ha
-        : (intRespond1 == 7 && intRespond2 == 7)  ? value * 1             // mm
-        : (intRespond1 == 7 && intRespond2 == 8)  ? value / 100           // cm
-        : (intRespond1 == 7 && intRespond2 == 9)  ? value / 1000000       // m
-        : (intRespond1 == 7 && intRespond2 == 10) ? value / 1000000000000 // km
-                                                                          // -cm
-        : (intRespond1 == 8 && intRespond2 == 1)  ? value / 6.452         // in
-        : (intRespond1 == 8 && intRespond2 == 2)  ? value / 929           // ft
-        : (intRespond1 == 8 && intRespond2 == 3)  ? value / 8361          // yd
-        : (intRespond1 == 8 && intRespond2 == 4)  ? value / 25900000000   // mi
-        : (intRespond1 == 8 && intRespond2 == 5)  ? value / 40470000      // ac
-        : (intRespond1 == 8 && intRespond2 == 6)  ? value / 100000000     // ha
-        : (intRespond1 == 8 && intRespond2 == 7)  ? value * 100           // mm
-        : (intRespond1 == 8 && intRespond2 == 8)  ? value * 1             // cm
-        : (intRespond1 == 8 && intRespond2 == 9)  ? value / 10000         // m
-        : (intRespond1 == 8 && intRespond2 == 10) ? value / 10000000000   // km
-                                                                          // -m
-        : (intRespond1 == 9 && intRespond2 == 1)  ? value * 1550          // in
-        : (intRespond1 == 9 && intRespond2 == 2)  ? value * 10.76         // ft
-        : (intRespond1 == 9 && intRespond2 == 3)  ? value * 1.196         // yd
-        : (intRespond1 == 9 && intRespond2 == 4)  ? value / 2590000       // mi
-        : (intRespond1 == 9 && intRespond2 == 5)  ? value / 4047          // ac
-        : (intRespond1 == 9 && intRespond2 == 6)  ? value / 10000         // ha
-        : (intRespond1 == 9 && intRespond2 == 7)  ? value * 1000000       // mm
-        : (intRespond1 == 9 && intRespond2 == 8)  ? value * 10000         // cm
-        : (intRespond1 == 9 && intRespond2 == 9)  ? value * 1             // m
-        : (intRespond1 == 9 && intRespond2 == 10) ? value / 1000000       // km
-                                                                          // -km
-        : (intRespond1 == 10 && intRespond2 == 1)  ? value * 1550000000   // in
-        : (intRespond1 == 10 && intRespond2 == 2)  ? value * 10760000     // ft
-        : (intRespond1 == 10 && intRespond2 == 3)  ? value * 1196000      // yd
-        : (intRespond1 == 10 && intRespond2 == 4)  ? value / 2.59         // mi
-        : (intRespond1 == 10 && intRespond2 == 5)  ? value * 247.1        // ac
-        : (intRespond1 == 10 && intRespond2 == 6)  ? value * 100          // ha
-        : (intRespond1 == 10 && intRespond2 == 7)  ? value * 1000000000000 // mm
-        : (intRespond1 == 10 && intRespond2 == 8)  ? value * 10000000000   // cm
-        : (intRespond1 == 10 && intRespond2 == 9)  ? value * 1000000       // m
-        : (intRespond1 == 10 && intRespond2 == 10) ? value * 1             // km
-                                                   : value *= 0;
-
-    std::cout << "\nResult: " << result << " " << unit.at(--intRespond2)
+    std::cout << "\nResult: " << result << " " << unit.at(--iConv2)
               << "\n\n(Press Enter to continue)";
     std::cin.get();
   }
 }
 
-void Data::_data(void) {
+void Conv::data() {
   unit = {"Bit (b)",       "Kilobit (kb)",   "Megabit (Mb)",  "Gigabit (Gb)",
           "Terabit (Tb)",  "Petabit (Pb)",   "Exabit (Eb)",   "Zettabit (Zb)",
           "Yottabit (Yb)", "Nibble ()",      "Byte (B)",      "Kilobyte (kB)",
@@ -688,17 +693,15 @@ void Data::_data(void) {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
-      Conv();
-      // deleteUnit();
-      return mainMenu();
+      CONV_CLEAR;
     } else {
       try {
-        intRespond1 = std::stoi(strRespond1);
+        iConv1 = std::stoi(strRespond1);
       } catch (...) {
         continue;
       }
     }
-    if (intRespond1 < 1 || intRespond1 > 19)
+    if (iConv1 < 1 || iConv1 > 19)
       continue;
 
     std::cout << "To: ";
@@ -706,17 +709,15 @@ void Data::_data(void) {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
-      Conv();
-      // deleteUnit();
-      return mainMenu();
+      CONV_CLEAR;
     } else {
       try {
-        intRespond2 = std::stoi(strRespond1);
+        iConv2 = std::stoi(strRespond1);
       } catch (...) {
         continue;
       }
     }
-    if (intRespond2 < 1 || intRespond2 > 19)
+    if (iConv2 < 1 || iConv2 > 19)
       continue;
 
     std::cout << "Value to Convert: ";
@@ -724,9 +725,7 @@ void Data::_data(void) {
     std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
                    ::tolower);
     if (strRespond1 == "e") {
-      Conv();
-      // deleteUnit();
-      return mainMenu();
+      CONV_CLEAR;
     } else {
       try {
         value = std::stoi(strRespond1);
@@ -735,388 +734,388 @@ void Data::_data(void) {
       }
     }
 
-    result = (intRespond1 == 1 && intRespond2 == 1)    ? value * 1
-             : (intRespond1 == 1 && intRespond2 == 2)  ? value / 1000
-             : (intRespond1 == 1 && intRespond2 == 3)  ? value / 1000000
-             : (intRespond1 == 1 && intRespond2 == 4)  ? value / 1.0000e+9
-             : (intRespond1 == 1 && intRespond2 == 5)  ? value / 1.0000e+12
-             : (intRespond1 == 1 && intRespond2 == 6)  ? value / 1.0000e+15
-             : (intRespond1 == 1 && intRespond2 == 7)  ? value / 1.0000e+18
-             : (intRespond1 == 1 && intRespond2 == 8)  ? value / 1.0000e+21
-             : (intRespond1 == 1 && intRespond2 == 9)  ? value / 1.0000e+24
-             : (intRespond1 == 1 && intRespond2 == 10) ? value / 4
-             : (intRespond1 == 1 && intRespond2 == 11) ? value / 8
-             : (intRespond1 == 1 && intRespond2 == 12) ? value / 8000
-             : (intRespond1 == 1 && intRespond2 == 13) ? value / 8000000
-             : (intRespond1 == 1 && intRespond2 == 14) ? value / 8.0000e+9
-             : (intRespond1 == 1 && intRespond2 == 15) ? value / 8.0000e+12
-             : (intRespond1 == 1 && intRespond2 == 16) ? value / 8.0000e+15
-             : (intRespond1 == 1 && intRespond2 == 17) ? value / 8.0000e+18
-             : (intRespond1 == 1 && intRespond2 == 18) ? value / 8.0000e+21
-             : (intRespond1 == 1 && intRespond2 == 19) ? value / 8.0000e+24
+    result = (iConv1 == 1 && iConv2 == 1)    ? value * 1
+             : (iConv1 == 1 && iConv2 == 2)  ? value / 1000
+             : (iConv1 == 1 && iConv2 == 3)  ? value / 1000000
+             : (iConv1 == 1 && iConv2 == 4)  ? value / 1.0000e+9
+             : (iConv1 == 1 && iConv2 == 5)  ? value / 1.0000e+12
+             : (iConv1 == 1 && iConv2 == 6)  ? value / 1.0000e+15
+             : (iConv1 == 1 && iConv2 == 7)  ? value / 1.0000e+18
+             : (iConv1 == 1 && iConv2 == 8)  ? value / 1.0000e+21
+             : (iConv1 == 1 && iConv2 == 9)  ? value / 1.0000e+24
+             : (iConv1 == 1 && iConv2 == 10) ? value / 4
+             : (iConv1 == 1 && iConv2 == 11) ? value / 8
+             : (iConv1 == 1 && iConv2 == 12) ? value / 8000
+             : (iConv1 == 1 && iConv2 == 13) ? value / 8000000
+             : (iConv1 == 1 && iConv2 == 14) ? value / 8.0000e+9
+             : (iConv1 == 1 && iConv2 == 15) ? value / 8.0000e+12
+             : (iConv1 == 1 && iConv2 == 16) ? value / 8.0000e+15
+             : (iConv1 == 1 && iConv2 == 17) ? value / 8.0000e+18
+             : (iConv1 == 1 && iConv2 == 18) ? value / 8.0000e+21
+             : (iConv1 == 1 && iConv2 == 19) ? value / 8.0000e+24
 
-             : (intRespond1 == 2 && intRespond2 == 1)  ? value * 1000
-             : (intRespond1 == 2 && intRespond2 == 2)  ? value * 1
-             : (intRespond1 == 2 && intRespond2 == 3)  ? value / 1000
-             : (intRespond1 == 2 && intRespond2 == 4)  ? value / 1000000
-             : (intRespond1 == 2 && intRespond2 == 5)  ? value / 1.0000e+9
-             : (intRespond1 == 2 && intRespond2 == 6)  ? value / 1.0000e+12
-             : (intRespond1 == 2 && intRespond2 == 7)  ? value / 1.0000e+15
-             : (intRespond1 == 2 && intRespond2 == 8)  ? value / 1.0000e+18
-             : (intRespond1 == 2 && intRespond2 == 9)  ? value / 1.0000e+21
-             : (intRespond1 == 2 && intRespond2 == 10) ? value * 250
-             : (intRespond1 == 2 && intRespond2 == 11) ? value * 125
-             : (intRespond1 == 2 && intRespond2 == 12) ? value / 8
-             : (intRespond1 == 2 && intRespond2 == 13) ? value / 8000
-             : (intRespond1 == 2 && intRespond2 == 14) ? value / 8000000
-             : (intRespond1 == 2 && intRespond2 == 15) ? value / 8.0000e+9
-             : (intRespond1 == 2 && intRespond2 == 16) ? value / 8.0000e+12
-             : (intRespond1 == 2 && intRespond2 == 17) ? value / 8.0000e+15
-             : (intRespond1 == 2 && intRespond2 == 18) ? value / 8.0000e+18
-             : (intRespond1 == 2 && intRespond2 == 19) ? value / 8.0000e+21
+             : (iConv1 == 2 && iConv2 == 1)  ? value * 1000
+             : (iConv1 == 2 && iConv2 == 2)  ? value * 1
+             : (iConv1 == 2 && iConv2 == 3)  ? value / 1000
+             : (iConv1 == 2 && iConv2 == 4)  ? value / 1000000
+             : (iConv1 == 2 && iConv2 == 5)  ? value / 1.0000e+9
+             : (iConv1 == 2 && iConv2 == 6)  ? value / 1.0000e+12
+             : (iConv1 == 2 && iConv2 == 7)  ? value / 1.0000e+15
+             : (iConv1 == 2 && iConv2 == 8)  ? value / 1.0000e+18
+             : (iConv1 == 2 && iConv2 == 9)  ? value / 1.0000e+21
+             : (iConv1 == 2 && iConv2 == 10) ? value * 250
+             : (iConv1 == 2 && iConv2 == 11) ? value * 125
+             : (iConv1 == 2 && iConv2 == 12) ? value / 8
+             : (iConv1 == 2 && iConv2 == 13) ? value / 8000
+             : (iConv1 == 2 && iConv2 == 14) ? value / 8000000
+             : (iConv1 == 2 && iConv2 == 15) ? value / 8.0000e+9
+             : (iConv1 == 2 && iConv2 == 16) ? value / 8.0000e+12
+             : (iConv1 == 2 && iConv2 == 17) ? value / 8.0000e+15
+             : (iConv1 == 2 && iConv2 == 18) ? value / 8.0000e+18
+             : (iConv1 == 2 && iConv2 == 19) ? value / 8.0000e+21
 
-             : (intRespond1 == 3 && intRespond2 == 1)  ? value * 1000000
-             : (intRespond1 == 3 && intRespond2 == 2)  ? value * 1000
-             : (intRespond1 == 3 && intRespond2 == 3)  ? value * 1
-             : (intRespond1 == 3 && intRespond2 == 4)  ? value / 1000
-             : (intRespond1 == 3 && intRespond2 == 5)  ? value / 1000000
-             : (intRespond1 == 3 && intRespond2 == 6)  ? value / 1.0000E+9
-             : (intRespond1 == 3 && intRespond2 == 7)  ? value / 1.0000E+12
-             : (intRespond1 == 3 && intRespond2 == 8)  ? value / 1.0000E+15
-             : (intRespond1 == 3 && intRespond2 == 9)  ? value / 1.0000E+18
-             : (intRespond1 == 3 && intRespond2 == 10) ? value * 250000
-             : (intRespond1 == 3 && intRespond2 == 11) ? value * 125000
-             : (intRespond1 == 3 && intRespond2 == 12) ? value * 125
-             : (intRespond1 == 3 && intRespond2 == 13) ? value / 8
-             : (intRespond1 == 3 && intRespond2 == 14) ? value / 8000
-             : (intRespond1 == 3 && intRespond2 == 15) ? value / 8000000
-             : (intRespond1 == 3 && intRespond2 == 16) ? value / 8.0000E+9
-             : (intRespond1 == 3 && intRespond2 == 17) ? value / 8.0000E+12
-             : (intRespond1 == 3 && intRespond2 == 18) ? value / 8.0000E+15
-             : (intRespond1 == 3 && intRespond2 == 19) ? value / 8.0000E+18
+             : (iConv1 == 3 && iConv2 == 1)  ? value * 1000000
+             : (iConv1 == 3 && iConv2 == 2)  ? value * 1000
+             : (iConv1 == 3 && iConv2 == 3)  ? value * 1
+             : (iConv1 == 3 && iConv2 == 4)  ? value / 1000
+             : (iConv1 == 3 && iConv2 == 5)  ? value / 1000000
+             : (iConv1 == 3 && iConv2 == 6)  ? value / 1.0000E+9
+             : (iConv1 == 3 && iConv2 == 7)  ? value / 1.0000E+12
+             : (iConv1 == 3 && iConv2 == 8)  ? value / 1.0000E+15
+             : (iConv1 == 3 && iConv2 == 9)  ? value / 1.0000E+18
+             : (iConv1 == 3 && iConv2 == 10) ? value * 250000
+             : (iConv1 == 3 && iConv2 == 11) ? value * 125000
+             : (iConv1 == 3 && iConv2 == 12) ? value * 125
+             : (iConv1 == 3 && iConv2 == 13) ? value / 8
+             : (iConv1 == 3 && iConv2 == 14) ? value / 8000
+             : (iConv1 == 3 && iConv2 == 15) ? value / 8000000
+             : (iConv1 == 3 && iConv2 == 16) ? value / 8.0000E+9
+             : (iConv1 == 3 && iConv2 == 17) ? value / 8.0000E+12
+             : (iConv1 == 3 && iConv2 == 18) ? value / 8.0000E+15
+             : (iConv1 == 3 && iConv2 == 19) ? value / 8.0000E+18
 
-             : (intRespond1 == 4 && intRespond2 == 1)  ? value * 1.0000E+9
-             : (intRespond1 == 4 && intRespond2 == 2)  ? value * 1000000
-             : (intRespond1 == 4 && intRespond2 == 3)  ? value * 1000
-             : (intRespond1 == 4 && intRespond2 == 4)  ? value * 1
-             : (intRespond1 == 4 && intRespond2 == 5)  ? value / 1000
-             : (intRespond1 == 4 && intRespond2 == 6)  ? value / 1000000
-             : (intRespond1 == 4 && intRespond2 == 7)  ? value / 1.0000E+9
-             : (intRespond1 == 4 && intRespond2 == 8)  ? value / 1.0000E+12
-             : (intRespond1 == 4 && intRespond2 == 9)  ? value / 1.0000E+15
-             : (intRespond1 == 4 && intRespond2 == 10) ? value * 250000000
-             : (intRespond1 == 4 && intRespond2 == 11) ? value * 125000000
-             : (intRespond1 == 4 && intRespond2 == 12) ? value * 125000
-             : (intRespond1 == 4 && intRespond2 == 13) ? value * 125
-             : (intRespond1 == 4 && intRespond2 == 14) ? value / 8
-             : (intRespond1 == 4 && intRespond2 == 15) ? value / 8000
-             : (intRespond1 == 4 && intRespond2 == 16) ? value / 8000000
-             : (intRespond1 == 4 && intRespond2 == 17) ? value / 8.0000E+9
-             : (intRespond1 == 4 && intRespond2 == 18) ? value / 8.0000E+12
-             : (intRespond1 == 4 && intRespond2 == 19) ? value / 8.0000E+15
+             : (iConv1 == 4 && iConv2 == 1)  ? value * 1.0000E+9
+             : (iConv1 == 4 && iConv2 == 2)  ? value * 1000000
+             : (iConv1 == 4 && iConv2 == 3)  ? value * 1000
+             : (iConv1 == 4 && iConv2 == 4)  ? value * 1
+             : (iConv1 == 4 && iConv2 == 5)  ? value / 1000
+             : (iConv1 == 4 && iConv2 == 6)  ? value / 1000000
+             : (iConv1 == 4 && iConv2 == 7)  ? value / 1.0000E+9
+             : (iConv1 == 4 && iConv2 == 8)  ? value / 1.0000E+12
+             : (iConv1 == 4 && iConv2 == 9)  ? value / 1.0000E+15
+             : (iConv1 == 4 && iConv2 == 10) ? value * 250000000
+             : (iConv1 == 4 && iConv2 == 11) ? value * 125000000
+             : (iConv1 == 4 && iConv2 == 12) ? value * 125000
+             : (iConv1 == 4 && iConv2 == 13) ? value * 125
+             : (iConv1 == 4 && iConv2 == 14) ? value / 8
+             : (iConv1 == 4 && iConv2 == 15) ? value / 8000
+             : (iConv1 == 4 && iConv2 == 16) ? value / 8000000
+             : (iConv1 == 4 && iConv2 == 17) ? value / 8.0000E+9
+             : (iConv1 == 4 && iConv2 == 18) ? value / 8.0000E+12
+             : (iConv1 == 4 && iConv2 == 19) ? value / 8.0000E+15
 
-             : (intRespond1 == 5 && intRespond2 == 1)  ? value * 1.0000E+12
-             : (intRespond1 == 5 && intRespond2 == 2)  ? value * 1.0000E+9
-             : (intRespond1 == 5 && intRespond2 == 3)  ? value * 1000000
-             : (intRespond1 == 5 && intRespond2 == 4)  ? value * 1000
-             : (intRespond1 == 5 && intRespond2 == 5)  ? value * 1
-             : (intRespond1 == 5 && intRespond2 == 6)  ? value / 1000
-             : (intRespond1 == 5 && intRespond2 == 7)  ? value / 1000000
-             : (intRespond1 == 5 && intRespond2 == 8)  ? value / 1.0000E+9
-             : (intRespond1 == 5 && intRespond2 == 9)  ? value / 1.0000E+12
-             : (intRespond1 == 5 && intRespond2 == 10) ? value * 2.5000E+11
-             : (intRespond1 == 5 && intRespond2 == 11) ? value * 1.2500E+11
-             : (intRespond1 == 5 && intRespond2 == 12) ? value * 125000000
-             : (intRespond1 == 5 && intRespond2 == 13) ? value * 125000
-             : (intRespond1 == 5 && intRespond2 == 14) ? value * 125
-             : (intRespond1 == 5 && intRespond2 == 15) ? value / 8
-             : (intRespond1 == 5 && intRespond2 == 16) ? value / 8000
-             : (intRespond1 == 5 && intRespond2 == 17) ? value / 8000000
-             : (intRespond1 == 5 && intRespond2 == 18) ? value / 8.0000E+9
-             : (intRespond1 == 5 && intRespond2 == 19) ? value / 8.0000E+12
+             : (iConv1 == 5 && iConv2 == 1)  ? value * 1.0000E+12
+             : (iConv1 == 5 && iConv2 == 2)  ? value * 1.0000E+9
+             : (iConv1 == 5 && iConv2 == 3)  ? value * 1000000
+             : (iConv1 == 5 && iConv2 == 4)  ? value * 1000
+             : (iConv1 == 5 && iConv2 == 5)  ? value * 1
+             : (iConv1 == 5 && iConv2 == 6)  ? value / 1000
+             : (iConv1 == 5 && iConv2 == 7)  ? value / 1000000
+             : (iConv1 == 5 && iConv2 == 8)  ? value / 1.0000E+9
+             : (iConv1 == 5 && iConv2 == 9)  ? value / 1.0000E+12
+             : (iConv1 == 5 && iConv2 == 10) ? value * 2.5000E+11
+             : (iConv1 == 5 && iConv2 == 11) ? value * 1.2500E+11
+             : (iConv1 == 5 && iConv2 == 12) ? value * 125000000
+             : (iConv1 == 5 && iConv2 == 13) ? value * 125000
+             : (iConv1 == 5 && iConv2 == 14) ? value * 125
+             : (iConv1 == 5 && iConv2 == 15) ? value / 8
+             : (iConv1 == 5 && iConv2 == 16) ? value / 8000
+             : (iConv1 == 5 && iConv2 == 17) ? value / 8000000
+             : (iConv1 == 5 && iConv2 == 18) ? value / 8.0000E+9
+             : (iConv1 == 5 && iConv2 == 19) ? value / 8.0000E+12
 
-             : (intRespond1 == 6 && intRespond2 == 1)  ? value * 1.0000E+15
-             : (intRespond1 == 6 && intRespond2 == 2)  ? value * 1.0000E+12
-             : (intRespond1 == 6 && intRespond2 == 3)  ? value * 1.0000E+9
-             : (intRespond1 == 6 && intRespond2 == 4)  ? value * 1000000
-             : (intRespond1 == 6 && intRespond2 == 5)  ? value * 1000
-             : (intRespond1 == 6 && intRespond2 == 6)  ? value * 1
-             : (intRespond1 == 6 && intRespond2 == 7)  ? value / 1000
-             : (intRespond1 == 6 && intRespond2 == 8)  ? value / 1000000
-             : (intRespond1 == 6 && intRespond2 == 9)  ? value / 1.0000E+9
-             : (intRespond1 == 6 && intRespond2 == 10) ? value * 2.5000E+14
-             : (intRespond1 == 6 && intRespond2 == 11) ? value * 1.2500E+14
-             : (intRespond1 == 6 && intRespond2 == 12) ? value * 1.2500E+11
-             : (intRespond1 == 6 && intRespond2 == 13) ? value * 125000000
-             : (intRespond1 == 6 && intRespond2 == 14) ? value * 125000
-             : (intRespond1 == 6 && intRespond2 == 15) ? value * 125
-             : (intRespond1 == 6 && intRespond2 == 16) ? value / 8
-             : (intRespond1 == 6 && intRespond2 == 17) ? value / 8000
-             : (intRespond1 == 6 && intRespond2 == 18) ? value / 8000000
-             : (intRespond1 == 6 && intRespond2 == 19) ? value / 8.0000E+9
+             : (iConv1 == 6 && iConv2 == 1)  ? value * 1.0000E+15
+             : (iConv1 == 6 && iConv2 == 2)  ? value * 1.0000E+12
+             : (iConv1 == 6 && iConv2 == 3)  ? value * 1.0000E+9
+             : (iConv1 == 6 && iConv2 == 4)  ? value * 1000000
+             : (iConv1 == 6 && iConv2 == 5)  ? value * 1000
+             : (iConv1 == 6 && iConv2 == 6)  ? value * 1
+             : (iConv1 == 6 && iConv2 == 7)  ? value / 1000
+             : (iConv1 == 6 && iConv2 == 8)  ? value / 1000000
+             : (iConv1 == 6 && iConv2 == 9)  ? value / 1.0000E+9
+             : (iConv1 == 6 && iConv2 == 10) ? value * 2.5000E+14
+             : (iConv1 == 6 && iConv2 == 11) ? value * 1.2500E+14
+             : (iConv1 == 6 && iConv2 == 12) ? value * 1.2500E+11
+             : (iConv1 == 6 && iConv2 == 13) ? value * 125000000
+             : (iConv1 == 6 && iConv2 == 14) ? value * 125000
+             : (iConv1 == 6 && iConv2 == 15) ? value * 125
+             : (iConv1 == 6 && iConv2 == 16) ? value / 8
+             : (iConv1 == 6 && iConv2 == 17) ? value / 8000
+             : (iConv1 == 6 && iConv2 == 18) ? value / 8000000
+             : (iConv1 == 6 && iConv2 == 19) ? value / 8.0000E+9
 
-             : (intRespond1 == 7 && intRespond2 == 1)  ? value * 1.0000E+18
-             : (intRespond1 == 7 && intRespond2 == 2)  ? value * 1.0000E+15
-             : (intRespond1 == 7 && intRespond2 == 3)  ? value * 1.0000E+12
-             : (intRespond1 == 7 && intRespond2 == 4)  ? value * 1.0000E+9
-             : (intRespond1 == 7 && intRespond2 == 5)  ? value * 1000000
-             : (intRespond1 == 7 && intRespond2 == 6)  ? value * 1000
-             : (intRespond1 == 7 && intRespond2 == 7)  ? value * 1
-             : (intRespond1 == 7 && intRespond2 == 8)  ? value / 1000
-             : (intRespond1 == 7 && intRespond2 == 9)  ? value / 1000000
-             : (intRespond1 == 7 && intRespond2 == 10) ? value * 2.5000E+17
-             : (intRespond1 == 7 && intRespond2 == 11) ? value * 1.2500E+17
-             : (intRespond1 == 7 && intRespond2 == 12) ? value * 1.2500E+14
-             : (intRespond1 == 7 && intRespond2 == 13) ? value * 1.2500E+11
-             : (intRespond1 == 7 && intRespond2 == 14) ? value * 125000000
-             : (intRespond1 == 7 && intRespond2 == 15) ? value * 125000
-             : (intRespond1 == 7 && intRespond2 == 16) ? value * 125
-             : (intRespond1 == 7 && intRespond2 == 17) ? value * 8
-             : (intRespond1 == 7 && intRespond2 == 18) ? value / 8000
-             : (intRespond1 == 7 && intRespond2 == 19) ? value / 8000000
+             : (iConv1 == 7 && iConv2 == 1)  ? value * 1.0000E+18
+             : (iConv1 == 7 && iConv2 == 2)  ? value * 1.0000E+15
+             : (iConv1 == 7 && iConv2 == 3)  ? value * 1.0000E+12
+             : (iConv1 == 7 && iConv2 == 4)  ? value * 1.0000E+9
+             : (iConv1 == 7 && iConv2 == 5)  ? value * 1000000
+             : (iConv1 == 7 && iConv2 == 6)  ? value * 1000
+             : (iConv1 == 7 && iConv2 == 7)  ? value * 1
+             : (iConv1 == 7 && iConv2 == 8)  ? value / 1000
+             : (iConv1 == 7 && iConv2 == 9)  ? value / 1000000
+             : (iConv1 == 7 && iConv2 == 10) ? value * 2.5000E+17
+             : (iConv1 == 7 && iConv2 == 11) ? value * 1.2500E+17
+             : (iConv1 == 7 && iConv2 == 12) ? value * 1.2500E+14
+             : (iConv1 == 7 && iConv2 == 13) ? value * 1.2500E+11
+             : (iConv1 == 7 && iConv2 == 14) ? value * 125000000
+             : (iConv1 == 7 && iConv2 == 15) ? value * 125000
+             : (iConv1 == 7 && iConv2 == 16) ? value * 125
+             : (iConv1 == 7 && iConv2 == 17) ? value * 8
+             : (iConv1 == 7 && iConv2 == 18) ? value / 8000
+             : (iConv1 == 7 && iConv2 == 19) ? value / 8000000
 
-             : (intRespond1 == 8 && intRespond2 == 1)  ? value * 1.0000E+21
-             : (intRespond1 == 8 && intRespond2 == 2)  ? value * 1.0000E+18
-             : (intRespond1 == 8 && intRespond2 == 3)  ? value * 1.0000E+15
-             : (intRespond1 == 8 && intRespond2 == 4)  ? value * 1.0000E+12
-             : (intRespond1 == 8 && intRespond2 == 5)  ? value * 1.0000E+9
-             : (intRespond1 == 8 && intRespond2 == 6)  ? value * 1000000
-             : (intRespond1 == 8 && intRespond2 == 7)  ? value * 1000
-             : (intRespond1 == 8 && intRespond2 == 8)  ? value * 1
-             : (intRespond1 == 8 && intRespond2 == 9)  ? value / 1000
-             : (intRespond1 == 8 && intRespond2 == 10) ? value * 2.5000E+20
-             : (intRespond1 == 8 && intRespond2 == 11) ? value * 1.2500E+20
-             : (intRespond1 == 8 && intRespond2 == 12) ? value * 1.2500E+17
-             : (intRespond1 == 8 && intRespond2 == 13) ? value * 1.2500E+14
-             : (intRespond1 == 8 && intRespond2 == 14) ? value * 1.2500E+11
-             : (intRespond1 == 8 && intRespond2 == 15) ? value * 125000000
-             : (intRespond1 == 8 && intRespond2 == 16) ? value * 125000
-             : (intRespond1 == 8 && intRespond2 == 17) ? value * 125
-             : (intRespond1 == 8 && intRespond2 == 18) ? value * 8
-             : (intRespond1 == 8 && intRespond2 == 19) ? value / 8000
+             : (iConv1 == 8 && iConv2 == 1)  ? value * 1.0000E+21
+             : (iConv1 == 8 && iConv2 == 2)  ? value * 1.0000E+18
+             : (iConv1 == 8 && iConv2 == 3)  ? value * 1.0000E+15
+             : (iConv1 == 8 && iConv2 == 4)  ? value * 1.0000E+12
+             : (iConv1 == 8 && iConv2 == 5)  ? value * 1.0000E+9
+             : (iConv1 == 8 && iConv2 == 6)  ? value * 1000000
+             : (iConv1 == 8 && iConv2 == 7)  ? value * 1000
+             : (iConv1 == 8 && iConv2 == 8)  ? value * 1
+             : (iConv1 == 8 && iConv2 == 9)  ? value / 1000
+             : (iConv1 == 8 && iConv2 == 10) ? value * 2.5000E+20
+             : (iConv1 == 8 && iConv2 == 11) ? value * 1.2500E+20
+             : (iConv1 == 8 && iConv2 == 12) ? value * 1.2500E+17
+             : (iConv1 == 8 && iConv2 == 13) ? value * 1.2500E+14
+             : (iConv1 == 8 && iConv2 == 14) ? value * 1.2500E+11
+             : (iConv1 == 8 && iConv2 == 15) ? value * 125000000
+             : (iConv1 == 8 && iConv2 == 16) ? value * 125000
+             : (iConv1 == 8 && iConv2 == 17) ? value * 125
+             : (iConv1 == 8 && iConv2 == 18) ? value * 8
+             : (iConv1 == 8 && iConv2 == 19) ? value / 8000
 
-             : (intRespond1 == 9 && intRespond2 == 1)  ? value * 1.0000E+24
-             : (intRespond1 == 9 && intRespond2 == 2)  ? value * 1.0000E+21
-             : (intRespond1 == 9 && intRespond2 == 3)  ? value * 1.0000E+18
-             : (intRespond1 == 9 && intRespond2 == 4)  ? value * 1.0000E+15
-             : (intRespond1 == 9 && intRespond2 == 5)  ? value * 1.0000E+12
-             : (intRespond1 == 9 && intRespond2 == 6)  ? value * 1.0000E+9
-             : (intRespond1 == 9 && intRespond2 == 7)  ? value * 1000000
-             : (intRespond1 == 9 && intRespond2 == 8)  ? value * 1000
-             : (intRespond1 == 9 && intRespond2 == 9)  ? value * 1
-             : (intRespond1 == 9 && intRespond2 == 10) ? value * 2.5000E+23
-             : (intRespond1 == 9 && intRespond2 == 11) ? value * 1.2500E+23
-             : (intRespond1 == 9 && intRespond2 == 12) ? value * 1.2500E+20
-             : (intRespond1 == 9 && intRespond2 == 13) ? value * 1.2500E+17
-             : (intRespond1 == 9 && intRespond2 == 14) ? value * 1.2500E+14
-             : (intRespond1 == 9 && intRespond2 == 15) ? value * 1.2500E+11
-             : (intRespond1 == 9 && intRespond2 == 16) ? value * 125000000
-             : (intRespond1 == 9 && intRespond2 == 17) ? value * 125000
-             : (intRespond1 == 9 && intRespond2 == 18) ? value * 125
-             : (intRespond1 == 9 && intRespond2 == 19) ? value * 8
+             : (iConv1 == 9 && iConv2 == 1)  ? value * 1.0000E+24
+             : (iConv1 == 9 && iConv2 == 2)  ? value * 1.0000E+21
+             : (iConv1 == 9 && iConv2 == 3)  ? value * 1.0000E+18
+             : (iConv1 == 9 && iConv2 == 4)  ? value * 1.0000E+15
+             : (iConv1 == 9 && iConv2 == 5)  ? value * 1.0000E+12
+             : (iConv1 == 9 && iConv2 == 6)  ? value * 1.0000E+9
+             : (iConv1 == 9 && iConv2 == 7)  ? value * 1000000
+             : (iConv1 == 9 && iConv2 == 8)  ? value * 1000
+             : (iConv1 == 9 && iConv2 == 9)  ? value * 1
+             : (iConv1 == 9 && iConv2 == 10) ? value * 2.5000E+23
+             : (iConv1 == 9 && iConv2 == 11) ? value * 1.2500E+23
+             : (iConv1 == 9 && iConv2 == 12) ? value * 1.2500E+20
+             : (iConv1 == 9 && iConv2 == 13) ? value * 1.2500E+17
+             : (iConv1 == 9 && iConv2 == 14) ? value * 1.2500E+14
+             : (iConv1 == 9 && iConv2 == 15) ? value * 1.2500E+11
+             : (iConv1 == 9 && iConv2 == 16) ? value * 125000000
+             : (iConv1 == 9 && iConv2 == 17) ? value * 125000
+             : (iConv1 == 9 && iConv2 == 18) ? value * 125
+             : (iConv1 == 9 && iConv2 == 19) ? value * 8
 
-             : (intRespond1 == 10 && intRespond2 == 1)  ? value * 4
-             : (intRespond1 == 10 && intRespond2 == 2)  ? value / 250
-             : (intRespond1 == 10 && intRespond2 == 3)  ? value / 250000
-             : (intRespond1 == 10 && intRespond2 == 4)  ? value / 2.5000E+8
-             : (intRespond1 == 10 && intRespond2 == 5)  ? value / 2.5000E+11
-             : (intRespond1 == 10 && intRespond2 == 6)  ? value / 2.5000E+14
-             : (intRespond1 == 10 && intRespond2 == 7)  ? value / 2.5000E+17
-             : (intRespond1 == 10 && intRespond2 == 8)  ? value / 2.5000E+20
-             : (intRespond1 == 10 && intRespond2 == 9)  ? value / 2.5000E+23
-             : (intRespond1 == 10 && intRespond2 == 10) ? value * 1
-             : (intRespond1 == 10 && intRespond2 == 11) ? value / 2
-             : (intRespond1 == 10 && intRespond2 == 12) ? value / 2000
-             : (intRespond1 == 10 && intRespond2 == 13) ? value / 2000000
-             : (intRespond1 == 10 && intRespond2 == 14) ? value / 2.0000E+9
-             : (intRespond1 == 10 && intRespond2 == 15) ? value / 2.0000E+12
-             : (intRespond1 == 10 && intRespond2 == 16) ? value / 2.0000E+15
-             : (intRespond1 == 10 && intRespond2 == 17) ? value / 2.0000E+18
-             : (intRespond1 == 10 && intRespond2 == 18) ? value / 2.0000E+21
-             : (intRespond1 == 10 && intRespond2 == 19) ? value / 2.0000E+24
+             : (iConv1 == 10 && iConv2 == 1)  ? value * 4
+             : (iConv1 == 10 && iConv2 == 2)  ? value / 250
+             : (iConv1 == 10 && iConv2 == 3)  ? value / 250000
+             : (iConv1 == 10 && iConv2 == 4)  ? value / 2.5000E+8
+             : (iConv1 == 10 && iConv2 == 5)  ? value / 2.5000E+11
+             : (iConv1 == 10 && iConv2 == 6)  ? value / 2.5000E+14
+             : (iConv1 == 10 && iConv2 == 7)  ? value / 2.5000E+17
+             : (iConv1 == 10 && iConv2 == 8)  ? value / 2.5000E+20
+             : (iConv1 == 10 && iConv2 == 9)  ? value / 2.5000E+23
+             : (iConv1 == 10 && iConv2 == 10) ? value * 1
+             : (iConv1 == 10 && iConv2 == 11) ? value / 2
+             : (iConv1 == 10 && iConv2 == 12) ? value / 2000
+             : (iConv1 == 10 && iConv2 == 13) ? value / 2000000
+             : (iConv1 == 10 && iConv2 == 14) ? value / 2.0000E+9
+             : (iConv1 == 10 && iConv2 == 15) ? value / 2.0000E+12
+             : (iConv1 == 10 && iConv2 == 16) ? value / 2.0000E+15
+             : (iConv1 == 10 && iConv2 == 17) ? value / 2.0000E+18
+             : (iConv1 == 10 && iConv2 == 18) ? value / 2.0000E+21
+             : (iConv1 == 10 && iConv2 == 19) ? value / 2.0000E+24
 
-             : (intRespond1 == 11 && intRespond2 == 1)  ? value * 8
-             : (intRespond1 == 11 && intRespond2 == 2)  ? value / 125
-             : (intRespond1 == 11 && intRespond2 == 3)  ? value / 125000
-             : (intRespond1 == 11 && intRespond2 == 4)  ? value / 1.2500E+8
-             : (intRespond1 == 11 && intRespond2 == 5)  ? value / 1.2500E+11
-             : (intRespond1 == 11 && intRespond2 == 6)  ? value / 1.2500E+14
-             : (intRespond1 == 11 && intRespond2 == 7)  ? value / 1.2500E+17
-             : (intRespond1 == 11 && intRespond2 == 8)  ? value / 1.2500E+20
-             : (intRespond1 == 11 && intRespond2 == 9)  ? value / 1.2500E+23
-             : (intRespond1 == 11 && intRespond2 == 10) ? value * 2
-             : (intRespond1 == 11 && intRespond2 == 11) ? value * 1
-             : (intRespond1 == 11 && intRespond2 == 12) ? value / 1000
-             : (intRespond1 == 11 && intRespond2 == 13) ? value / 1000000
-             : (intRespond1 == 11 && intRespond2 == 14) ? value / 1.0000E+9
-             : (intRespond1 == 11 && intRespond2 == 15) ? value / 1.0000E+12
-             : (intRespond1 == 11 && intRespond2 == 16) ? value / 1.0000E+15
-             : (intRespond1 == 11 && intRespond2 == 17) ? value / 1.0000E+18
-             : (intRespond1 == 11 && intRespond2 == 18) ? value / 1.0000E+21
-             : (intRespond1 == 11 && intRespond2 == 19) ? value / 1.0000E+24
+             : (iConv1 == 11 && iConv2 == 1)  ? value * 8
+             : (iConv1 == 11 && iConv2 == 2)  ? value / 125
+             : (iConv1 == 11 && iConv2 == 3)  ? value / 125000
+             : (iConv1 == 11 && iConv2 == 4)  ? value / 1.2500E+8
+             : (iConv1 == 11 && iConv2 == 5)  ? value / 1.2500E+11
+             : (iConv1 == 11 && iConv2 == 6)  ? value / 1.2500E+14
+             : (iConv1 == 11 && iConv2 == 7)  ? value / 1.2500E+17
+             : (iConv1 == 11 && iConv2 == 8)  ? value / 1.2500E+20
+             : (iConv1 == 11 && iConv2 == 9)  ? value / 1.2500E+23
+             : (iConv1 == 11 && iConv2 == 10) ? value * 2
+             : (iConv1 == 11 && iConv2 == 11) ? value * 1
+             : (iConv1 == 11 && iConv2 == 12) ? value / 1000
+             : (iConv1 == 11 && iConv2 == 13) ? value / 1000000
+             : (iConv1 == 11 && iConv2 == 14) ? value / 1.0000E+9
+             : (iConv1 == 11 && iConv2 == 15) ? value / 1.0000E+12
+             : (iConv1 == 11 && iConv2 == 16) ? value / 1.0000E+15
+             : (iConv1 == 11 && iConv2 == 17) ? value / 1.0000E+18
+             : (iConv1 == 11 && iConv2 == 18) ? value / 1.0000E+21
+             : (iConv1 == 11 && iConv2 == 19) ? value / 1.0000E+24
 
-             : (intRespond1 == 12 && intRespond2 == 1)  ? value * 8000
-             : (intRespond1 == 12 && intRespond2 == 2)  ? value * 8
-             : (intRespond1 == 12 && intRespond2 == 3)  ? value / 125
-             : (intRespond1 == 12 && intRespond2 == 4)  ? value / 125000
-             : (intRespond1 == 12 && intRespond2 == 5)  ? value / 1.2500E+8
-             : (intRespond1 == 12 && intRespond2 == 6)  ? value / 1.2500E+11
-             : (intRespond1 == 12 && intRespond2 == 7)  ? value / 1.2500E+14
-             : (intRespond1 == 12 && intRespond2 == 8)  ? value / 1.2500E+17
-             : (intRespond1 == 12 && intRespond2 == 9)  ? value / 1.2500E+20
-             : (intRespond1 == 12 && intRespond2 == 10) ? value * 2000
-             : (intRespond1 == 12 && intRespond2 == 11) ? value * 1000
-             : (intRespond1 == 12 && intRespond2 == 12) ? value * 1
-             : (intRespond1 == 12 && intRespond2 == 13) ? value / 1000
-             : (intRespond1 == 12 && intRespond2 == 14) ? value / 1000000
-             : (intRespond1 == 12 && intRespond2 == 15) ? value / 1.0000E+9
-             : (intRespond1 == 12 && intRespond2 == 16) ? value / 1.0000E+12
-             : (intRespond1 == 12 && intRespond2 == 17) ? value / 1.0000E+15
-             : (intRespond1 == 12 && intRespond2 == 18) ? value / 1.0000E+18
-             : (intRespond1 == 12 && intRespond2 == 19) ? value / 1.0000E+21
+             : (iConv1 == 12 && iConv2 == 1)  ? value * 8000
+             : (iConv1 == 12 && iConv2 == 2)  ? value * 8
+             : (iConv1 == 12 && iConv2 == 3)  ? value / 125
+             : (iConv1 == 12 && iConv2 == 4)  ? value / 125000
+             : (iConv1 == 12 && iConv2 == 5)  ? value / 1.2500E+8
+             : (iConv1 == 12 && iConv2 == 6)  ? value / 1.2500E+11
+             : (iConv1 == 12 && iConv2 == 7)  ? value / 1.2500E+14
+             : (iConv1 == 12 && iConv2 == 8)  ? value / 1.2500E+17
+             : (iConv1 == 12 && iConv2 == 9)  ? value / 1.2500E+20
+             : (iConv1 == 12 && iConv2 == 10) ? value * 2000
+             : (iConv1 == 12 && iConv2 == 11) ? value * 1000
+             : (iConv1 == 12 && iConv2 == 12) ? value * 1
+             : (iConv1 == 12 && iConv2 == 13) ? value / 1000
+             : (iConv1 == 12 && iConv2 == 14) ? value / 1000000
+             : (iConv1 == 12 && iConv2 == 15) ? value / 1.0000E+9
+             : (iConv1 == 12 && iConv2 == 16) ? value / 1.0000E+12
+             : (iConv1 == 12 && iConv2 == 17) ? value / 1.0000E+15
+             : (iConv1 == 12 && iConv2 == 18) ? value / 1.0000E+18
+             : (iConv1 == 12 && iConv2 == 19) ? value / 1.0000E+21
 
-             : (intRespond1 == 13 && intRespond2 == 1)  ? value * 8000000
-             : (intRespond1 == 13 && intRespond2 == 2)  ? value * 8000
-             : (intRespond1 == 13 && intRespond2 == 3)  ? value * 8
-             : (intRespond1 == 13 && intRespond2 == 4)  ? value / 125
-             : (intRespond1 == 13 && intRespond2 == 5)  ? value / 125000
-             : (intRespond1 == 13 && intRespond2 == 6)  ? value / 1.2500E+8
-             : (intRespond1 == 13 && intRespond2 == 7)  ? value / 1.2500E+11
-             : (intRespond1 == 13 && intRespond2 == 8)  ? value / 1.2500E+14
-             : (intRespond1 == 13 && intRespond2 == 9)  ? value / 1.2500E+17
-             : (intRespond1 == 13 && intRespond2 == 10) ? value * 2000000
-             : (intRespond1 == 13 && intRespond2 == 11) ? value * 1000000
-             : (intRespond1 == 13 && intRespond2 == 12) ? value * 1000
-             : (intRespond1 == 13 && intRespond2 == 13) ? value * 1
-             : (intRespond1 == 13 && intRespond2 == 14) ? value / 1000
-             : (intRespond1 == 13 && intRespond2 == 15) ? value / 1000000
-             : (intRespond1 == 13 && intRespond2 == 16) ? value / 1.0000E+9
-             : (intRespond1 == 13 && intRespond2 == 17) ? value / 1.0000E+12
-             : (intRespond1 == 13 && intRespond2 == 18) ? value / 1.0000E+15
-             : (intRespond1 == 13 && intRespond2 == 19) ? value / 1.0000E+18
+             : (iConv1 == 13 && iConv2 == 1)  ? value * 8000000
+             : (iConv1 == 13 && iConv2 == 2)  ? value * 8000
+             : (iConv1 == 13 && iConv2 == 3)  ? value * 8
+             : (iConv1 == 13 && iConv2 == 4)  ? value / 125
+             : (iConv1 == 13 && iConv2 == 5)  ? value / 125000
+             : (iConv1 == 13 && iConv2 == 6)  ? value / 1.2500E+8
+             : (iConv1 == 13 && iConv2 == 7)  ? value / 1.2500E+11
+             : (iConv1 == 13 && iConv2 == 8)  ? value / 1.2500E+14
+             : (iConv1 == 13 && iConv2 == 9)  ? value / 1.2500E+17
+             : (iConv1 == 13 && iConv2 == 10) ? value * 2000000
+             : (iConv1 == 13 && iConv2 == 11) ? value * 1000000
+             : (iConv1 == 13 && iConv2 == 12) ? value * 1000
+             : (iConv1 == 13 && iConv2 == 13) ? value * 1
+             : (iConv1 == 13 && iConv2 == 14) ? value / 1000
+             : (iConv1 == 13 && iConv2 == 15) ? value / 1000000
+             : (iConv1 == 13 && iConv2 == 16) ? value / 1.0000E+9
+             : (iConv1 == 13 && iConv2 == 17) ? value / 1.0000E+12
+             : (iConv1 == 13 && iConv2 == 18) ? value / 1.0000E+15
+             : (iConv1 == 13 && iConv2 == 19) ? value / 1.0000E+18
 
-             : (intRespond1 == 14 && intRespond2 == 1)  ? value * 8.0000E+9
-             : (intRespond1 == 14 && intRespond2 == 2)  ? value * 8000000
-             : (intRespond1 == 14 && intRespond2 == 3)  ? value * 8000
-             : (intRespond1 == 14 && intRespond2 == 4)  ? value * 8
-             : (intRespond1 == 14 && intRespond2 == 5)  ? value / 125
-             : (intRespond1 == 14 && intRespond2 == 6)  ? value / 125000
-             : (intRespond1 == 14 && intRespond2 == 7)  ? value / 1.2500E+8
-             : (intRespond1 == 14 && intRespond2 == 8)  ? value / 1.2500E+11
-             : (intRespond1 == 14 && intRespond2 == 9)  ? value / 1.2500E+14
-             : (intRespond1 == 14 && intRespond2 == 10) ? value * 2.0000E+9
-             : (intRespond1 == 14 && intRespond2 == 11) ? value * 1.0000E+9
-             : (intRespond1 == 14 && intRespond2 == 12) ? value * 1000000
-             : (intRespond1 == 14 && intRespond2 == 13) ? value * 1000
-             : (intRespond1 == 14 && intRespond2 == 14) ? value * 1
-             : (intRespond1 == 14 && intRespond2 == 15) ? value / 1000
-             : (intRespond1 == 14 && intRespond2 == 16) ? value / 1000000
-             : (intRespond1 == 14 && intRespond2 == 17) ? value / 1.0000E+9
-             : (intRespond1 == 14 && intRespond2 == 18) ? value / 1.0000E+11
-             : (intRespond1 == 14 && intRespond2 == 19) ? value / 1.0000E+15
+             : (iConv1 == 14 && iConv2 == 1)  ? value * 8.0000E+9
+             : (iConv1 == 14 && iConv2 == 2)  ? value * 8000000
+             : (iConv1 == 14 && iConv2 == 3)  ? value * 8000
+             : (iConv1 == 14 && iConv2 == 4)  ? value * 8
+             : (iConv1 == 14 && iConv2 == 5)  ? value / 125
+             : (iConv1 == 14 && iConv2 == 6)  ? value / 125000
+             : (iConv1 == 14 && iConv2 == 7)  ? value / 1.2500E+8
+             : (iConv1 == 14 && iConv2 == 8)  ? value / 1.2500E+11
+             : (iConv1 == 14 && iConv2 == 9)  ? value / 1.2500E+14
+             : (iConv1 == 14 && iConv2 == 10) ? value * 2.0000E+9
+             : (iConv1 == 14 && iConv2 == 11) ? value * 1.0000E+9
+             : (iConv1 == 14 && iConv2 == 12) ? value * 1000000
+             : (iConv1 == 14 && iConv2 == 13) ? value * 1000
+             : (iConv1 == 14 && iConv2 == 14) ? value * 1
+             : (iConv1 == 14 && iConv2 == 15) ? value / 1000
+             : (iConv1 == 14 && iConv2 == 16) ? value / 1000000
+             : (iConv1 == 14 && iConv2 == 17) ? value / 1.0000E+9
+             : (iConv1 == 14 && iConv2 == 18) ? value / 1.0000E+11
+             : (iConv1 == 14 && iConv2 == 19) ? value / 1.0000E+15
 
-             : (intRespond1 == 15 && intRespond2 == 1)  ? value * 8.0000E+12
-             : (intRespond1 == 15 && intRespond2 == 2)  ? value * 8.0000E+9
-             : (intRespond1 == 15 && intRespond2 == 3)  ? value * 8000000
-             : (intRespond1 == 15 && intRespond2 == 4)  ? value * 8000
-             : (intRespond1 == 15 && intRespond2 == 5)  ? value * 8
-             : (intRespond1 == 15 && intRespond2 == 6)  ? value / 125
-             : (intRespond1 == 15 && intRespond2 == 7)  ? value / 125000
-             : (intRespond1 == 15 && intRespond2 == 8)  ? value / 1.2500E+8
-             : (intRespond1 == 15 && intRespond2 == 9)  ? value / 1.2500E+11
-             : (intRespond1 == 15 && intRespond2 == 10) ? value * 2.0000E+12
-             : (intRespond1 == 15 && intRespond2 == 11) ? value * 1.0000E+12
-             : (intRespond1 == 15 && intRespond2 == 12) ? value * 1.0000E+9
-             : (intRespond1 == 15 && intRespond2 == 13) ? value * 1000000
-             : (intRespond1 == 15 && intRespond2 == 14) ? value * 1000
-             : (intRespond1 == 15 && intRespond2 == 15) ? value * 1
-             : (intRespond1 == 15 && intRespond2 == 16) ? value / 1000
-             : (intRespond1 == 15 && intRespond2 == 17) ? value / 1000000
-             : (intRespond1 == 15 && intRespond2 == 18) ? value / 1.0000E+9
-             : (intRespond1 == 15 && intRespond2 == 19) ? value / 1.0000E+12
+             : (iConv1 == 15 && iConv2 == 1)  ? value * 8.0000E+12
+             : (iConv1 == 15 && iConv2 == 2)  ? value * 8.0000E+9
+             : (iConv1 == 15 && iConv2 == 3)  ? value * 8000000
+             : (iConv1 == 15 && iConv2 == 4)  ? value * 8000
+             : (iConv1 == 15 && iConv2 == 5)  ? value * 8
+             : (iConv1 == 15 && iConv2 == 6)  ? value / 125
+             : (iConv1 == 15 && iConv2 == 7)  ? value / 125000
+             : (iConv1 == 15 && iConv2 == 8)  ? value / 1.2500E+8
+             : (iConv1 == 15 && iConv2 == 9)  ? value / 1.2500E+11
+             : (iConv1 == 15 && iConv2 == 10) ? value * 2.0000E+12
+             : (iConv1 == 15 && iConv2 == 11) ? value * 1.0000E+12
+             : (iConv1 == 15 && iConv2 == 12) ? value * 1.0000E+9
+             : (iConv1 == 15 && iConv2 == 13) ? value * 1000000
+             : (iConv1 == 15 && iConv2 == 14) ? value * 1000
+             : (iConv1 == 15 && iConv2 == 15) ? value * 1
+             : (iConv1 == 15 && iConv2 == 16) ? value / 1000
+             : (iConv1 == 15 && iConv2 == 17) ? value / 1000000
+             : (iConv1 == 15 && iConv2 == 18) ? value / 1.0000E+9
+             : (iConv1 == 15 && iConv2 == 19) ? value / 1.0000E+12
 
-             : (intRespond1 == 16 && intRespond2 == 1)  ? value * 8.0000E+15
-             : (intRespond1 == 16 && intRespond2 == 2)  ? value * 8.0000E+12
-             : (intRespond1 == 16 && intRespond2 == 3)  ? value * 8.0000E+9
-             : (intRespond1 == 16 && intRespond2 == 4)  ? value * 8000000
-             : (intRespond1 == 16 && intRespond2 == 5)  ? value * 8000
-             : (intRespond1 == 16 && intRespond2 == 6)  ? value * 8
-             : (intRespond1 == 16 && intRespond2 == 7)  ? value / 125
-             : (intRespond1 == 16 && intRespond2 == 8)  ? value / 125000
-             : (intRespond1 == 16 && intRespond2 == 9)  ? value / 1.2500E+8
-             : (intRespond1 == 16 && intRespond2 == 10) ? value * 2.0000E+15
-             : (intRespond1 == 16 && intRespond2 == 11) ? value * 1.0000E+15
-             : (intRespond1 == 16 && intRespond2 == 12) ? value * 1.0000E+12
-             : (intRespond1 == 16 && intRespond2 == 13) ? value * 1.0000E+9
-             : (intRespond1 == 16 && intRespond2 == 14) ? value * 1000000
-             : (intRespond1 == 16 && intRespond2 == 15) ? value * 1000
-             : (intRespond1 == 16 && intRespond2 == 16) ? value * 1
-             : (intRespond1 == 16 && intRespond2 == 17) ? value / 1000
-             : (intRespond1 == 16 && intRespond2 == 18) ? value / 1000000
-             : (intRespond1 == 16 && intRespond2 == 19) ? value / 1.0000E+9
+             : (iConv1 == 16 && iConv2 == 1)  ? value * 8.0000E+15
+             : (iConv1 == 16 && iConv2 == 2)  ? value * 8.0000E+12
+             : (iConv1 == 16 && iConv2 == 3)  ? value * 8.0000E+9
+             : (iConv1 == 16 && iConv2 == 4)  ? value * 8000000
+             : (iConv1 == 16 && iConv2 == 5)  ? value * 8000
+             : (iConv1 == 16 && iConv2 == 6)  ? value * 8
+             : (iConv1 == 16 && iConv2 == 7)  ? value / 125
+             : (iConv1 == 16 && iConv2 == 8)  ? value / 125000
+             : (iConv1 == 16 && iConv2 == 9)  ? value / 1.2500E+8
+             : (iConv1 == 16 && iConv2 == 10) ? value * 2.0000E+15
+             : (iConv1 == 16 && iConv2 == 11) ? value * 1.0000E+15
+             : (iConv1 == 16 && iConv2 == 12) ? value * 1.0000E+12
+             : (iConv1 == 16 && iConv2 == 13) ? value * 1.0000E+9
+             : (iConv1 == 16 && iConv2 == 14) ? value * 1000000
+             : (iConv1 == 16 && iConv2 == 15) ? value * 1000
+             : (iConv1 == 16 && iConv2 == 16) ? value * 1
+             : (iConv1 == 16 && iConv2 == 17) ? value / 1000
+             : (iConv1 == 16 && iConv2 == 18) ? value / 1000000
+             : (iConv1 == 16 && iConv2 == 19) ? value / 1.0000E+9
 
-             : (intRespond1 == 17 && intRespond2 == 1)  ? value * 8.0000E+18
-             : (intRespond1 == 17 && intRespond2 == 2)  ? value * 8.0000E+15
-             : (intRespond1 == 17 && intRespond2 == 3)  ? value * 8.0000E+12
-             : (intRespond1 == 17 && intRespond2 == 4)  ? value * 8.0000E+9
-             : (intRespond1 == 17 && intRespond2 == 5)  ? value * 8000000
-             : (intRespond1 == 17 && intRespond2 == 6)  ? value * 8000
-             : (intRespond1 == 17 && intRespond2 == 7)  ? value * 8
-             : (intRespond1 == 17 && intRespond2 == 8)  ? value / 125
-             : (intRespond1 == 17 && intRespond2 == 9)  ? value / 125000
-             : (intRespond1 == 17 && intRespond2 == 10) ? value * 2.0000E+18
-             : (intRespond1 == 17 && intRespond2 == 11) ? value * 1.0000E+18
-             : (intRespond1 == 17 && intRespond2 == 12) ? value * 1.0000E+15
-             : (intRespond1 == 17 && intRespond2 == 13) ? value * 1.0000E+12
-             : (intRespond1 == 17 && intRespond2 == 14) ? value * 1.0000E+9
-             : (intRespond1 == 17 && intRespond2 == 15) ? value * 1000000
-             : (intRespond1 == 17 && intRespond2 == 16) ? value * 1000
-             : (intRespond1 == 17 && intRespond2 == 17) ? value * 1
-             : (intRespond1 == 17 && intRespond2 == 18) ? value / 1000
-             : (intRespond1 == 17 && intRespond2 == 19) ? value / 1000000
+             : (iConv1 == 17 && iConv2 == 1)  ? value * 8.0000E+18
+             : (iConv1 == 17 && iConv2 == 2)  ? value * 8.0000E+15
+             : (iConv1 == 17 && iConv2 == 3)  ? value * 8.0000E+12
+             : (iConv1 == 17 && iConv2 == 4)  ? value * 8.0000E+9
+             : (iConv1 == 17 && iConv2 == 5)  ? value * 8000000
+             : (iConv1 == 17 && iConv2 == 6)  ? value * 8000
+             : (iConv1 == 17 && iConv2 == 7)  ? value * 8
+             : (iConv1 == 17 && iConv2 == 8)  ? value / 125
+             : (iConv1 == 17 && iConv2 == 9)  ? value / 125000
+             : (iConv1 == 17 && iConv2 == 10) ? value * 2.0000E+18
+             : (iConv1 == 17 && iConv2 == 11) ? value * 1.0000E+18
+             : (iConv1 == 17 && iConv2 == 12) ? value * 1.0000E+15
+             : (iConv1 == 17 && iConv2 == 13) ? value * 1.0000E+12
+             : (iConv1 == 17 && iConv2 == 14) ? value * 1.0000E+9
+             : (iConv1 == 17 && iConv2 == 15) ? value * 1000000
+             : (iConv1 == 17 && iConv2 == 16) ? value * 1000
+             : (iConv1 == 17 && iConv2 == 17) ? value * 1
+             : (iConv1 == 17 && iConv2 == 18) ? value / 1000
+             : (iConv1 == 17 && iConv2 == 19) ? value / 1000000
 
-             : (intRespond1 == 18 && intRespond2 == 1)  ? value * 8.0000E+21
-             : (intRespond1 == 18 && intRespond2 == 2)  ? value * 8.0000E+18
-             : (intRespond1 == 18 && intRespond2 == 3)  ? value * 8.0000E+15
-             : (intRespond1 == 18 && intRespond2 == 4)  ? value * 8.0000E+12
-             : (intRespond1 == 18 && intRespond2 == 5)  ? value * 8.0000E+9
-             : (intRespond1 == 18 && intRespond2 == 6)  ? value * 8000000
-             : (intRespond1 == 18 && intRespond2 == 7)  ? value * 8000
-             : (intRespond1 == 18 && intRespond2 == 8)  ? value * 8
-             : (intRespond1 == 18 && intRespond2 == 9)  ? value / 125
-             : (intRespond1 == 18 && intRespond2 == 10) ? value * 2.0000E+21
-             : (intRespond1 == 18 && intRespond2 == 11) ? value * 1.0000E+21
-             : (intRespond1 == 18 && intRespond2 == 12) ? value * 1.0000E+18
-             : (intRespond1 == 18 && intRespond2 == 13) ? value * 1.0000E+15
-             : (intRespond1 == 18 && intRespond2 == 14) ? value * 1.0000E+12
-             : (intRespond1 == 18 && intRespond2 == 15) ? value * 1.0000E+9
-             : (intRespond1 == 18 && intRespond2 == 16) ? value * 1000000
-             : (intRespond1 == 18 && intRespond2 == 17) ? value * 1000
-             : (intRespond1 == 18 && intRespond2 == 18) ? value * 1
-             : (intRespond1 == 18 && intRespond2 == 19) ? value / 1000
+             : (iConv1 == 18 && iConv2 == 1)  ? value * 8.0000E+21
+             : (iConv1 == 18 && iConv2 == 2)  ? value * 8.0000E+18
+             : (iConv1 == 18 && iConv2 == 3)  ? value * 8.0000E+15
+             : (iConv1 == 18 && iConv2 == 4)  ? value * 8.0000E+12
+             : (iConv1 == 18 && iConv2 == 5)  ? value * 8.0000E+9
+             : (iConv1 == 18 && iConv2 == 6)  ? value * 8000000
+             : (iConv1 == 18 && iConv2 == 7)  ? value * 8000
+             : (iConv1 == 18 && iConv2 == 8)  ? value * 8
+             : (iConv1 == 18 && iConv2 == 9)  ? value / 125
+             : (iConv1 == 18 && iConv2 == 10) ? value * 2.0000E+21
+             : (iConv1 == 18 && iConv2 == 11) ? value * 1.0000E+21
+             : (iConv1 == 18 && iConv2 == 12) ? value * 1.0000E+18
+             : (iConv1 == 18 && iConv2 == 13) ? value * 1.0000E+15
+             : (iConv1 == 18 && iConv2 == 14) ? value * 1.0000E+12
+             : (iConv1 == 18 && iConv2 == 15) ? value * 1.0000E+9
+             : (iConv1 == 18 && iConv2 == 16) ? value * 1000000
+             : (iConv1 == 18 && iConv2 == 17) ? value * 1000
+             : (iConv1 == 18 && iConv2 == 18) ? value * 1
+             : (iConv1 == 18 && iConv2 == 19) ? value / 1000
 
-             : (intRespond1 == 19 && intRespond2 == 1)  ? value * 8.0000E+24
-             : (intRespond1 == 19 && intRespond2 == 2)  ? value * 8.0000E+21
-             : (intRespond1 == 19 && intRespond2 == 3)  ? value * 8.0000E+18
-             : (intRespond1 == 19 && intRespond2 == 4)  ? value * 8.0000E+15
-             : (intRespond1 == 19 && intRespond2 == 5)  ? value * 8.0000E+12
-             : (intRespond1 == 19 && intRespond2 == 6)  ? value * 8.0000E+9
-             : (intRespond1 == 19 && intRespond2 == 7)  ? value * 8000000
-             : (intRespond1 == 19 && intRespond2 == 8)  ? value * 8000
-             : (intRespond1 == 19 && intRespond2 == 9)  ? value * 8
-             : (intRespond1 == 19 && intRespond2 == 10) ? value * 2.0000E+24
-             : (intRespond1 == 19 && intRespond2 == 11) ? value * 1.0000E+24
-             : (intRespond1 == 19 && intRespond2 == 12) ? value * 1.0000E+21
-             : (intRespond1 == 19 && intRespond2 == 13) ? value * 1.0000E+18
-             : (intRespond1 == 19 && intRespond2 == 14) ? value * 1.0000E+15
-             : (intRespond1 == 19 && intRespond2 == 15) ? value * 1.0000E+12
-             : (intRespond1 == 19 && intRespond2 == 16) ? value * 1.0000E+9
-             : (intRespond1 == 19 && intRespond2 == 17) ? value * 1000000
-             : (intRespond1 == 19 && intRespond2 == 18) ? value * 1000
-             : (intRespond1 == 19 && intRespond2 == 19) ? value * 1
-                                                        : value * 0;
+             : (iConv1 == 19 && iConv2 == 1)  ? value * 8.0000E+24
+             : (iConv1 == 19 && iConv2 == 2)  ? value * 8.0000E+21
+             : (iConv1 == 19 && iConv2 == 3)  ? value * 8.0000E+18
+             : (iConv1 == 19 && iConv2 == 4)  ? value * 8.0000E+15
+             : (iConv1 == 19 && iConv2 == 5)  ? value * 8.0000E+12
+             : (iConv1 == 19 && iConv2 == 6)  ? value * 8.0000E+9
+             : (iConv1 == 19 && iConv2 == 7)  ? value * 8000000
+             : (iConv1 == 19 && iConv2 == 8)  ? value * 8000
+             : (iConv1 == 19 && iConv2 == 9)  ? value * 8
+             : (iConv1 == 19 && iConv2 == 10) ? value * 2.0000E+24
+             : (iConv1 == 19 && iConv2 == 11) ? value * 1.0000E+24
+             : (iConv1 == 19 && iConv2 == 12) ? value * 1.0000E+21
+             : (iConv1 == 19 && iConv2 == 13) ? value * 1.0000E+18
+             : (iConv1 == 19 && iConv2 == 14) ? value * 1.0000E+15
+             : (iConv1 == 19 && iConv2 == 15) ? value * 1.0000E+12
+             : (iConv1 == 19 && iConv2 == 16) ? value * 1.0000E+9
+             : (iConv1 == 19 && iConv2 == 17) ? value * 1000000
+             : (iConv1 == 19 && iConv2 == 18) ? value * 1000
+             : (iConv1 == 19 && iConv2 == 19) ? value * 1
+                                              : value * 0;
 
-    std::cout << "\nResult: " << result << " " << unit.at(--intRespond2)
+    std::cout << "\nResult: " << result << " " << unit.at(--iConv2)
               << "\n\n(Press enter to continue)";
     std::cin.get();
   }

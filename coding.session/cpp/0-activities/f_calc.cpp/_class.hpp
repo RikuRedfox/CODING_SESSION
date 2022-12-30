@@ -19,9 +19,9 @@ class SimpleCalc {
 public:
   SimpleCalc() {
     op = ' ';
-    num1 = 0;
-    num2 = 0;
-    t_num = 0;
+    num1 = 0.;
+    num2 = 0.;
+    t_num = 0.;
     m_num1 = 0;
     m_num2 = 0;
     m_num = 0;
@@ -52,7 +52,7 @@ public:
   }
 
 private:
-  int intWeight, intHeight;
+  unsigned int intWeight, intHeight;
   float weightValue, heightValue1, heightValue2;
   std::array<std::string, 2> weight;
   std::array<std::string, 4> height;
@@ -87,11 +87,28 @@ public:
   }
 
 private:
-  int iConv1, iConv2;
-  long double result, value;
+  unsigned short iConv2;
+  long double result;
+
+protected:
+  unsigned short iConv1;
+  long double value;
   std::vector<std::string> unit;
 
 public:
   void area();
   void data();
+};
+
+class Temperature : protected Conv {
+public:
+  Temperature() {
+    result = {0., 0., 0., 0.};
+  }
+
+private:
+  std::array<long double, 4> result;
+
+public:
+  void temperature();
 };

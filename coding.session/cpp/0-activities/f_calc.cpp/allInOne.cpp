@@ -25,18 +25,19 @@ int main() {
 }
 // Acting like a main func
 void mainMenu() {
-  Conv *conv = new Conv;
   SimpleCalc *simplecalc = new SimpleCalc;
   BMI *bmi = new BMI;
   Discount *discount = new Discount;
+  Conv *conv = new Conv;
+  Temperature *temperature = new Temperature;
 
   short unsigned int iRespond;
   std::array<std::string, 12> choice{
-      "Simple Calculator",      "Convert: Area",
-      "Calculator: BMI",        "Convert: Data",
-      "Calculator: Discount",   "Converter: Length [ONG]",
+      "Simple Calculator",      "Calculator: BMI",
+      "Calculator: Discount",   "Converter: Area",
+      "Converter: Data",        "Converter: Length [ONG]",
       "Converter: Mass [ONG]",  "Converter: Numerical System [ONG]",
-      "Converter: Speed [ONG]", "Converter: Temperature [ONG]",
+      "Converter: Speed [ONG]", "Converter: Temperature",
       "Converter: Time [ONG]",  "Converter: Volume [ONG]"};
 
   do {
@@ -60,6 +61,7 @@ void mainMenu() {
       delete bmi;
       delete discount;
       delete conv;
+      delete temperature;
       break;
     }
 
@@ -74,31 +76,36 @@ void mainMenu() {
       delete bmi;
       delete discount;
       delete conv;
+      delete temperature;
       simplecalc->simpleCalc();
     } else if (iRespond == 2) {
-      delete simplecalc;
-      delete bmi;
-      delete discount;
-      // delete conv;
-      conv->area();
-    } else if (iRespond == 3) {
       delete simplecalc;
       // delete bmi;
       delete discount;
       delete conv;
+      delete temperature;
       bmi->bmi();
+    } else if (iRespond == 3) {
+      delete simplecalc;
+      delete bmi;
+      // delete discount;
+      delete conv;
+      delete temperature;
+      discount->discount();
     } else if (iRespond == 4) {
       delete simplecalc;
       delete bmi;
       delete discount;
       // delete conv;
-      conv->data();
+      delete temperature;
+      conv->area();
     } else if (iRespond == 5) {
       delete simplecalc;
       delete bmi;
-      // delete discount;
-      delete conv;
-      discount->discount();
+      delete discount;
+      // delete conv;
+      delete temperature;
+      conv->data();
     } else if (iRespond == 6) {
       continue;
     } else if (iRespond == 7) {
@@ -108,7 +115,12 @@ void mainMenu() {
     } else if (iRespond == 9) {
       continue;
     } else if (iRespond == 10) {
-      continue;
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv;
+      // delete temperature;
+      temperature->temperature();
     } else if (iRespond == 11) {
       continue;
     } else if (iRespond == 12) {
@@ -1137,5 +1149,84 @@ void Conv::data() {
     std::cout << "\nResult: " << result << " " << unit.at(--iConv2)
               << "\n\n(Press enter to continue)";
     std::cin.get();
+  }
+}
+
+void Temperature::temperature() {
+  unit = {"Celcius (C)", "Fahrenheit (F)", "Kelvin (K)", "Rankine (R)"};
+  std::cout << "Press enter.";
+  while (true) {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    i = 1;
+    LOG_CLEAR;
+    std::cout << "\tCommands:"
+                 "\n'e' Back to main menu\n\n";
+
+    for (auto a : unit)
+      std::cout << "[" << i++ << "] " << a << "\n";
+
+    i = 0;
+    for (auto a : unit)
+      std::cout << "\n" << a << ": " << result.at(i++);
+
+    std::cout << "\n\nFrom: ";
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
+                   ::tolower);
+    if (strRespond1 == "e") {
+      CONV_CLEAR;
+    } else {
+      try {
+        iConv1 = std::stoi(strRespond1);
+      } catch (...) {
+        continue;
+      }
+    }
+    if (iConv1 < 1 || iConv1 > 4)
+      continue;
+
+    std::cout << "Value of " << unit.at(--iConv1) << ": ";
+    std::cin >> strRespond1;
+    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
+                   ::tolower);
+    if (strRespond1 == "e") {
+      CONV_CLEAR;
+    } else {
+      try {
+        value = std::stoi(strRespond1);
+      } catch (...) {
+        continue;
+      }
+    }
+
+    ++iConv1;
+    if (iConv1 == 1) {
+      result.at(0) = (value * 1);
+      result.at(1) = ((value * 1.8) + 32);
+      result.at(2) = (value + 273.15);
+      result.at(3) = ((value * 1.8) + 491.67);
+    } else if (iConv1 == 2) {
+      result.at(0) = ((value - 32) * 0.555556);
+      result.at(1) = (value * 1);
+      result.at(2) = ((value + 459.67) * 0.555556);
+      result.at(3) = (value + 459.67);
+    } else if (iConv1 == 3) {
+      result.at(0) = (value - 273.15);
+      result.at(1) = ((value * 1.8) - 459.67);
+      result.at(2) = (value * 1);
+      result.at(3) = (value * 1.8);
+    } else if (iConv1 == 4) {
+      result.at(0) = (value * 0.555556) - 273.15;
+      result.at(1) = (value - 459.67);
+      result.at(2) = (value * 0.555556);
+      result.at(3) = (value * 1);
+    } else {
+      result.at(0) = 0;
+      result.at(1) = 0;
+      result.at(2) = 0;
+      result.at(3) = 0;
+    }
   }
 }

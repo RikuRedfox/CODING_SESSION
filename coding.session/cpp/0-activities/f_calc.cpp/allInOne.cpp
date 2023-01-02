@@ -3,10 +3,11 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <sstream>
 
 #define LOG_CLEAR std::cout << "\033[2J\033[1;1H";
-#define RELEASE 0
+#define RELEASE 1
 
 #include "_class.hpp"
 
@@ -16,8 +17,8 @@ int main() {
 #if RELEASE == 1 // RELEASE
   mainMenu();
 #else // DEBUGGING
-  NumSystem numSystem;
-  numSystem.numSystem();
+  // NumSystem numSystem;
+  // numSystem.numSystem();
 #endif
   return 0;
 }
@@ -28,14 +29,29 @@ void mainMenu() {
   Discount *discount = new Discount;
   Conv *conv = new Conv;
   Temperature *temperature = new Temperature;
-  NumSystem *numSystem = new NumSystem;
+  // NumSystem *numSystem = new NumSystem;
+
+  // std::unique_ptr<SimpleCalc> simplecalc = std::make_unique<SimpleCalc>();
+  // std::unique_ptr<BMI> bmi = std::make_unique<BMI>();
+  // std::unique_ptr<Discount> discount = std::make_unique<Discount>();
+  // std::unique_ptr<Conv> conv = std::make_unique<Conv>();
+  // std::unique_ptr<Temperature> temperature = std::make_unique<Temperature>();
+  // // std::unique_ptr<NumSystem> numSystem = std::make_unique<NumSystem>();
+
+  std::cout << "\n" << sizeof(*simplecalc);
+  std::cout << "\n" << sizeof(*bmi);
+  std::cout << "\n" << sizeof(*discount);
+  std::cout << "\n" << sizeof(*conv);
+  std::cout << "\n" << sizeof(*temperature);
+
+  std::cin.get();
 
   unsigned short iRespond;
   std::array<std::string, 12> choice{
       "Simple Calculator",      "Calculator: BMI",
       "Calculator: Discount",   "Converter: Area",
       "Converter: Data",        "Converter: Length [ONG]",
-      "Converter: Mass [ONG]",  "Converter: Numerical System [ONG]",
+      "Converter: Mass [ONG]",  "Converter: Numerical System [ERR]",
       "Converter: Speed [ONG]", "Converter: Temperature",
       "Converter: Time [ONG]",  "Converter: Volume [ONG]"};
 
@@ -56,12 +72,12 @@ void mainMenu() {
     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
                    glb::strRespond1.begin(), ::tolower);
     if (glb::strRespond1 == "e") {
-      delete simplecalc;
-      delete bmi;
-      delete discount;
-      delete conv;
-      delete temperature;
-      delete numSystem;
+      // delete simplecalc;
+      // delete bmi;
+      // delete discount;
+      // delete conv;
+      // delete temperature;
+      // delete numSystem;
       break;
     }
 
@@ -72,12 +88,12 @@ void mainMenu() {
     }
 
     if (iRespond == 1) {
-      //   delete simplecalc;
+      // delete simplecalc;
       delete bmi;
       delete discount;
       delete conv;
       delete temperature;
-      delete numSystem;
+      // delete numSystem;
       simplecalc->simpleCalc();
     } else if (iRespond == 2) {
       delete simplecalc;
@@ -85,15 +101,15 @@ void mainMenu() {
       delete discount;
       delete conv;
       delete temperature;
-      delete numSystem;
+      // delete numSystem;
       bmi->bmi();
     } else if (iRespond == 3) {
       delete simplecalc;
       delete bmi;
-      //   delete discount;
+      // delete discount;
       delete conv;
       delete temperature;
-      delete numSystem;
+      // delete numSystem;
       discount->discount();
     } else if (iRespond == 4) {
       delete simplecalc;
@@ -101,6 +117,7 @@ void mainMenu() {
       delete discount;
       // delete conv;
       delete temperature;
+      // delete numSystem;
       conv->area();
     } else if (iRespond == 5) {
       delete simplecalc;
@@ -108,20 +125,21 @@ void mainMenu() {
       delete discount;
       //   delete conv;
       delete temperature;
-      delete numSystem;
+      // delete numSystem;
       conv->data();
     } else if (iRespond == 6) {
       continue;
     } else if (iRespond == 7) {
       continue;
     } else if (iRespond == 8) {
-      delete simplecalc;
-      delete bmi;
-      delete discount;
-      delete conv;
-      delete temperature;
-      //   delete numSystem;
-      numSystem->numSystem();
+      // delete simplecalc;
+      // delete bmi;
+      // delete discount;
+      // delete conv;
+      // delete temperature;
+      // delete numSystem;
+      // numSystem->numSystem();
+      continue;
     } else if (iRespond == 9) {
       continue;
     } else if (iRespond == 10) {
@@ -129,8 +147,8 @@ void mainMenu() {
       delete bmi;
       delete discount;
       delete conv;
-      //   delete temperature;
-      delete numSystem;
+      // delete temperature;
+      // delete numSystem;
       temperature->temperature();
     } else if (iRespond == 11) {
       continue;
@@ -139,7 +157,9 @@ void mainMenu() {
     } else {
       continue;
     }
+    break;
   } while (true);
+  return;
 }
 
 void SimpleCalc::simpleCalc() {
@@ -1240,106 +1260,78 @@ void Temperature::temperature() {
   }
 }
 
-void NumSystem::numSystem() {
-  unit = {"Binary BIN (Working on it.)", "Octal OCT", "Decimal DEC",
-          "Hexadecimal HEX"};
-  std::cout << "Press enter.";
-  while (true) {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+// void NumSystem::numSystem() {
+//   unit = {"Binary BIN (Working on it.)", "Octal OCT", "Decimal DEC",
+//           "Hexadecimal HEX"};
+//   std::cout << "Press enter.";
+//   while (true) {
+//     std::cin.clear();
+//     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    glb::i = 1;
-    LOG_CLEAR;
-    std::cout << "\tCommands:"
-                 "\n'e' Back to main menu\n\n";
+//     glb::i = 1;
+//     LOG_CLEAR;
+//     std::cout << "\tCommands:"
+//                  "\n'e' Back to main menu\n\n";
 
-    for (auto a : unit)
-      std::cout << "[" << glb::i++ << "] " << a << "\n";
+//     for (auto a : unit)
+//       std::cout << "[" << glb::i++ << "] " << a << "\n";
 
-    printf("\n");
-    if (iConv1 == 1) { // bin
-      std::cout << "Binary BIN: " << value << "\n";
-      std::cout << "Octal OCT: " << std::oct << value << "\n";
-      std::cout << "Decimal Dec: " << std::dec << value << "\n";
-      std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
-    } else if (iConv1 == 2) { // oct
-      std::cout << "Binary BIN: " << value << "\n";
-      std::cout << "Octal OCT: " << std::oct << value << "\n";
-      std::cout << "Decimal Dec: " << std::dec << value << "\n";
-      std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
-    } else if (iConv1 == 3) { // dec
-      std::cout << "Binary BIN: " << value << "\n";
-      std::cout << "Octal OCT: " << std::oct << value << "\n";
-      std::cout << "Decimal Dec: " << std::dec << value << "\n";
-      std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
-    } else if (iConv1 == 4) { // hex
-      std::cout << "Binary BIN: " << value << "\n";
-      std::cout << "Octal OCT: " << std::oct << value << "\n";
-      std::cout << "Decimal Dec: " << std::dec << value << "\n";
-      std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
-    } else {
-      result.at(0) = 0;
-      result.at(1) = 0;
-      result.at(2) = 0;
-      result.at(3) = 0;
-    }
+//     printf("\n");
+//     if (iConv1 == 1) { // bin
+//       std::cout << "Binary BIN: " << value << "\n";
+//       std::cout << "Octal OCT: " << std::oct << value << "\n";
+//       std::cout << "Decimal Dec: " << std::dec << value << "\n";
+//       std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
+//     } else if (iConv1 == 2) { // oct
+//       std::cout << "Binary BIN: " << value << "\n";
+//       std::cout << "Octal OCT: " << std::oct << value << "\n";
+//       std::cout << "Decimal Dec: " << std::dec << value << "\n";
+//       std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
+//     } else if (iConv1 == 3) { // dec
+//       std::cout << "Binary BIN: " << value << "\n";
+//       std::cout << "Octal OCT: " << std::oct << value << "\n";
+//       std::cout << "Decimal Dec: " << std::dec << value << "\n";
+//       std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
+//     } else if (iConv1 == 4) { // hex
+//       std::cout << "Binary BIN: " << value << "\n";
+//       std::cout << "Octal OCT: " << std::oct << value << "\n";
+//       std::cout << "Decimal Dec: " << std::dec << value << "\n";
+//       std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
+//     } else {
+//       result.at(0) = 0;
+//       result.at(1) = 0;
+//       result.at(2) = 0;
+//       result.at(3) = 0;
+//     }
 
-    std::cout << "\nFrom: ";
-    std::cin >> glb::strRespond1;
-    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-                   glb::strRespond1.begin(), ::tolower);
-    if (glb::strRespond1 == "e") {
-      CONV_CLEAR;
-    } else {
-      try {
-        iConv1 = std::stoi(glb::strRespond1);
-      } catch (...) {
-        continue;
-      }
-    }
-    if (iConv1 < 1 || iConv1 > 4)
-      continue;
+//     std::cout << "\nFrom: ";
+//     std::cin >> glb::strRespond1;
+//     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+//                    glb::strRespond1.begin(), ::tolower);
+//     if (glb::strRespond1 == "e") {
+//       CONV_CLEAR;
+//     } else {
+//       try {
+//         iConv1 = std::stoi(glb::strRespond1);
+//       } catch (...) {
+//         continue;
+//       }
+//     }
+//     if (iConv1 < 1 || iConv1 > 4)
+//       continue;
 
-    std::cout << "Value of " << unit.at(--iConv1) << ": ";
-    std::cin >> glb::strRespond1;
-    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-                   glb::strRespond1.begin(), ::tolower);
-    if (glb::strRespond1 == "e") {
-      CONV_CLEAR;
-    } else {
-      try {
-        value = std::stoi(glb::strRespond1);
-      } catch (...) {
-        continue;
-      }
-    }
-
-    // ++iConv1;
-    // if (iConv1 == 1) { // bin
-    //   result.at(0) = value;
-    //   result.at(1) = value;
-    //   result.at(2) = value;
-    //   result.at(3) = value;
-    // } else if (iConv1 == 2) { // oct
-    //   result.at(0) = value;
-    //   result.at(1) = value;
-    //   result.at(2) = value;
-    //   result.at(3) = value;
-    // } else if (iConv1 == 3) { // dec
-    //   result.at(0) = value;
-    //   result.at(1) = value;
-    //   result.at(2) = value;
-    //   result.at(3) = value;
-    // } else if (iConv1 == 4) { // hex
-    //   result.at(0) = value;
-    //   result.at(1) = value;
-    //   result.at(2) = value;
-    //   result.at(3) = value;
-    // } else {
-    //   result.at(0) = 0;
-    //   result.at(1) = 0;
-    //   result.at(2) = 0;
-    //   result.at(3) = 0;
-    // }
-  }
-}
+//     std::cout << "Value of " << unit.at(--iConv1) << ": ";
+//     std::cin >> glb::strRespond1;
+//     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+//                    glb::strRespond1.begin(), ::tolower);
+//     if (glb::strRespond1 == "e") {
+//       CONV_CLEAR;
+//     } else {
+//       try {
+//         value = std::stoi(glb::strRespond1);
+//       } catch (...) {
+//         continue;
+//       }
+//     }
+//   }
+// }

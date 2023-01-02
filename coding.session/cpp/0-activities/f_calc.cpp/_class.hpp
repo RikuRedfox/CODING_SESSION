@@ -46,13 +46,13 @@ public:
     m_num2 = 0;
     m_num = 0;
 
-    // printf("SimpleCalc ");
-    // CREATED;
+    printf("SimpleCalc ");
+    CREATED;
   }
-  // ~SimpleCalc() {
-  //   printf("SimpleCalc ");
-  //   DESTROYED;
-  // }
+  ~SimpleCalc() {
+    printf("SimpleCalc ");
+    DESTROYED;
+  }
 
 private:
   // Operator
@@ -76,14 +76,15 @@ public:
     weightValue = 0.0;
     heightValue1 = 0.0;
     heightValue2 = 0.0;
-    // printf("BMI ");
-    // CREATED;
+
+    printf("BMI ");
+    CREATED;
   }
 
-  // ~BMI() {
-  //   printf("BMI ");
-  //   DESTROYED;
-  // }
+  ~BMI() {
+    printf("BMI ");
+    DESTROYED;
+  }
 
 private:
   unsigned int intWeight, intHeight;
@@ -101,13 +102,14 @@ public:
     origPrice = 0.0;
     Percentage = 0.0;
 
-    // printf("Discount ");
-    // CREATED;
+    printf("Discount ");
+    CREATED;
   }
-  // ~Discount() {
-  //   printf("Discount ");
-  //   DESTROYED;
-  // }
+
+  ~Discount() {
+    printf("Discount ");
+    DESTROYED;
+  }
 
 private:
   float origPrice, Percentage;
@@ -126,14 +128,14 @@ public:
     // Clear the vector to zero element.
     unit.clear();
 
-    // printf("Conv ");
-    // CREATED;
+    printf("Conv ");
+    CREATED;
   }
 
-  // ~Conv() {
-  //   printf("Conv ");
-  //   DESTROYED;
-  // }
+  ~Conv() {
+    printf("Conv ");
+    DESTROYED;
+  }
 
 private:
   unsigned short iConv2;
@@ -154,13 +156,13 @@ public:
   Temperature() {
     result = { 0., 0., 0., 0. };
 
-    // printf("Temperature ");
-    // CREATED;
+    printf("Temperature ");
+    CREATED;
   }
-  // ~Temperature() {
-  //   printf("Temperature ");
-  //   DESTROYED;
-  // }
+  ~Temperature() {
+    printf("Temperature ");
+    DESTROYED;
+  }
 
 protected:
   std::array<long double, 4> result;
@@ -169,7 +171,7 @@ public:
   void temperature();
 };
 
-class NumSystem : protected Temperature {
-  public:
-  void numSystem();
-};
+// class NumSystem : protected Temperature {
+//   public:
+//   void numSystem();
+// };

@@ -5,21 +5,19 @@
 #include <limits>
 #include <sstream>
 
+#define LOG_CLEAR std::cout << "\033[2J\033[1;1H";
+#define RELEASE 0
+
 #include "_class.hpp"
 
-#define LOG_CLEAR std::cout << "\033[2J\033[1;1H";
-#define RELEASE 1
-
 void mainMenu();
-
-std::string strRespond1, strRespond2;
-unsigned short i;
 
 int main() {
 #if RELEASE == 1 // RELEASE
   mainMenu();
 #else // DEBUGGING
-
+  NumSystem numSystem;
+  numSystem.numSystem();
 #endif
   return 0;
 }
@@ -30,8 +28,9 @@ void mainMenu() {
   Discount *discount = new Discount;
   Conv *conv = new Conv;
   Temperature *temperature = new Temperature;
+  NumSystem *numSystem = new NumSystem;
 
-  short unsigned int iRespond;
+  unsigned short iRespond;
   std::array<std::string, 12> choice{
       "Simple Calculator",      "Calculator: BMI",
       "Calculator: Discount",   "Converter: Area",
@@ -48,49 +47,53 @@ void mainMenu() {
     std::cout << "\tCommands:"
                  "\n'e' to exit program.";
     std::cout << "\n\n\tCALCULATOR / CONVERTER\n";
-    i = 1;
+    glb::i = 1;
     for (auto a : choice)
-      std::cout << "[" << i++ << "] " << a << "\n";
+      std::cout << "[" << glb::i++ << "] " << a << "\n";
 
     std::cout << "\nType a number to enter one of the calculator: ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e") {
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
       delete simplecalc;
       delete bmi;
       delete discount;
       delete conv;
       delete temperature;
+      delete numSystem;
       break;
     }
 
     try {
-      iRespond = stoi(strRespond1);
+      iRespond = stoi(glb::strRespond1);
     } catch (...) {
       continue;
     }
 
     if (iRespond == 1) {
-      // delete simplecalc;
+      //   delete simplecalc;
       delete bmi;
       delete discount;
       delete conv;
       delete temperature;
+      delete numSystem;
       simplecalc->simpleCalc();
     } else if (iRespond == 2) {
       delete simplecalc;
-      // delete bmi;
+      //   delete bmi;
       delete discount;
       delete conv;
       delete temperature;
+      delete numSystem;
       bmi->bmi();
     } else if (iRespond == 3) {
       delete simplecalc;
       delete bmi;
-      // delete discount;
+      //   delete discount;
       delete conv;
       delete temperature;
+      delete numSystem;
       discount->discount();
     } else if (iRespond == 4) {
       delete simplecalc;
@@ -103,15 +106,22 @@ void mainMenu() {
       delete simplecalc;
       delete bmi;
       delete discount;
-      // delete conv;
+      //   delete conv;
       delete temperature;
+      delete numSystem;
       conv->data();
     } else if (iRespond == 6) {
       continue;
     } else if (iRespond == 7) {
       continue;
     } else if (iRespond == 8) {
-      continue;
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv;
+      delete temperature;
+      //   delete numSystem;
+      numSystem->numSystem();
     } else if (iRespond == 9) {
       continue;
     } else if (iRespond == 10) {
@@ -119,7 +129,8 @@ void mainMenu() {
       delete bmi;
       delete discount;
       delete conv;
-      // delete temperature;
+      //   delete temperature;
+      delete numSystem;
       temperature->temperature();
     } else if (iRespond == 11) {
       continue;
@@ -128,8 +139,6 @@ void mainMenu() {
     } else {
       continue;
     }
-
-    break; // force to exit
   } while (true);
 }
 
@@ -159,10 +168,10 @@ void SimpleCalc::simpleCalc() {
 
     std::cout << "\n\n\t[Ex. Format: 1 + 2]\n>> ";
     // Frist num
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e")
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e")
       return mainMenu();
 
     // Operator
@@ -172,15 +181,15 @@ void SimpleCalc::simpleCalc() {
       return mainMenu();
 
     // second num
-    std::cin >> strRespond2;
-    std::transform(strRespond2.begin(), strRespond2.end(), strRespond2.begin(),
-                   ::tolower);
-    if (strRespond2 == "e")
+    std::cin >> glb::strRespond2;
+    std::transform(glb::strRespond2.begin(), glb::strRespond2.end(),
+                   glb::strRespond2.begin(), ::tolower);
+    if (glb::strRespond2 == "e")
       return mainMenu();
 
     try {
-      num1 = stold(strRespond1);
-      num2 = stold(strRespond2);
+      num1 = stold(glb::strRespond1);
+      num2 = stold(glb::strRespond2);
     } catch (...) {
       continue;
     }
@@ -214,24 +223,24 @@ void BMI::bmi() {
 
     while (true) {
       while (true) {
-        i = 1;
+        glb::i = 1;
         LOG_CLEAR;
         std::cout << "\tCommands:"
                      "\n'e' Back to main menu"
                      "\n\n\tWeight\n";
 
         for (auto a : weight)
-          std::cout << "[" << i++ << "] " << a << "\n";
+          std::cout << "[" << glb::i++ << "] " << a << "\n";
 
         std::cout << "Weight: ";
-        std::cin >> strRespond1;
-        std::transform(strRespond1.begin(), strRespond1.end(),
-                       strRespond1.begin(), ::tolower);
-        if (strRespond1 == "e")
+        std::cin >> glb::strRespond1;
+        std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                       glb::strRespond1.begin(), ::tolower);
+        if (glb::strRespond1 == "e")
           return mainMenu();
         else {
           try {
-            intWeight = std::stoi(strRespond1);
+            intWeight = std::stoi(glb::strRespond1);
             weight.at(--intWeight);
           } catch (...) {
             continue;
@@ -247,14 +256,14 @@ void BMI::bmi() {
         std::cout << "\nWeight (" << weight.at(intWeight) << ") "
                   << "\n";
         std::cout << "Weight Value: ";
-        std::cin >> strRespond1;
-        std::transform(strRespond1.begin(), strRespond1.end(),
-                       strRespond1.begin(), ::tolower);
-        if (strRespond1 == "e")
+        std::cin >> glb::strRespond1;
+        std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                       glb::strRespond1.begin(), ::tolower);
+        if (glb::strRespond1 == "e")
           return mainMenu();
         else {
           try {
-            weightValue = std::stod(strRespond1);
+            weightValue = std::stod(glb::strRespond1);
             if (weight.at(intWeight) == weight.at(0))
               weightValue /= 2.20462262;
           } catch (...) {
@@ -272,19 +281,19 @@ void BMI::bmi() {
                      "\n\nWeight: "
                   << weightValue << " " << weight.at(1) << "\n\n\tHeight\n";
 
-        i = 1;
+        glb::i = 1;
         for (auto a : height)
-          std::cout << "[" << i++ << "] " << a << "\n";
+          std::cout << "[" << glb::i++ << "] " << a << "\n";
 
         std::cout << "Height: ";
-        std::cin >> strRespond1;
-        std::transform(strRespond1.begin(), strRespond1.end(),
-                       strRespond1.begin(), ::tolower);
-        if (strRespond1 == "e")
+        std::cin >> glb::strRespond1;
+        std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                       glb::strRespond1.begin(), ::tolower);
+        if (glb::strRespond1 == "e")
           return mainMenu();
         else {
           try {
-            intHeight = std::stoi(strRespond1);
+            intHeight = std::stoi(glb::strRespond1);
             height.at(--intHeight);
           } catch (...) {
             continue;
@@ -307,14 +316,14 @@ void BMI::bmi() {
                       << weightValue << " " << weight.at(1)
                       << "\n\n\tHeight: " << height.at(intHeight);
             std::cout << "\nHeight Value (ft): ";
-            std::cin >> strRespond1;
-            std::transform(strRespond1.begin(), strRespond1.end(),
-                           strRespond1.begin(), ::tolower);
-            if (strRespond1 == "e")
+            std::cin >> glb::strRespond1;
+            std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                           glb::strRespond1.begin(), ::tolower);
+            if (glb::strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue1 = stod(strRespond1);
+                heightValue1 = stod(glb::strRespond1);
                 heightValue1 /= 3.2808399;
               } catch (...) {
                 continue;
@@ -331,14 +340,14 @@ void BMI::bmi() {
             std::cout << "\nHeight Value (ft) - " << heightValue1 << " "
                       << height.at(3);
             std::cout << "\nHeight Value (in): ";
-            std::cin >> strRespond1;
-            std::transform(strRespond1.begin(), strRespond1.end(),
-                           strRespond1.begin(), ::tolower);
-            if (strRespond1 == "e")
+            std::cin >> glb::strRespond1;
+            std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                           glb::strRespond1.begin(), ::tolower);
+            if (glb::strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue2 = stod(strRespond1);
+                heightValue2 = stod(glb::strRespond1);
                 if (heightValue2 < 1 || heightValue2 > 12) {
                   std::cerr << "Must be between 1 and 12 (Press Enter)";
                   std::cin.get();
@@ -360,14 +369,14 @@ void BMI::bmi() {
                       << weightValue << " " << weight.at(1)
                       << "\n\n\tHeight: " << height.at(intHeight);
             std::cout << "\nHeight Value (in): ";
-            std::cin >> strRespond1;
-            std::transform(strRespond1.begin(), strRespond1.end(),
-                           strRespond1.begin(), ::tolower);
-            if (strRespond1 == "e")
+            std::cin >> glb::strRespond1;
+            std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                           glb::strRespond1.begin(), ::tolower);
+            if (glb::strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue1 = stod(strRespond1);
+                heightValue1 = stod(glb::strRespond1);
                 heightValue1 /= 39.3700787;
               } catch (...) {
                 continue;
@@ -383,14 +392,14 @@ void BMI::bmi() {
                       << weightValue << " " << weight.at(1)
                       << "\n\n\tHeight: " << height.at(intHeight);
             std::cout << "\nHeight Value (cm): ";
-            std::cin >> strRespond1;
-            std::transform(strRespond1.begin(), strRespond1.end(),
-                           strRespond1.begin(), ::tolower);
-            if (strRespond1 == "e")
+            std::cin >> glb::strRespond1;
+            std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                           glb::strRespond1.begin(), ::tolower);
+            if (glb::strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue1 = stod(strRespond1);
+                heightValue1 = stod(glb::strRespond1);
                 heightValue1 /= 100;
               } catch (...) {
                 continue;
@@ -406,14 +415,14 @@ void BMI::bmi() {
                       << weightValue << " " << weight.at(1)
                       << "\n\n\tHeight: " << height.at(intHeight);
             std::cout << "\nHeight Value (m): ";
-            std::cin >> strRespond1;
-            std::transform(strRespond1.begin(), strRespond1.end(),
-                           strRespond1.begin(), ::tolower);
-            if (strRespond1 == "e")
+            std::cin >> glb::strRespond1;
+            std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                           glb::strRespond1.begin(), ::tolower);
+            if (glb::strRespond1 == "e")
               return mainMenu();
             else {
               try {
-                heightValue1 = stod(strRespond1);
+                heightValue1 = stod(glb::strRespond1);
               } catch (...) {
                 continue;
               }
@@ -467,28 +476,28 @@ void Discount::discount() {
                  "\n'e' Back to main menu\n\n";
     // Original Price
     std::cout << "Enter Original Price: ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e")
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e")
       return mainMenu();
     else {
       try {
-        origPrice = stof(strRespond1);
+        origPrice = stof(glb::strRespond1);
       } catch (...) {
         continue;
       }
     }
     // Percentage
     std::cout << "Enter Percentage: ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e")
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e")
       return mainMenu();
     else {
       try {
-        Percentage = stof(strRespond1);
+        Percentage = stof(glb::strRespond1);
         Percentage *= .01;
       } catch (...) {
         continue;
@@ -522,23 +531,23 @@ void Conv::area() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    i = 1;
+    glb::i = 1;
     LOG_CLEAR;
     std::cout << "\tCommands:"
                  "\n'e' Back to main menu\n\n";
 
     for (auto a : unit)
-      std::cout << "[" << i++ << "] " << a << "\n";
+      std::cout << "[" << glb::i++ << "] " << a << "\n";
 
     std::cout << "\nFrom: ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e") {
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
       CONV_CLEAR
     } else {
       try {
-        iConv1 = stoi(strRespond1);
+        iConv1 = stoi(glb::strRespond1);
       } catch (...) {
         continue;
       }
@@ -547,14 +556,14 @@ void Conv::area() {
       continue;
 
     std::cout << "To: ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e") {
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
       CONV_CLEAR
     } else {
       try {
-        iConv2 = stoi(strRespond1);
+        iConv2 = stoi(glb::strRespond1);
       } catch (...) {
         continue;
       }
@@ -564,14 +573,14 @@ void Conv::area() {
       continue;
 
     std::cout << "Value of " << unit.at(--iConv1) << ": ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e") {
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
       CONV_CLEAR;
     } else {
       try {
-        value = stold(strRespond1);
+        value = stold(glb::strRespond1);
       } catch (...) {
         continue;
       }
@@ -705,22 +714,22 @@ void Conv::data() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    i = 1;
+    glb::i = 1;
     LOG_CLEAR;
     std::cout << "\tCommands:"
                  "\n'e' Back to main menu\n\n";
     for (auto a : unit)
-      std::cout << "[" << i++ << "] " << a << "\n";
+      std::cout << "[" << glb::i++ << "] " << a << "\n";
 
     std::cout << "\nFrom: ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e") {
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
       CONV_CLEAR;
     } else {
       try {
-        iConv1 = std::stoi(strRespond1);
+        iConv1 = std::stoi(glb::strRespond1);
       } catch (...) {
         continue;
       }
@@ -729,14 +738,14 @@ void Conv::data() {
       continue;
 
     std::cout << "To: ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e") {
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
       CONV_CLEAR;
     } else {
       try {
-        iConv2 = std::stoi(strRespond1);
+        iConv2 = std::stoi(glb::strRespond1);
       } catch (...) {
         continue;
       }
@@ -745,14 +754,14 @@ void Conv::data() {
       continue;
 
     std::cout << "Value of " << unit.at(--iConv1) << ": ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e") {
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
       CONV_CLEAR;
     } else {
       try {
-        value = std::stoi(strRespond1);
+        value = std::stoi(glb::strRespond1);
       } catch (...) {
         continue;
       }
@@ -1159,27 +1168,27 @@ void Temperature::temperature() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    i = 1;
+    glb::i = 1;
     LOG_CLEAR;
     std::cout << "\tCommands:"
                  "\n'e' Back to main menu\n\n";
 
     for (auto a : unit)
-      std::cout << "[" << i++ << "] " << a << "\n";
+      std::cout << "[" << glb::i++ << "] " << a << "\n";
 
-    i = 0;
+    glb::i = 0;
     for (auto a : unit)
-      std::cout << "\n" << a << ": " << result.at(i++);
+      std::cout << "\n" << a << ": " << result.at(glb::i++);
 
     std::cout << "\n\nFrom: ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e") {
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
       CONV_CLEAR;
     } else {
       try {
-        iConv1 = std::stoi(strRespond1);
+        iConv1 = std::stoi(glb::strRespond1);
       } catch (...) {
         continue;
       }
@@ -1188,14 +1197,14 @@ void Temperature::temperature() {
       continue;
 
     std::cout << "Value of " << unit.at(--iConv1) << ": ";
-    std::cin >> strRespond1;
-    std::transform(strRespond1.begin(), strRespond1.end(), strRespond1.begin(),
-                   ::tolower);
-    if (strRespond1 == "e") {
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
       CONV_CLEAR;
     } else {
       try {
-        value = std::stoi(strRespond1);
+        value = std::stoi(glb::strRespond1);
       } catch (...) {
         continue;
       }
@@ -1228,5 +1237,109 @@ void Temperature::temperature() {
       result.at(2) = 0;
       result.at(3) = 0;
     }
+  }
+}
+
+void NumSystem::numSystem() {
+  unit = {"Binary BIN (Working on it.)", "Octal OCT", "Decimal DEC",
+          "Hexadecimal HEX"};
+  std::cout << "Press enter.";
+  while (true) {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    glb::i = 1;
+    LOG_CLEAR;
+    std::cout << "\tCommands:"
+                 "\n'e' Back to main menu\n\n";
+
+    for (auto a : unit)
+      std::cout << "[" << glb::i++ << "] " << a << "\n";
+
+    printf("\n");
+    if (iConv1 == 1) { // bin
+      std::cout << "Binary BIN: " << value << "\n";
+      std::cout << "Octal OCT: " << std::oct << value << "\n";
+      std::cout << "Decimal Dec: " << std::dec << value << "\n";
+      std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
+    } else if (iConv1 == 2) { // oct
+      std::cout << "Binary BIN: " << value << "\n";
+      std::cout << "Octal OCT: " << std::oct << value << "\n";
+      std::cout << "Decimal Dec: " << std::dec << value << "\n";
+      std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
+    } else if (iConv1 == 3) { // dec
+      std::cout << "Binary BIN: " << value << "\n";
+      std::cout << "Octal OCT: " << std::oct << value << "\n";
+      std::cout << "Decimal Dec: " << std::dec << value << "\n";
+      std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
+    } else if (iConv1 == 4) { // hex
+      std::cout << "Binary BIN: " << value << "\n";
+      std::cout << "Octal OCT: " << std::oct << value << "\n";
+      std::cout << "Decimal Dec: " << std::dec << value << "\n";
+      std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
+    } else {
+      result.at(0) = 0;
+      result.at(1) = 0;
+      result.at(2) = 0;
+      result.at(3) = 0;
+    }
+
+    std::cout << "\nFrom: ";
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
+      CONV_CLEAR;
+    } else {
+      try {
+        iConv1 = std::stoi(glb::strRespond1);
+      } catch (...) {
+        continue;
+      }
+    }
+    if (iConv1 < 1 || iConv1 > 4)
+      continue;
+
+    std::cout << "Value of " << unit.at(--iConv1) << ": ";
+    std::cin >> glb::strRespond1;
+    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                   glb::strRespond1.begin(), ::tolower);
+    if (glb::strRespond1 == "e") {
+      CONV_CLEAR;
+    } else {
+      try {
+        value = std::stoi(glb::strRespond1);
+      } catch (...) {
+        continue;
+      }
+    }
+
+    // ++iConv1;
+    // if (iConv1 == 1) { // bin
+    //   result.at(0) = value;
+    //   result.at(1) = value;
+    //   result.at(2) = value;
+    //   result.at(3) = value;
+    // } else if (iConv1 == 2) { // oct
+    //   result.at(0) = value;
+    //   result.at(1) = value;
+    //   result.at(2) = value;
+    //   result.at(3) = value;
+    // } else if (iConv1 == 3) { // dec
+    //   result.at(0) = value;
+    //   result.at(1) = value;
+    //   result.at(2) = value;
+    //   result.at(3) = value;
+    // } else if (iConv1 == 4) { // hex
+    //   result.at(0) = value;
+    //   result.at(1) = value;
+    //   result.at(2) = value;
+    //   result.at(3) = value;
+    // } else {
+    //   result.at(0) = 0;
+    //   result.at(1) = 0;
+    //   result.at(2) = 0;
+    //   result.at(3) = 0;
+    // }
   }
 }

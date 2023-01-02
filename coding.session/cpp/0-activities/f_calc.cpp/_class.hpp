@@ -1,6 +1,19 @@
+#pragma once
 #include <array>
 #include <string>
 #include <vector>
+
+#define CREATED                                                                \
+  static unsigned short i = 0;                                                 \
+  ++i;                                                                         \
+  printf("Created: %i Times", i);                                              \
+  std::cin.get();
+
+#define DESTROYED                                                              \
+  static unsigned short i = 0;                                                 \
+  ++i;                                                                         \
+  printf("Destroyed: %i Times", i);                                            \
+  std::cin.get();
 
 /* In the main cpp file, there are variables called strRespond 1 and 2 (at
  * global scope) that handle the user input. The string can be used to exit the
@@ -15,6 +28,13 @@
 // Each Class have a Constructor that will set the member variables to default
 // once the Class called in the main file.
 
+// I just realize that the global variable are bad, so I create a namespace for
+// that still can be use globally
+namespace glb {
+std::string strRespond1, strRespond2;
+unsigned short i;
+} // namespace glb
+
 class SimpleCalc {
 public:
   SimpleCalc() {
@@ -25,7 +45,14 @@ public:
     m_num1 = 0;
     m_num2 = 0;
     m_num = 0;
+
+    // printf("SimpleCalc ");
+    // CREATED;
   }
+  // ~SimpleCalc() {
+  //   printf("SimpleCalc ");
+  //   DESTROYED;
+  // }
 
 private:
   // Operator
@@ -49,7 +76,14 @@ public:
     weightValue = 0.0;
     heightValue1 = 0.0;
     heightValue2 = 0.0;
+    // printf("BMI ");
+    // CREATED;
   }
+
+  // ~BMI() {
+  //   printf("BMI ");
+  //   DESTROYED;
+  // }
 
 private:
   unsigned int intWeight, intHeight;
@@ -66,7 +100,14 @@ public:
   Discount() {
     origPrice = 0.0;
     Percentage = 0.0;
+
+    // printf("Discount ");
+    // CREATED;
   }
+  // ~Discount() {
+  //   printf("Discount ");
+  //   DESTROYED;
+  // }
 
 private:
   float origPrice, Percentage;
@@ -84,7 +125,15 @@ public:
     value = 0.0;
     // Clear the vector to zero element.
     unit.clear();
+
+    // printf("Conv ");
+    // CREATED;
   }
+
+  // ~Conv() {
+  //   printf("Conv ");
+  //   DESTROYED;
+  // }
 
 private:
   unsigned short iConv2;
@@ -103,12 +152,24 @@ public:
 class Temperature : protected Conv {
 public:
   Temperature() {
-    result = {0., 0., 0., 0.};
-  }
+    result = { 0., 0., 0., 0. };
 
-private:
+    // printf("Temperature ");
+    // CREATED;
+  }
+  // ~Temperature() {
+  //   printf("Temperature ");
+  //   DESTROYED;
+  // }
+
+protected:
   std::array<long double, 4> result;
 
 public:
   void temperature();
+};
+
+class NumSystem : protected Temperature {
+  public:
+  void numSystem();
 };

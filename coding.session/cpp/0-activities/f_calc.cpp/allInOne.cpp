@@ -11,49 +11,35 @@
 
 #include "_class.hpp"
 
-void mainMenu();
+static void mainMenu();
+static inline long double listOfResult(unsigned short where,
+                                       unsigned short &from, unsigned short &to,
+                                       long double &value);
 
 int main() {
 #if RELEASE == 1 // RELEASE
   mainMenu();
 #else // DEBUGGING
-  // NumSystem numSystem;
-  // numSystem.numSystem();
+  
 #endif
   return 0;
 }
 // Acting like a main func
-void mainMenu() {
+static void mainMenu() {
   SimpleCalc *simplecalc = new SimpleCalc;
   BMI *bmi = new BMI;
   Discount *discount = new Discount;
-  Conv *conv = new Conv;
-  Temperature *temperature = new Temperature;
-  // NumSystem *numSystem = new NumSystem;
-
-  // std::unique_ptr<SimpleCalc> simplecalc = std::make_unique<SimpleCalc>();
-  // std::unique_ptr<BMI> bmi = std::make_unique<BMI>();
-  // std::unique_ptr<Discount> discount = std::make_unique<Discount>();
-  // std::unique_ptr<Conv> conv = std::make_unique<Conv>();
-  // std::unique_ptr<Temperature> temperature = std::make_unique<Temperature>();
-  // // std::unique_ptr<NumSystem> numSystem = std::make_unique<NumSystem>();
-
-  std::cout << "\n" << sizeof(*simplecalc);
-  std::cout << "\n" << sizeof(*bmi);
-  std::cout << "\n" << sizeof(*discount);
-  std::cout << "\n" << sizeof(*conv);
-  std::cout << "\n" << sizeof(*temperature);
-
-  std::cin.get();
+  Conv1 *conv1 = new Conv1;
+  Conv2 *conv2 = new Conv2;
 
   unsigned short iRespond;
-  std::array<std::string, 12> choice{
+  const std::vector<std::string> choice{
       "Simple Calculator",      "Calculator: BMI",
       "Calculator: Discount",   "Converter: Area",
       "Converter: Data",        "Converter: Length [ONG]",
-      "Converter: Mass [ONG]",  "Converter: Numerical System [ERR]",
-      "Converter: Speed [ONG]", "Converter: Temperature",
-      "Converter: Time [ONG]",  "Converter: Volume [ONG]"};
+      "Converter: Mass [ONG]",  "Converter: Speed [ONG]",
+      "Converter: Temperature", "Converter: Time [ONG]",
+      "Converter: Volume [ONG]"};
 
   do {
     std::cin.clear();
@@ -72,12 +58,11 @@ void mainMenu() {
     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
                    glb::strRespond1.begin(), ::tolower);
     if (glb::strRespond1 == "e") {
-      // delete simplecalc;
-      // delete bmi;
-      // delete discount;
-      // delete conv;
-      // delete temperature;
-      // delete numSystem;
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv1;
+      delete conv2;
       break;
     }
 
@@ -91,70 +76,92 @@ void mainMenu() {
       // delete simplecalc;
       delete bmi;
       delete discount;
-      delete conv;
-      delete temperature;
-      // delete numSystem;
+      delete conv1;
+      delete conv2;
       simplecalc->simpleCalc();
     } else if (iRespond == 2) {
       delete simplecalc;
-      //   delete bmi;
+      // delete bmi;
       delete discount;
-      delete conv;
-      delete temperature;
-      // delete numSystem;
+      delete conv1;
+      delete conv2;
       bmi->bmi();
     } else if (iRespond == 3) {
       delete simplecalc;
       delete bmi;
       // delete discount;
-      delete conv;
-      delete temperature;
-      // delete numSystem;
+      delete conv1;
+      delete conv2;
       discount->discount();
     } else if (iRespond == 4) {
       delete simplecalc;
       delete bmi;
       delete discount;
-      // delete conv;
-      delete temperature;
-      // delete numSystem;
-      conv->area();
+      // delete conv1;
+      delete conv2;
+      conv1->area();
     } else if (iRespond == 5) {
       delete simplecalc;
       delete bmi;
       delete discount;
-      //   delete conv;
-      delete temperature;
-      // delete numSystem;
-      conv->data();
+      delete conv1;
+      // delete conv2;
+      conv1->data();
     } else if (iRespond == 6) {
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv1;
+      delete conv2;
       continue;
     } else if (iRespond == 7) {
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv1;
+      delete conv2;
       continue;
     } else if (iRespond == 8) {
-      // delete simplecalc;
-      // delete bmi;
-      // delete discount;
-      // delete conv;
-      // delete temperature;
-      // delete numSystem;
-      // numSystem->numSystem();
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv1;
+      delete conv2;
       continue;
     } else if (iRespond == 9) {
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv1;
+      delete conv2;
       continue;
     } else if (iRespond == 10) {
       delete simplecalc;
       delete bmi;
       delete discount;
-      delete conv;
-      // delete temperature;
-      // delete numSystem;
-      temperature->temperature();
+      delete conv1;
+      delete conv2;
+      conv2->temperature();
     } else if (iRespond == 11) {
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv1;
+      delete conv2;
       continue;
     } else if (iRespond == 12) {
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv1;
+      delete conv2;
       continue;
     } else {
+      delete simplecalc;
+      delete bmi;
+      delete discount;
+      delete conv1;
+      delete conv2;
       continue;
     }
     break;
@@ -535,7 +542,7 @@ void Discount::discount() {
   unit.clear();                                                                \
   return mainMenu();
 
-void Conv::area() {
+void Conv1::area() {
   unit = {"Square inch (in)",
           "Square foot (ft)",
           "Square yard (yd)",
@@ -592,7 +599,7 @@ void Conv::area() {
     if (iConv2 < 1 || iConv2 > 10)
       continue;
 
-    std::cout << "Value of " << unit.at(--iConv1) << ": ";
+    std::cout << "Value of " << unit.at(--iConv1) << ": " << ++iConv1;
     std::cin >> glb::strRespond1;
     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
                    glb::strRespond1.begin(), ::tolower);
@@ -606,116 +613,7 @@ void Conv::area() {
       }
     }
 
-    ++iConv1; // at line 554 there is an decrement happening
-
-    /* this area of code base is:
-    if(n1 == n2){
-      if(n1 == n2)
-      else if(n1 == n2)
-      else
-    } else */
-
-    result = (iConv1 == 1)    ? ((iConv2 == 2)    ? value / 144
-                                 : (iConv2 == 3)  ? value / 1296
-                                 : (iConv2 == 4)  ? value / 4.0145E+9
-                                 : (iConv2 == 5)  ? value / 6.2726E+6
-                                 : (iConv2 == 6)  ? value / 1.5500E+7
-                                 : (iConv2 == 7)  ? value * 645.16
-                                 : (iConv2 == 8)  ? value * 6.4516
-                                 : (iConv2 == 9)  ? value / 1550.0031
-                                 : (iConv2 == 10) ? value / 1.5500E+9
-                                                  : value * 1) // if n1 == n2
-             : (iConv1 == 2)  ? ((iConv2 == 1)    ? value * 144
-                                 : (iConv2 == 3)  ? value / 9
-                                 : (iConv2 == 4)  ? value / 2.7878E+7
-                                 : (iConv2 == 5)  ? value / 43560
-                                 : (iConv2 == 6)  ? value / 107639.104
-                                 : (iConv2 == 7)  ? value * 92903.04
-                                 : (iConv2 == 8)  ? value * 929.0304
-                                 : (iConv2 == 9)  ? value / 10.7639104
-                                 : (iConv2 == 10) ? value / 1.0764E+7
-                                                  : value * 1) // if n1 == n2
-             : (iConv1 == 3)  ? ((iConv2 == 1)    ? value * 1296
-                                 : (iConv2 == 2)  ? value * 9
-                                 : (iConv2 == 4)  ? value / 3.0976E+6
-                                 : (iConv2 == 5)  ? value / 4840
-                                 : (iConv2 == 6)  ? value / 11959.9005
-                                 : (iConv2 == 7)  ? value * 836127.36
-                                 : (iConv2 == 8)  ? value * 8361.2736
-                                 : (iConv2 == 9)  ? value / 1.19599005
-                                 : (iConv2 == 10) ? value / 1.1960E+6
-                                                  : value * 1) // if n1 == n2
-             : (iConv1 == 4)  ? ((iConv2 == 1)    ? value * 4.0145E+9
-                                 : (iConv2 == 2)  ? value * 2.7878E+7
-                                 : (iConv2 == 3)  ? value * 3097600
-                                 : (iConv2 == 5)  ? value / 3.0976E+6
-                                 : (iConv2 == 6)  ? value / 11959.9005
-                                 : (iConv2 == 7)  ? value * 836127.36
-                                 : (iConv2 == 8)  ? value * 8361.2736
-                                 : (iConv2 == 9)  ? value / 1.19599005
-                                 : (iConv2 == 10) ? value / 1.1960E+6
-                                                  : value * 1) // if n1 == n2
-             : (iConv1 == 5)  ? ((iConv2 == 1)    ? value * 6272640
-                                 : (iConv2 == 2)  ? value * 43560
-                                 : (iConv2 == 3)  ? value * 4840
-                                 : (iConv2 == 4)  ? value / 640
-                                 : (iConv2 == 6)  ? value / 2.47105381
-                                 : (iConv2 == 7)  ? value * 4.0469E+9
-                                 : (iConv2 == 8)  ? value * 4.0469E+7
-                                 : (iConv2 == 9)  ? value * 4046.85642
-                                 : (iConv2 == 10) ? value / 247.105381
-                                                  : value * 1) // if n1 == n2
-             : (iConv1 == 6)  ? ((iConv2 == 1)    ? value * 1.5500E+7
-                                 : (iConv2 == 2)  ? value * 107639.104
-                                 : (iConv2 == 3)  ? value * 11959.9005
-                                 : (iConv2 == 4)  ? value / 258.998811
-                                 : (iConv2 == 5)  ? value * 2.47105381
-                                 : (iConv2 == 7)  ? value * 1.0000E+10
-                                 : (iConv2 == 8)  ? value * 100000000
-                                 : (iConv2 == 9)  ? value * 10000
-                                 : (iConv2 == 10) ? value / 100
-                                                  : value * 1) // if n1 == n2
-             : (iConv1 == 7)  ? ((iConv2 == 1)    ? value / 645.16
-                                 : (iConv2 == 2)  ? value / 92903.04
-                                 : (iConv2 == 3)  ? value / 836127.36
-                                 : (iConv2 == 4)  ? value / 2.5900E+12
-                                 : (iConv2 == 5)  ? value / 4.0469E+9
-                                 : (iConv2 == 6)  ? value / 4.0469E+9
-                                 : (iConv2 == 8)  ? value / 100
-                                 : (iConv2 == 9)  ? value / 1000000
-                                 : (iConv2 == 10) ? value / 1.0000E+12
-                                                  : value * 1) // if n1 == n2
-             : (iConv1 == 8)  ? ((iConv2 == 1)    ? value / 6.4516
-                                 : (iConv2 == 2)  ? value / 929.0304
-                                 : (iConv2 == 3)  ? value / 8361.2736
-                                 : (iConv2 == 4)  ? value / 2.5900E+10
-                                 : (iConv2 == 5)  ? value / 4.0469E+7
-                                 : (iConv2 == 6)  ? value / 100000000
-                                 : (iConv2 == 7)  ? value * 100
-                                 : (iConv2 == 9)  ? value / 10000
-                                 : (iConv2 == 10) ? value / 1.0000E+10
-                                                  : value * 1) // if n1 == n2
-             : (iConv1 == 9)  ? ((iConv2 == 1)    ? value * 1550.0031
-                                 : (iConv2 == 2)  ? value * 10.7639104
-                                 : (iConv2 == 3)  ? value * 1.19599005
-                                 : (iConv2 == 4)  ? value / 2.5900E+6
-                                 : (iConv2 == 5)  ? value / 4046.85642
-                                 : (iConv2 == 6)  ? value / 10000
-                                 : (iConv2 == 7)  ? value * 1000000
-                                 : (iConv2 == 8)  ? value * 10000
-                                 : (iConv2 == 10) ? value / 1000000
-                                                  : value * 1) // if n1 == n2
-             : (iConv1 == 10) ? ((iConv2 == 1)   ? value * 1.5500E+9
-                                 : (iConv2 == 2) ? value * 1.0764E+7
-                                 : (iConv2 == 3) ? value * 1.1960E+6
-                                 : (iConv2 == 4) ? value / 2.58998811
-                                 : (iConv2 == 5) ? value * 247.105381
-                                 : (iConv2 == 6) ? value * 100
-                                 : (iConv2 == 7) ? value * 1.0000E+12
-                                 : (iConv2 == 8) ? value * 1.0000E+10
-                                 : (iConv2 == 9) ? value * 1000000
-                                                 : value * 1) // if n1 == n2
-                              : value * 0;
+    result = listOfResult(1, iConv1, iConv2, value);
 
     std::cout << "\nResult: " << result << " " << unit.at(--iConv2)
               << "\n\n(Press Enter to continue)";
@@ -723,7 +621,7 @@ void Conv::area() {
   }
 }
 
-void Conv::data() {
+void Conv1::data() {
   unit = {"Bit (b)",       "Kilobit (kb)",   "Megabit (Mb)",  "Gigabit (Gb)",
           "Terabit (Tb)",  "Petabit (Pb)",   "Exabit (Eb)",   "Zettabit (Zb)",
           "Yottabit (Yb)", "Nibble ()",      "Byte (B)",      "Kilobyte (kB)",
@@ -773,7 +671,7 @@ void Conv::data() {
     if (iConv2 < 1 || iConv2 > 19)
       continue;
 
-    std::cout << "Value of " << unit.at(--iConv1) << ": ";
+    std::cout << "Value of " << unit.at(--iConv1) << ": " << ++iConv1;
     std::cin >> glb::strRespond1;
     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
                    glb::strRespond1.begin(), ::tolower);
@@ -786,402 +684,506 @@ void Conv::data() {
         continue;
       }
     }
-
-    ++iConv1; // decrement at line 735
-    /* this area of code base is:
-    if (n1 == n2)
-    else if (n1 == n2)
-    else
-    */
-
-    result = (iConv1 == 1 && iConv2 == 1)    ? value * 1
-             : (iConv1 == 1 && iConv2 == 2)  ? value / 1000
-             : (iConv1 == 1 && iConv2 == 3)  ? value / 1000000
-             : (iConv1 == 1 && iConv2 == 4)  ? value / 1.0000e+9
-             : (iConv1 == 1 && iConv2 == 5)  ? value / 1.0000e+12
-             : (iConv1 == 1 && iConv2 == 6)  ? value / 1.0000e+15
-             : (iConv1 == 1 && iConv2 == 7)  ? value / 1.0000e+18
-             : (iConv1 == 1 && iConv2 == 8)  ? value / 1.0000e+21
-             : (iConv1 == 1 && iConv2 == 9)  ? value / 1.0000e+24
-             : (iConv1 == 1 && iConv2 == 10) ? value / 4
-             : (iConv1 == 1 && iConv2 == 11) ? value / 8
-             : (iConv1 == 1 && iConv2 == 12) ? value / 8000
-             : (iConv1 == 1 && iConv2 == 13) ? value / 8000000
-             : (iConv1 == 1 && iConv2 == 14) ? value / 8.0000e+9
-             : (iConv1 == 1 && iConv2 == 15) ? value / 8.0000e+12
-             : (iConv1 == 1 && iConv2 == 16) ? value / 8.0000e+15
-             : (iConv1 == 1 && iConv2 == 17) ? value / 8.0000e+18
-             : (iConv1 == 1 && iConv2 == 18) ? value / 8.0000e+21
-             : (iConv1 == 1 && iConv2 == 19) ? value / 8.0000e+24
-
-             : (iConv1 == 2 && iConv2 == 1)  ? value * 1000
-             : (iConv1 == 2 && iConv2 == 2)  ? value * 1
-             : (iConv1 == 2 && iConv2 == 3)  ? value / 1000
-             : (iConv1 == 2 && iConv2 == 4)  ? value / 1000000
-             : (iConv1 == 2 && iConv2 == 5)  ? value / 1.0000e+9
-             : (iConv1 == 2 && iConv2 == 6)  ? value / 1.0000e+12
-             : (iConv1 == 2 && iConv2 == 7)  ? value / 1.0000e+15
-             : (iConv1 == 2 && iConv2 == 8)  ? value / 1.0000e+18
-             : (iConv1 == 2 && iConv2 == 9)  ? value / 1.0000e+21
-             : (iConv1 == 2 && iConv2 == 10) ? value * 250
-             : (iConv1 == 2 && iConv2 == 11) ? value * 125
-             : (iConv1 == 2 && iConv2 == 12) ? value / 8
-             : (iConv1 == 2 && iConv2 == 13) ? value / 8000
-             : (iConv1 == 2 && iConv2 == 14) ? value / 8000000
-             : (iConv1 == 2 && iConv2 == 15) ? value / 8.0000e+9
-             : (iConv1 == 2 && iConv2 == 16) ? value / 8.0000e+12
-             : (iConv1 == 2 && iConv2 == 17) ? value / 8.0000e+15
-             : (iConv1 == 2 && iConv2 == 18) ? value / 8.0000e+18
-             : (iConv1 == 2 && iConv2 == 19) ? value / 8.0000e+21
-
-             : (iConv1 == 3 && iConv2 == 1)  ? value * 1000000
-             : (iConv1 == 3 && iConv2 == 2)  ? value * 1000
-             : (iConv1 == 3 && iConv2 == 3)  ? value * 1
-             : (iConv1 == 3 && iConv2 == 4)  ? value / 1000
-             : (iConv1 == 3 && iConv2 == 5)  ? value / 1000000
-             : (iConv1 == 3 && iConv2 == 6)  ? value / 1.0000E+9
-             : (iConv1 == 3 && iConv2 == 7)  ? value / 1.0000E+12
-             : (iConv1 == 3 && iConv2 == 8)  ? value / 1.0000E+15
-             : (iConv1 == 3 && iConv2 == 9)  ? value / 1.0000E+18
-             : (iConv1 == 3 && iConv2 == 10) ? value * 250000
-             : (iConv1 == 3 && iConv2 == 11) ? value * 125000
-             : (iConv1 == 3 && iConv2 == 12) ? value * 125
-             : (iConv1 == 3 && iConv2 == 13) ? value / 8
-             : (iConv1 == 3 && iConv2 == 14) ? value / 8000
-             : (iConv1 == 3 && iConv2 == 15) ? value / 8000000
-             : (iConv1 == 3 && iConv2 == 16) ? value / 8.0000E+9
-             : (iConv1 == 3 && iConv2 == 17) ? value / 8.0000E+12
-             : (iConv1 == 3 && iConv2 == 18) ? value / 8.0000E+15
-             : (iConv1 == 3 && iConv2 == 19) ? value / 8.0000E+18
-
-             : (iConv1 == 4 && iConv2 == 1)  ? value * 1.0000E+9
-             : (iConv1 == 4 && iConv2 == 2)  ? value * 1000000
-             : (iConv1 == 4 && iConv2 == 3)  ? value * 1000
-             : (iConv1 == 4 && iConv2 == 4)  ? value * 1
-             : (iConv1 == 4 && iConv2 == 5)  ? value / 1000
-             : (iConv1 == 4 && iConv2 == 6)  ? value / 1000000
-             : (iConv1 == 4 && iConv2 == 7)  ? value / 1.0000E+9
-             : (iConv1 == 4 && iConv2 == 8)  ? value / 1.0000E+12
-             : (iConv1 == 4 && iConv2 == 9)  ? value / 1.0000E+15
-             : (iConv1 == 4 && iConv2 == 10) ? value * 250000000
-             : (iConv1 == 4 && iConv2 == 11) ? value * 125000000
-             : (iConv1 == 4 && iConv2 == 12) ? value * 125000
-             : (iConv1 == 4 && iConv2 == 13) ? value * 125
-             : (iConv1 == 4 && iConv2 == 14) ? value / 8
-             : (iConv1 == 4 && iConv2 == 15) ? value / 8000
-             : (iConv1 == 4 && iConv2 == 16) ? value / 8000000
-             : (iConv1 == 4 && iConv2 == 17) ? value / 8.0000E+9
-             : (iConv1 == 4 && iConv2 == 18) ? value / 8.0000E+12
-             : (iConv1 == 4 && iConv2 == 19) ? value / 8.0000E+15
-
-             : (iConv1 == 5 && iConv2 == 1)  ? value * 1.0000E+12
-             : (iConv1 == 5 && iConv2 == 2)  ? value * 1.0000E+9
-             : (iConv1 == 5 && iConv2 == 3)  ? value * 1000000
-             : (iConv1 == 5 && iConv2 == 4)  ? value * 1000
-             : (iConv1 == 5 && iConv2 == 5)  ? value * 1
-             : (iConv1 == 5 && iConv2 == 6)  ? value / 1000
-             : (iConv1 == 5 && iConv2 == 7)  ? value / 1000000
-             : (iConv1 == 5 && iConv2 == 8)  ? value / 1.0000E+9
-             : (iConv1 == 5 && iConv2 == 9)  ? value / 1.0000E+12
-             : (iConv1 == 5 && iConv2 == 10) ? value * 2.5000E+11
-             : (iConv1 == 5 && iConv2 == 11) ? value * 1.2500E+11
-             : (iConv1 == 5 && iConv2 == 12) ? value * 125000000
-             : (iConv1 == 5 && iConv2 == 13) ? value * 125000
-             : (iConv1 == 5 && iConv2 == 14) ? value * 125
-             : (iConv1 == 5 && iConv2 == 15) ? value / 8
-             : (iConv1 == 5 && iConv2 == 16) ? value / 8000
-             : (iConv1 == 5 && iConv2 == 17) ? value / 8000000
-             : (iConv1 == 5 && iConv2 == 18) ? value / 8.0000E+9
-             : (iConv1 == 5 && iConv2 == 19) ? value / 8.0000E+12
-
-             : (iConv1 == 6 && iConv2 == 1)  ? value * 1.0000E+15
-             : (iConv1 == 6 && iConv2 == 2)  ? value * 1.0000E+12
-             : (iConv1 == 6 && iConv2 == 3)  ? value * 1.0000E+9
-             : (iConv1 == 6 && iConv2 == 4)  ? value * 1000000
-             : (iConv1 == 6 && iConv2 == 5)  ? value * 1000
-             : (iConv1 == 6 && iConv2 == 6)  ? value * 1
-             : (iConv1 == 6 && iConv2 == 7)  ? value / 1000
-             : (iConv1 == 6 && iConv2 == 8)  ? value / 1000000
-             : (iConv1 == 6 && iConv2 == 9)  ? value / 1.0000E+9
-             : (iConv1 == 6 && iConv2 == 10) ? value * 2.5000E+14
-             : (iConv1 == 6 && iConv2 == 11) ? value * 1.2500E+14
-             : (iConv1 == 6 && iConv2 == 12) ? value * 1.2500E+11
-             : (iConv1 == 6 && iConv2 == 13) ? value * 125000000
-             : (iConv1 == 6 && iConv2 == 14) ? value * 125000
-             : (iConv1 == 6 && iConv2 == 15) ? value * 125
-             : (iConv1 == 6 && iConv2 == 16) ? value / 8
-             : (iConv1 == 6 && iConv2 == 17) ? value / 8000
-             : (iConv1 == 6 && iConv2 == 18) ? value / 8000000
-             : (iConv1 == 6 && iConv2 == 19) ? value / 8.0000E+9
-
-             : (iConv1 == 7 && iConv2 == 1)  ? value * 1.0000E+18
-             : (iConv1 == 7 && iConv2 == 2)  ? value * 1.0000E+15
-             : (iConv1 == 7 && iConv2 == 3)  ? value * 1.0000E+12
-             : (iConv1 == 7 && iConv2 == 4)  ? value * 1.0000E+9
-             : (iConv1 == 7 && iConv2 == 5)  ? value * 1000000
-             : (iConv1 == 7 && iConv2 == 6)  ? value * 1000
-             : (iConv1 == 7 && iConv2 == 7)  ? value * 1
-             : (iConv1 == 7 && iConv2 == 8)  ? value / 1000
-             : (iConv1 == 7 && iConv2 == 9)  ? value / 1000000
-             : (iConv1 == 7 && iConv2 == 10) ? value * 2.5000E+17
-             : (iConv1 == 7 && iConv2 == 11) ? value * 1.2500E+17
-             : (iConv1 == 7 && iConv2 == 12) ? value * 1.2500E+14
-             : (iConv1 == 7 && iConv2 == 13) ? value * 1.2500E+11
-             : (iConv1 == 7 && iConv2 == 14) ? value * 125000000
-             : (iConv1 == 7 && iConv2 == 15) ? value * 125000
-             : (iConv1 == 7 && iConv2 == 16) ? value * 125
-             : (iConv1 == 7 && iConv2 == 17) ? value * 8
-             : (iConv1 == 7 && iConv2 == 18) ? value / 8000
-             : (iConv1 == 7 && iConv2 == 19) ? value / 8000000
-
-             : (iConv1 == 8 && iConv2 == 1)  ? value * 1.0000E+21
-             : (iConv1 == 8 && iConv2 == 2)  ? value * 1.0000E+18
-             : (iConv1 == 8 && iConv2 == 3)  ? value * 1.0000E+15
-             : (iConv1 == 8 && iConv2 == 4)  ? value * 1.0000E+12
-             : (iConv1 == 8 && iConv2 == 5)  ? value * 1.0000E+9
-             : (iConv1 == 8 && iConv2 == 6)  ? value * 1000000
-             : (iConv1 == 8 && iConv2 == 7)  ? value * 1000
-             : (iConv1 == 8 && iConv2 == 8)  ? value * 1
-             : (iConv1 == 8 && iConv2 == 9)  ? value / 1000
-             : (iConv1 == 8 && iConv2 == 10) ? value * 2.5000E+20
-             : (iConv1 == 8 && iConv2 == 11) ? value * 1.2500E+20
-             : (iConv1 == 8 && iConv2 == 12) ? value * 1.2500E+17
-             : (iConv1 == 8 && iConv2 == 13) ? value * 1.2500E+14
-             : (iConv1 == 8 && iConv2 == 14) ? value * 1.2500E+11
-             : (iConv1 == 8 && iConv2 == 15) ? value * 125000000
-             : (iConv1 == 8 && iConv2 == 16) ? value * 125000
-             : (iConv1 == 8 && iConv2 == 17) ? value * 125
-             : (iConv1 == 8 && iConv2 == 18) ? value * 8
-             : (iConv1 == 8 && iConv2 == 19) ? value / 8000
-
-             : (iConv1 == 9 && iConv2 == 1)  ? value * 1.0000E+24
-             : (iConv1 == 9 && iConv2 == 2)  ? value * 1.0000E+21
-             : (iConv1 == 9 && iConv2 == 3)  ? value * 1.0000E+18
-             : (iConv1 == 9 && iConv2 == 4)  ? value * 1.0000E+15
-             : (iConv1 == 9 && iConv2 == 5)  ? value * 1.0000E+12
-             : (iConv1 == 9 && iConv2 == 6)  ? value * 1.0000E+9
-             : (iConv1 == 9 && iConv2 == 7)  ? value * 1000000
-             : (iConv1 == 9 && iConv2 == 8)  ? value * 1000
-             : (iConv1 == 9 && iConv2 == 9)  ? value * 1
-             : (iConv1 == 9 && iConv2 == 10) ? value * 2.5000E+23
-             : (iConv1 == 9 && iConv2 == 11) ? value * 1.2500E+23
-             : (iConv1 == 9 && iConv2 == 12) ? value * 1.2500E+20
-             : (iConv1 == 9 && iConv2 == 13) ? value * 1.2500E+17
-             : (iConv1 == 9 && iConv2 == 14) ? value * 1.2500E+14
-             : (iConv1 == 9 && iConv2 == 15) ? value * 1.2500E+11
-             : (iConv1 == 9 && iConv2 == 16) ? value * 125000000
-             : (iConv1 == 9 && iConv2 == 17) ? value * 125000
-             : (iConv1 == 9 && iConv2 == 18) ? value * 125
-             : (iConv1 == 9 && iConv2 == 19) ? value * 8
-
-             : (iConv1 == 10 && iConv2 == 1)  ? value * 4
-             : (iConv1 == 10 && iConv2 == 2)  ? value / 250
-             : (iConv1 == 10 && iConv2 == 3)  ? value / 250000
-             : (iConv1 == 10 && iConv2 == 4)  ? value / 2.5000E+8
-             : (iConv1 == 10 && iConv2 == 5)  ? value / 2.5000E+11
-             : (iConv1 == 10 && iConv2 == 6)  ? value / 2.5000E+14
-             : (iConv1 == 10 && iConv2 == 7)  ? value / 2.5000E+17
-             : (iConv1 == 10 && iConv2 == 8)  ? value / 2.5000E+20
-             : (iConv1 == 10 && iConv2 == 9)  ? value / 2.5000E+23
-             : (iConv1 == 10 && iConv2 == 10) ? value * 1
-             : (iConv1 == 10 && iConv2 == 11) ? value / 2
-             : (iConv1 == 10 && iConv2 == 12) ? value / 2000
-             : (iConv1 == 10 && iConv2 == 13) ? value / 2000000
-             : (iConv1 == 10 && iConv2 == 14) ? value / 2.0000E+9
-             : (iConv1 == 10 && iConv2 == 15) ? value / 2.0000E+12
-             : (iConv1 == 10 && iConv2 == 16) ? value / 2.0000E+15
-             : (iConv1 == 10 && iConv2 == 17) ? value / 2.0000E+18
-             : (iConv1 == 10 && iConv2 == 18) ? value / 2.0000E+21
-             : (iConv1 == 10 && iConv2 == 19) ? value / 2.0000E+24
-
-             : (iConv1 == 11 && iConv2 == 1)  ? value * 8
-             : (iConv1 == 11 && iConv2 == 2)  ? value / 125
-             : (iConv1 == 11 && iConv2 == 3)  ? value / 125000
-             : (iConv1 == 11 && iConv2 == 4)  ? value / 1.2500E+8
-             : (iConv1 == 11 && iConv2 == 5)  ? value / 1.2500E+11
-             : (iConv1 == 11 && iConv2 == 6)  ? value / 1.2500E+14
-             : (iConv1 == 11 && iConv2 == 7)  ? value / 1.2500E+17
-             : (iConv1 == 11 && iConv2 == 8)  ? value / 1.2500E+20
-             : (iConv1 == 11 && iConv2 == 9)  ? value / 1.2500E+23
-             : (iConv1 == 11 && iConv2 == 10) ? value * 2
-             : (iConv1 == 11 && iConv2 == 11) ? value * 1
-             : (iConv1 == 11 && iConv2 == 12) ? value / 1000
-             : (iConv1 == 11 && iConv2 == 13) ? value / 1000000
-             : (iConv1 == 11 && iConv2 == 14) ? value / 1.0000E+9
-             : (iConv1 == 11 && iConv2 == 15) ? value / 1.0000E+12
-             : (iConv1 == 11 && iConv2 == 16) ? value / 1.0000E+15
-             : (iConv1 == 11 && iConv2 == 17) ? value / 1.0000E+18
-             : (iConv1 == 11 && iConv2 == 18) ? value / 1.0000E+21
-             : (iConv1 == 11 && iConv2 == 19) ? value / 1.0000E+24
-
-             : (iConv1 == 12 && iConv2 == 1)  ? value * 8000
-             : (iConv1 == 12 && iConv2 == 2)  ? value * 8
-             : (iConv1 == 12 && iConv2 == 3)  ? value / 125
-             : (iConv1 == 12 && iConv2 == 4)  ? value / 125000
-             : (iConv1 == 12 && iConv2 == 5)  ? value / 1.2500E+8
-             : (iConv1 == 12 && iConv2 == 6)  ? value / 1.2500E+11
-             : (iConv1 == 12 && iConv2 == 7)  ? value / 1.2500E+14
-             : (iConv1 == 12 && iConv2 == 8)  ? value / 1.2500E+17
-             : (iConv1 == 12 && iConv2 == 9)  ? value / 1.2500E+20
-             : (iConv1 == 12 && iConv2 == 10) ? value * 2000
-             : (iConv1 == 12 && iConv2 == 11) ? value * 1000
-             : (iConv1 == 12 && iConv2 == 12) ? value * 1
-             : (iConv1 == 12 && iConv2 == 13) ? value / 1000
-             : (iConv1 == 12 && iConv2 == 14) ? value / 1000000
-             : (iConv1 == 12 && iConv2 == 15) ? value / 1.0000E+9
-             : (iConv1 == 12 && iConv2 == 16) ? value / 1.0000E+12
-             : (iConv1 == 12 && iConv2 == 17) ? value / 1.0000E+15
-             : (iConv1 == 12 && iConv2 == 18) ? value / 1.0000E+18
-             : (iConv1 == 12 && iConv2 == 19) ? value / 1.0000E+21
-
-             : (iConv1 == 13 && iConv2 == 1)  ? value * 8000000
-             : (iConv1 == 13 && iConv2 == 2)  ? value * 8000
-             : (iConv1 == 13 && iConv2 == 3)  ? value * 8
-             : (iConv1 == 13 && iConv2 == 4)  ? value / 125
-             : (iConv1 == 13 && iConv2 == 5)  ? value / 125000
-             : (iConv1 == 13 && iConv2 == 6)  ? value / 1.2500E+8
-             : (iConv1 == 13 && iConv2 == 7)  ? value / 1.2500E+11
-             : (iConv1 == 13 && iConv2 == 8)  ? value / 1.2500E+14
-             : (iConv1 == 13 && iConv2 == 9)  ? value / 1.2500E+17
-             : (iConv1 == 13 && iConv2 == 10) ? value * 2000000
-             : (iConv1 == 13 && iConv2 == 11) ? value * 1000000
-             : (iConv1 == 13 && iConv2 == 12) ? value * 1000
-             : (iConv1 == 13 && iConv2 == 13) ? value * 1
-             : (iConv1 == 13 && iConv2 == 14) ? value / 1000
-             : (iConv1 == 13 && iConv2 == 15) ? value / 1000000
-             : (iConv1 == 13 && iConv2 == 16) ? value / 1.0000E+9
-             : (iConv1 == 13 && iConv2 == 17) ? value / 1.0000E+12
-             : (iConv1 == 13 && iConv2 == 18) ? value / 1.0000E+15
-             : (iConv1 == 13 && iConv2 == 19) ? value / 1.0000E+18
-
-             : (iConv1 == 14 && iConv2 == 1)  ? value * 8.0000E+9
-             : (iConv1 == 14 && iConv2 == 2)  ? value * 8000000
-             : (iConv1 == 14 && iConv2 == 3)  ? value * 8000
-             : (iConv1 == 14 && iConv2 == 4)  ? value * 8
-             : (iConv1 == 14 && iConv2 == 5)  ? value / 125
-             : (iConv1 == 14 && iConv2 == 6)  ? value / 125000
-             : (iConv1 == 14 && iConv2 == 7)  ? value / 1.2500E+8
-             : (iConv1 == 14 && iConv2 == 8)  ? value / 1.2500E+11
-             : (iConv1 == 14 && iConv2 == 9)  ? value / 1.2500E+14
-             : (iConv1 == 14 && iConv2 == 10) ? value * 2.0000E+9
-             : (iConv1 == 14 && iConv2 == 11) ? value * 1.0000E+9
-             : (iConv1 == 14 && iConv2 == 12) ? value * 1000000
-             : (iConv1 == 14 && iConv2 == 13) ? value * 1000
-             : (iConv1 == 14 && iConv2 == 14) ? value * 1
-             : (iConv1 == 14 && iConv2 == 15) ? value / 1000
-             : (iConv1 == 14 && iConv2 == 16) ? value / 1000000
-             : (iConv1 == 14 && iConv2 == 17) ? value / 1.0000E+9
-             : (iConv1 == 14 && iConv2 == 18) ? value / 1.0000E+11
-             : (iConv1 == 14 && iConv2 == 19) ? value / 1.0000E+15
-
-             : (iConv1 == 15 && iConv2 == 1)  ? value * 8.0000E+12
-             : (iConv1 == 15 && iConv2 == 2)  ? value * 8.0000E+9
-             : (iConv1 == 15 && iConv2 == 3)  ? value * 8000000
-             : (iConv1 == 15 && iConv2 == 4)  ? value * 8000
-             : (iConv1 == 15 && iConv2 == 5)  ? value * 8
-             : (iConv1 == 15 && iConv2 == 6)  ? value / 125
-             : (iConv1 == 15 && iConv2 == 7)  ? value / 125000
-             : (iConv1 == 15 && iConv2 == 8)  ? value / 1.2500E+8
-             : (iConv1 == 15 && iConv2 == 9)  ? value / 1.2500E+11
-             : (iConv1 == 15 && iConv2 == 10) ? value * 2.0000E+12
-             : (iConv1 == 15 && iConv2 == 11) ? value * 1.0000E+12
-             : (iConv1 == 15 && iConv2 == 12) ? value * 1.0000E+9
-             : (iConv1 == 15 && iConv2 == 13) ? value * 1000000
-             : (iConv1 == 15 && iConv2 == 14) ? value * 1000
-             : (iConv1 == 15 && iConv2 == 15) ? value * 1
-             : (iConv1 == 15 && iConv2 == 16) ? value / 1000
-             : (iConv1 == 15 && iConv2 == 17) ? value / 1000000
-             : (iConv1 == 15 && iConv2 == 18) ? value / 1.0000E+9
-             : (iConv1 == 15 && iConv2 == 19) ? value / 1.0000E+12
-
-             : (iConv1 == 16 && iConv2 == 1)  ? value * 8.0000E+15
-             : (iConv1 == 16 && iConv2 == 2)  ? value * 8.0000E+12
-             : (iConv1 == 16 && iConv2 == 3)  ? value * 8.0000E+9
-             : (iConv1 == 16 && iConv2 == 4)  ? value * 8000000
-             : (iConv1 == 16 && iConv2 == 5)  ? value * 8000
-             : (iConv1 == 16 && iConv2 == 6)  ? value * 8
-             : (iConv1 == 16 && iConv2 == 7)  ? value / 125
-             : (iConv1 == 16 && iConv2 == 8)  ? value / 125000
-             : (iConv1 == 16 && iConv2 == 9)  ? value / 1.2500E+8
-             : (iConv1 == 16 && iConv2 == 10) ? value * 2.0000E+15
-             : (iConv1 == 16 && iConv2 == 11) ? value * 1.0000E+15
-             : (iConv1 == 16 && iConv2 == 12) ? value * 1.0000E+12
-             : (iConv1 == 16 && iConv2 == 13) ? value * 1.0000E+9
-             : (iConv1 == 16 && iConv2 == 14) ? value * 1000000
-             : (iConv1 == 16 && iConv2 == 15) ? value * 1000
-             : (iConv1 == 16 && iConv2 == 16) ? value * 1
-             : (iConv1 == 16 && iConv2 == 17) ? value / 1000
-             : (iConv1 == 16 && iConv2 == 18) ? value / 1000000
-             : (iConv1 == 16 && iConv2 == 19) ? value / 1.0000E+9
-
-             : (iConv1 == 17 && iConv2 == 1)  ? value * 8.0000E+18
-             : (iConv1 == 17 && iConv2 == 2)  ? value * 8.0000E+15
-             : (iConv1 == 17 && iConv2 == 3)  ? value * 8.0000E+12
-             : (iConv1 == 17 && iConv2 == 4)  ? value * 8.0000E+9
-             : (iConv1 == 17 && iConv2 == 5)  ? value * 8000000
-             : (iConv1 == 17 && iConv2 == 6)  ? value * 8000
-             : (iConv1 == 17 && iConv2 == 7)  ? value * 8
-             : (iConv1 == 17 && iConv2 == 8)  ? value / 125
-             : (iConv1 == 17 && iConv2 == 9)  ? value / 125000
-             : (iConv1 == 17 && iConv2 == 10) ? value * 2.0000E+18
-             : (iConv1 == 17 && iConv2 == 11) ? value * 1.0000E+18
-             : (iConv1 == 17 && iConv2 == 12) ? value * 1.0000E+15
-             : (iConv1 == 17 && iConv2 == 13) ? value * 1.0000E+12
-             : (iConv1 == 17 && iConv2 == 14) ? value * 1.0000E+9
-             : (iConv1 == 17 && iConv2 == 15) ? value * 1000000
-             : (iConv1 == 17 && iConv2 == 16) ? value * 1000
-             : (iConv1 == 17 && iConv2 == 17) ? value * 1
-             : (iConv1 == 17 && iConv2 == 18) ? value / 1000
-             : (iConv1 == 17 && iConv2 == 19) ? value / 1000000
-
-             : (iConv1 == 18 && iConv2 == 1)  ? value * 8.0000E+21
-             : (iConv1 == 18 && iConv2 == 2)  ? value * 8.0000E+18
-             : (iConv1 == 18 && iConv2 == 3)  ? value * 8.0000E+15
-             : (iConv1 == 18 && iConv2 == 4)  ? value * 8.0000E+12
-             : (iConv1 == 18 && iConv2 == 5)  ? value * 8.0000E+9
-             : (iConv1 == 18 && iConv2 == 6)  ? value * 8000000
-             : (iConv1 == 18 && iConv2 == 7)  ? value * 8000
-             : (iConv1 == 18 && iConv2 == 8)  ? value * 8
-             : (iConv1 == 18 && iConv2 == 9)  ? value / 125
-             : (iConv1 == 18 && iConv2 == 10) ? value * 2.0000E+21
-             : (iConv1 == 18 && iConv2 == 11) ? value * 1.0000E+21
-             : (iConv1 == 18 && iConv2 == 12) ? value * 1.0000E+18
-             : (iConv1 == 18 && iConv2 == 13) ? value * 1.0000E+15
-             : (iConv1 == 18 && iConv2 == 14) ? value * 1.0000E+12
-             : (iConv1 == 18 && iConv2 == 15) ? value * 1.0000E+9
-             : (iConv1 == 18 && iConv2 == 16) ? value * 1000000
-             : (iConv1 == 18 && iConv2 == 17) ? value * 1000
-             : (iConv1 == 18 && iConv2 == 18) ? value * 1
-             : (iConv1 == 18 && iConv2 == 19) ? value / 1000
-
-             : (iConv1 == 19 && iConv2 == 1)  ? value * 8.0000E+24
-             : (iConv1 == 19 && iConv2 == 2)  ? value * 8.0000E+21
-             : (iConv1 == 19 && iConv2 == 3)  ? value * 8.0000E+18
-             : (iConv1 == 19 && iConv2 == 4)  ? value * 8.0000E+15
-             : (iConv1 == 19 && iConv2 == 5)  ? value * 8.0000E+12
-             : (iConv1 == 19 && iConv2 == 6)  ? value * 8.0000E+9
-             : (iConv1 == 19 && iConv2 == 7)  ? value * 8000000
-             : (iConv1 == 19 && iConv2 == 8)  ? value * 8000
-             : (iConv1 == 19 && iConv2 == 9)  ? value * 8
-             : (iConv1 == 19 && iConv2 == 10) ? value * 2.0000E+24
-             : (iConv1 == 19 && iConv2 == 11) ? value * 1.0000E+24
-             : (iConv1 == 19 && iConv2 == 12) ? value * 1.0000E+21
-             : (iConv1 == 19 && iConv2 == 13) ? value * 1.0000E+18
-             : (iConv1 == 19 && iConv2 == 14) ? value * 1.0000E+15
-             : (iConv1 == 19 && iConv2 == 15) ? value * 1.0000E+12
-             : (iConv1 == 19 && iConv2 == 16) ? value * 1.0000E+9
-             : (iConv1 == 19 && iConv2 == 17) ? value * 1000000
-             : (iConv1 == 19 && iConv2 == 18) ? value * 1000
-             : (iConv1 == 19 && iConv2 == 19) ? value * 1
-                                              : value * 0;
-
+    result = listOfResult(2, iConv1, iConv2, value);
     std::cout << "\nResult: " << result << " " << unit.at(--iConv2)
               << "\n\n(Press enter to continue)";
     std::cin.get();
   }
 }
 
-void Temperature::temperature() {
+static long double listOfResult(unsigned short where,
+                                       unsigned short &from, unsigned short &to,
+                                       long double &value) {
+  long double result = 0.0L;
+  if (where == 1) {
+    result = (from == 1)    ? ((to == 2)    ? value / 144
+                               : (to == 3)  ? value / 1296
+                               : (to == 4)  ? value / 4.0145E+9
+                               : (to == 5)  ? value / 6.2726E+6
+                               : (to == 6)  ? value / 1.5500E+7
+                               : (to == 7)  ? value * 645.16
+                               : (to == 8)  ? value * 6.4516
+                               : (to == 9)  ? value / 1550.0031
+                               : (to == 10) ? value / 1.5500E+9
+                                            : value * 1) // if n1 == n2
+             : (from == 2)  ? ((to == 1)    ? value * 144
+                               : (to == 3)  ? value / 9
+                               : (to == 4)  ? value / 2.7878E+7
+                               : (to == 5)  ? value / 43560
+                               : (to == 6)  ? value / 107639.104
+                               : (to == 7)  ? value * 92903.04
+                               : (to == 8)  ? value * 929.0304
+                               : (to == 9)  ? value / 10.7639104
+                               : (to == 10) ? value / 1.0764E+7
+                                            : value * 1) // if n1 == n2
+             : (from == 3)  ? ((to == 1)    ? value * 1296
+                               : (to == 2)  ? value * 9
+                               : (to == 4)  ? value / 3.0976E+6
+                               : (to == 5)  ? value / 4840
+                               : (to == 6)  ? value / 11959.9005
+                               : (to == 7)  ? value * 836127.36
+                               : (to == 8)  ? value * 8361.2736
+                               : (to == 9)  ? value / 1.19599005
+                               : (to == 10) ? value / 1.1960E+6
+                                            : value * 1) // if n1 == n2
+             : (from == 4)  ? ((to == 1)    ? value * 4.0145E+9
+                               : (to == 2)  ? value * 2.7878E+7
+                               : (to == 3)  ? value * 3097600
+                               : (to == 5)  ? value / 3.0976E+6
+                               : (to == 6)  ? value / 11959.9005
+                               : (to == 7)  ? value * 836127.36
+                               : (to == 8)  ? value * 8361.2736
+                               : (to == 9)  ? value / 1.19599005
+                               : (to == 10) ? value / 1.1960E+6
+                                            : value * 1) // if n1 == n2
+             : (from == 5)  ? ((to == 1)    ? value * 6272640
+                               : (to == 2)  ? value * 43560
+                               : (to == 3)  ? value * 4840
+                               : (to == 4)  ? value / 640
+                               : (to == 6)  ? value / 2.47105381
+                               : (to == 7)  ? value * 4.0469E+9
+                               : (to == 8)  ? value * 4.0469E+7
+                               : (to == 9)  ? value * 4046.85642
+                               : (to == 10) ? value / 247.105381
+                                            : value * 1) // if n1 == n2
+             : (from == 6)  ? ((to == 1)    ? value * 1.5500E+7
+                               : (to == 2)  ? value * 107639.104
+                               : (to == 3)  ? value * 11959.9005
+                               : (to == 4)  ? value / 258.998811
+                               : (to == 5)  ? value * 2.47105381
+                               : (to == 7)  ? value * 1.0000E+10
+                               : (to == 8)  ? value * 100000000
+                               : (to == 9)  ? value * 10000
+                               : (to == 10) ? value / 100
+                                            : value * 1) // if n1 == n2
+             : (from == 7)  ? ((to == 1)    ? value / 645.16
+                               : (to == 2)  ? value / 92903.04
+                               : (to == 3)  ? value / 836127.36
+                               : (to == 4)  ? value / 2.5900E+12
+                               : (to == 5)  ? value / 4.0469E+9
+                               : (to == 6)  ? value / 4.0469E+9
+                               : (to == 8)  ? value / 100
+                               : (to == 9)  ? value / 1000000
+                               : (to == 10) ? value / 1.0000E+12
+                                            : value * 1) // if n1 == n2
+             : (from == 8)  ? ((to == 1)    ? value / 6.4516
+                               : (to == 2)  ? value / 929.0304
+                               : (to == 3)  ? value / 8361.2736
+                               : (to == 4)  ? value / 2.5900E+10
+                               : (to == 5)  ? value / 4.0469E+7
+                               : (to == 6)  ? value / 100000000
+                               : (to == 7)  ? value * 100
+                               : (to == 9)  ? value / 10000
+                               : (to == 10) ? value / 1.0000E+10
+                                            : value * 1) // if n1 == n2
+             : (from == 9)  ? ((to == 1)    ? value * 1550.0031
+                               : (to == 2)  ? value * 10.7639104
+                               : (to == 3)  ? value * 1.19599005
+                               : (to == 4)  ? value / 2.5900E+6
+                               : (to == 5)  ? value / 4046.85642
+                               : (to == 6)  ? value / 10000
+                               : (to == 7)  ? value * 1000000
+                               : (to == 8)  ? value * 10000
+                               : (to == 10) ? value / 1000000
+                                            : value * 1) // if n1 == n2
+             : (from == 10) ? ((to == 1)   ? value * 1.5500E+9
+                               : (to == 2) ? value * 1.0764E+7
+                               : (to == 3) ? value * 1.1960E+6
+                               : (to == 4) ? value / 2.58998811
+                               : (to == 5) ? value * 247.105381
+                               : (to == 6) ? value * 100
+                               : (to == 7) ? value * 1.0000E+12
+                               : (to == 8) ? value * 1.0000E+10
+                               : (to == 9) ? value * 1000000
+                                           : value * 1) // if n1 == n2
+                            : value * 0;
+  }
+  if (where == 2) {
+    result = (from == 1 && to == 1)    ? value * 1
+             : (from == 1 && to == 2)  ? value / 1000
+             : (from == 1 && to == 3)  ? value / 1000000
+             : (from == 1 && to == 4)  ? value / 1.0000e+9
+             : (from == 1 && to == 5)  ? value / 1.0000e+12
+             : (from == 1 && to == 6)  ? value / 1.0000e+15
+             : (from == 1 && to == 7)  ? value / 1.0000e+18
+             : (from == 1 && to == 8)  ? value / 1.0000e+21
+             : (from == 1 && to == 9)  ? value / 1.0000e+24
+             : (from == 1 && to == 10) ? value / 4
+             : (from == 1 && to == 11) ? value / 8
+             : (from == 1 && to == 12) ? value / 8000
+             : (from == 1 && to == 13) ? value / 8000000
+             : (from == 1 && to == 14) ? value / 8.0000e+9
+             : (from == 1 && to == 15) ? value / 8.0000e+12
+             : (from == 1 && to == 16) ? value / 8.0000e+15
+             : (from == 1 && to == 17) ? value / 8.0000e+18
+             : (from == 1 && to == 18) ? value / 8.0000e+21
+             : (from == 1 && to == 19) ? value / 8.0000e+24
+
+             : (from == 2 && to == 1)  ? value * 1000
+             : (from == 2 && to == 2)  ? value * 1
+             : (from == 2 && to == 3)  ? value / 1000
+             : (from == 2 && to == 4)  ? value / 1000000
+             : (from == 2 && to == 5)  ? value / 1.0000e+9
+             : (from == 2 && to == 6)  ? value / 1.0000e+12
+             : (from == 2 && to == 7)  ? value / 1.0000e+15
+             : (from == 2 && to == 8)  ? value / 1.0000e+18
+             : (from == 2 && to == 9)  ? value / 1.0000e+21
+             : (from == 2 && to == 10) ? value * 250
+             : (from == 2 && to == 11) ? value * 125
+             : (from == 2 && to == 12) ? value / 8
+             : (from == 2 && to == 13) ? value / 8000
+             : (from == 2 && to == 14) ? value / 8000000
+             : (from == 2 && to == 15) ? value / 8.0000e+9
+             : (from == 2 && to == 16) ? value / 8.0000e+12
+             : (from == 2 && to == 17) ? value / 8.0000e+15
+             : (from == 2 && to == 18) ? value / 8.0000e+18
+             : (from == 2 && to == 19) ? value / 8.0000e+21
+
+             : (from == 3 && to == 1)  ? value * 1000000
+             : (from == 3 && to == 2)  ? value * 1000
+             : (from == 3 && to == 3)  ? value * 1
+             : (from == 3 && to == 4)  ? value / 1000
+             : (from == 3 && to == 5)  ? value / 1000000
+             : (from == 3 && to == 6)  ? value / 1.0000E+9
+             : (from == 3 && to == 7)  ? value / 1.0000E+12
+             : (from == 3 && to == 8)  ? value / 1.0000E+15
+             : (from == 3 && to == 9)  ? value / 1.0000E+18
+             : (from == 3 && to == 10) ? value * 250000
+             : (from == 3 && to == 11) ? value * 125000
+             : (from == 3 && to == 12) ? value * 125
+             : (from == 3 && to == 13) ? value / 8
+             : (from == 3 && to == 14) ? value / 8000
+             : (from == 3 && to == 15) ? value / 8000000
+             : (from == 3 && to == 16) ? value / 8.0000E+9
+             : (from == 3 && to == 17) ? value / 8.0000E+12
+             : (from == 3 && to == 18) ? value / 8.0000E+15
+             : (from == 3 && to == 19) ? value / 8.0000E+18
+
+             : (from == 4 && to == 1)  ? value * 1.0000E+9
+             : (from == 4 && to == 2)  ? value * 1000000
+             : (from == 4 && to == 3)  ? value * 1000
+             : (from == 4 && to == 4)  ? value * 1
+             : (from == 4 && to == 5)  ? value / 1000
+             : (from == 4 && to == 6)  ? value / 1000000
+             : (from == 4 && to == 7)  ? value / 1.0000E+9
+             : (from == 4 && to == 8)  ? value / 1.0000E+12
+             : (from == 4 && to == 9)  ? value / 1.0000E+15
+             : (from == 4 && to == 10) ? value * 250000000
+             : (from == 4 && to == 11) ? value * 125000000
+             : (from == 4 && to == 12) ? value * 125000
+             : (from == 4 && to == 13) ? value * 125
+             : (from == 4 && to == 14) ? value / 8
+             : (from == 4 && to == 15) ? value / 8000
+             : (from == 4 && to == 16) ? value / 8000000
+             : (from == 4 && to == 17) ? value / 8.0000E+9
+             : (from == 4 && to == 18) ? value / 8.0000E+12
+             : (from == 4 && to == 19) ? value / 8.0000E+15
+
+             : (from == 5 && to == 1)  ? value * 1.0000E+12
+             : (from == 5 && to == 2)  ? value * 1.0000E+9
+             : (from == 5 && to == 3)  ? value * 1000000
+             : (from == 5 && to == 4)  ? value * 1000
+             : (from == 5 && to == 5)  ? value * 1
+             : (from == 5 && to == 6)  ? value / 1000
+             : (from == 5 && to == 7)  ? value / 1000000
+             : (from == 5 && to == 8)  ? value / 1.0000E+9
+             : (from == 5 && to == 9)  ? value / 1.0000E+12
+             : (from == 5 && to == 10) ? value * 2.5000E+11
+             : (from == 5 && to == 11) ? value * 1.2500E+11
+             : (from == 5 && to == 12) ? value * 125000000
+             : (from == 5 && to == 13) ? value * 125000
+             : (from == 5 && to == 14) ? value * 125
+             : (from == 5 && to == 15) ? value / 8
+             : (from == 5 && to == 16) ? value / 8000
+             : (from == 5 && to == 17) ? value / 8000000
+             : (from == 5 && to == 18) ? value / 8.0000E+9
+             : (from == 5 && to == 19) ? value / 8.0000E+12
+
+             : (from == 6 && to == 1)  ? value * 1.0000E+15
+             : (from == 6 && to == 2)  ? value * 1.0000E+12
+             : (from == 6 && to == 3)  ? value * 1.0000E+9
+             : (from == 6 && to == 4)  ? value * 1000000
+             : (from == 6 && to == 5)  ? value * 1000
+             : (from == 6 && to == 6)  ? value * 1
+             : (from == 6 && to == 7)  ? value / 1000
+             : (from == 6 && to == 8)  ? value / 1000000
+             : (from == 6 && to == 9)  ? value / 1.0000E+9
+             : (from == 6 && to == 10) ? value * 2.5000E+14
+             : (from == 6 && to == 11) ? value * 1.2500E+14
+             : (from == 6 && to == 12) ? value * 1.2500E+11
+             : (from == 6 && to == 13) ? value * 125000000
+             : (from == 6 && to == 14) ? value * 125000
+             : (from == 6 && to == 15) ? value * 125
+             : (from == 6 && to == 16) ? value / 8
+             : (from == 6 && to == 17) ? value / 8000
+             : (from == 6 && to == 18) ? value / 8000000
+             : (from == 6 && to == 19) ? value / 8.0000E+9
+
+             : (from == 7 && to == 1)  ? value * 1.0000E+18
+             : (from == 7 && to == 2)  ? value * 1.0000E+15
+             : (from == 7 && to == 3)  ? value * 1.0000E+12
+             : (from == 7 && to == 4)  ? value * 1.0000E+9
+             : (from == 7 && to == 5)  ? value * 1000000
+             : (from == 7 && to == 6)  ? value * 1000
+             : (from == 7 && to == 7)  ? value * 1
+             : (from == 7 && to == 8)  ? value / 1000
+             : (from == 7 && to == 9)  ? value / 1000000
+             : (from == 7 && to == 10) ? value * 2.5000E+17
+             : (from == 7 && to == 11) ? value * 1.2500E+17
+             : (from == 7 && to == 12) ? value * 1.2500E+14
+             : (from == 7 && to == 13) ? value * 1.2500E+11
+             : (from == 7 && to == 14) ? value * 125000000
+             : (from == 7 && to == 15) ? value * 125000
+             : (from == 7 && to == 16) ? value * 125
+             : (from == 7 && to == 17) ? value * 8
+             : (from == 7 && to == 18) ? value / 8000
+             : (from == 7 && to == 19) ? value / 8000000
+
+             : (from == 8 && to == 1)  ? value * 1.0000E+21
+             : (from == 8 && to == 2)  ? value * 1.0000E+18
+             : (from == 8 && to == 3)  ? value * 1.0000E+15
+             : (from == 8 && to == 4)  ? value * 1.0000E+12
+             : (from == 8 && to == 5)  ? value * 1.0000E+9
+             : (from == 8 && to == 6)  ? value * 1000000
+             : (from == 8 && to == 7)  ? value * 1000
+             : (from == 8 && to == 8)  ? value * 1
+             : (from == 8 && to == 9)  ? value / 1000
+             : (from == 8 && to == 10) ? value * 2.5000E+20
+             : (from == 8 && to == 11) ? value * 1.2500E+20
+             : (from == 8 && to == 12) ? value * 1.2500E+17
+             : (from == 8 && to == 13) ? value * 1.2500E+14
+             : (from == 8 && to == 14) ? value * 1.2500E+11
+             : (from == 8 && to == 15) ? value * 125000000
+             : (from == 8 && to == 16) ? value * 125000
+             : (from == 8 && to == 17) ? value * 125
+             : (from == 8 && to == 18) ? value * 8
+             : (from == 8 && to == 19) ? value / 8000
+
+             : (from == 9 && to == 1)  ? value * 1.0000E+24
+             : (from == 9 && to == 2)  ? value * 1.0000E+21
+             : (from == 9 && to == 3)  ? value * 1.0000E+18
+             : (from == 9 && to == 4)  ? value * 1.0000E+15
+             : (from == 9 && to == 5)  ? value * 1.0000E+12
+             : (from == 9 && to == 6)  ? value * 1.0000E+9
+             : (from == 9 && to == 7)  ? value * 1000000
+             : (from == 9 && to == 8)  ? value * 1000
+             : (from == 9 && to == 9)  ? value * 1
+             : (from == 9 && to == 10) ? value * 2.5000E+23
+             : (from == 9 && to == 11) ? value * 1.2500E+23
+             : (from == 9 && to == 12) ? value * 1.2500E+20
+             : (from == 9 && to == 13) ? value * 1.2500E+17
+             : (from == 9 && to == 14) ? value * 1.2500E+14
+             : (from == 9 && to == 15) ? value * 1.2500E+11
+             : (from == 9 && to == 16) ? value * 125000000
+             : (from == 9 && to == 17) ? value * 125000
+             : (from == 9 && to == 18) ? value * 125
+             : (from == 9 && to == 19) ? value * 8
+
+             : (from == 10 && to == 1)  ? value * 4
+             : (from == 10 && to == 2)  ? value / 250
+             : (from == 10 && to == 3)  ? value / 250000
+             : (from == 10 && to == 4)  ? value / 2.5000E+8
+             : (from == 10 && to == 5)  ? value / 2.5000E+11
+             : (from == 10 && to == 6)  ? value / 2.5000E+14
+             : (from == 10 && to == 7)  ? value / 2.5000E+17
+             : (from == 10 && to == 8)  ? value / 2.5000E+20
+             : (from == 10 && to == 9)  ? value / 2.5000E+23
+             : (from == 10 && to == 10) ? value * 1
+             : (from == 10 && to == 11) ? value / 2
+             : (from == 10 && to == 12) ? value / 2000
+             : (from == 10 && to == 13) ? value / 2000000
+             : (from == 10 && to == 14) ? value / 2.0000E+9
+             : (from == 10 && to == 15) ? value / 2.0000E+12
+             : (from == 10 && to == 16) ? value / 2.0000E+15
+             : (from == 10 && to == 17) ? value / 2.0000E+18
+             : (from == 10 && to == 18) ? value / 2.0000E+21
+             : (from == 10 && to == 19) ? value / 2.0000E+24
+
+             : (from == 11 && to == 1)  ? value * 8
+             : (from == 11 && to == 2)  ? value / 125
+             : (from == 11 && to == 3)  ? value / 125000
+             : (from == 11 && to == 4)  ? value / 1.2500E+8
+             : (from == 11 && to == 5)  ? value / 1.2500E+11
+             : (from == 11 && to == 6)  ? value / 1.2500E+14
+             : (from == 11 && to == 7)  ? value / 1.2500E+17
+             : (from == 11 && to == 8)  ? value / 1.2500E+20
+             : (from == 11 && to == 9)  ? value / 1.2500E+23
+             : (from == 11 && to == 10) ? value * 2
+             : (from == 11 && to == 11) ? value * 1
+             : (from == 11 && to == 12) ? value / 1000
+             : (from == 11 && to == 13) ? value / 1000000
+             : (from == 11 && to == 14) ? value / 1.0000E+9
+             : (from == 11 && to == 15) ? value / 1.0000E+12
+             : (from == 11 && to == 16) ? value / 1.0000E+15
+             : (from == 11 && to == 17) ? value / 1.0000E+18
+             : (from == 11 && to == 18) ? value / 1.0000E+21
+             : (from == 11 && to == 19) ? value / 1.0000E+24
+
+             : (from == 12 && to == 1)  ? value * 8000
+             : (from == 12 && to == 2)  ? value * 8
+             : (from == 12 && to == 3)  ? value / 125
+             : (from == 12 && to == 4)  ? value / 125000
+             : (from == 12 && to == 5)  ? value / 1.2500E+8
+             : (from == 12 && to == 6)  ? value / 1.2500E+11
+             : (from == 12 && to == 7)  ? value / 1.2500E+14
+             : (from == 12 && to == 8)  ? value / 1.2500E+17
+             : (from == 12 && to == 9)  ? value / 1.2500E+20
+             : (from == 12 && to == 10) ? value * 2000
+             : (from == 12 && to == 11) ? value * 1000
+             : (from == 12 && to == 12) ? value * 1
+             : (from == 12 && to == 13) ? value / 1000
+             : (from == 12 && to == 14) ? value / 1000000
+             : (from == 12 && to == 15) ? value / 1.0000E+9
+             : (from == 12 && to == 16) ? value / 1.0000E+12
+             : (from == 12 && to == 17) ? value / 1.0000E+15
+             : (from == 12 && to == 18) ? value / 1.0000E+18
+             : (from == 12 && to == 19) ? value / 1.0000E+21
+
+             : (from == 13 && to == 1)  ? value * 8000000
+             : (from == 13 && to == 2)  ? value * 8000
+             : (from == 13 && to == 3)  ? value * 8
+             : (from == 13 && to == 4)  ? value / 125
+             : (from == 13 && to == 5)  ? value / 125000
+             : (from == 13 && to == 6)  ? value / 1.2500E+8
+             : (from == 13 && to == 7)  ? value / 1.2500E+11
+             : (from == 13 && to == 8)  ? value / 1.2500E+14
+             : (from == 13 && to == 9)  ? value / 1.2500E+17
+             : (from == 13 && to == 10) ? value * 2000000
+             : (from == 13 && to == 11) ? value * 1000000
+             : (from == 13 && to == 12) ? value * 1000
+             : (from == 13 && to == 13) ? value * 1
+             : (from == 13 && to == 14) ? value / 1000
+             : (from == 13 && to == 15) ? value / 1000000
+             : (from == 13 && to == 16) ? value / 1.0000E+9
+             : (from == 13 && to == 17) ? value / 1.0000E+12
+             : (from == 13 && to == 18) ? value / 1.0000E+15
+             : (from == 13 && to == 19) ? value / 1.0000E+18
+
+             : (from == 14 && to == 1)  ? value * 8.0000E+9
+             : (from == 14 && to == 2)  ? value * 8000000
+             : (from == 14 && to == 3)  ? value * 8000
+             : (from == 14 && to == 4)  ? value * 8
+             : (from == 14 && to == 5)  ? value / 125
+             : (from == 14 && to == 6)  ? value / 125000
+             : (from == 14 && to == 7)  ? value / 1.2500E+8
+             : (from == 14 && to == 8)  ? value / 1.2500E+11
+             : (from == 14 && to == 9)  ? value / 1.2500E+14
+             : (from == 14 && to == 10) ? value * 2.0000E+9
+             : (from == 14 && to == 11) ? value * 1.0000E+9
+             : (from == 14 && to == 12) ? value * 1000000
+             : (from == 14 && to == 13) ? value * 1000
+             : (from == 14 && to == 14) ? value * 1
+             : (from == 14 && to == 15) ? value / 1000
+             : (from == 14 && to == 16) ? value / 1000000
+             : (from == 14 && to == 17) ? value / 1.0000E+9
+             : (from == 14 && to == 18) ? value / 1.0000E+11
+             : (from == 14 && to == 19) ? value / 1.0000E+15
+
+             : (from == 15 && to == 1)  ? value * 8.0000E+12
+             : (from == 15 && to == 2)  ? value * 8.0000E+9
+             : (from == 15 && to == 3)  ? value * 8000000
+             : (from == 15 && to == 4)  ? value * 8000
+             : (from == 15 && to == 5)  ? value * 8
+             : (from == 15 && to == 6)  ? value / 125
+             : (from == 15 && to == 7)  ? value / 125000
+             : (from == 15 && to == 8)  ? value / 1.2500E+8
+             : (from == 15 && to == 9)  ? value / 1.2500E+11
+             : (from == 15 && to == 10) ? value * 2.0000E+12
+             : (from == 15 && to == 11) ? value * 1.0000E+12
+             : (from == 15 && to == 12) ? value * 1.0000E+9
+             : (from == 15 && to == 13) ? value * 1000000
+             : (from == 15 && to == 14) ? value * 1000
+             : (from == 15 && to == 15) ? value * 1
+             : (from == 15 && to == 16) ? value / 1000
+             : (from == 15 && to == 17) ? value / 1000000
+             : (from == 15 && to == 18) ? value / 1.0000E+9
+             : (from == 15 && to == 19) ? value / 1.0000E+12
+
+             : (from == 16 && to == 1)  ? value * 8.0000E+15
+             : (from == 16 && to == 2)  ? value * 8.0000E+12
+             : (from == 16 && to == 3)  ? value * 8.0000E+9
+             : (from == 16 && to == 4)  ? value * 8000000
+             : (from == 16 && to == 5)  ? value * 8000
+             : (from == 16 && to == 6)  ? value * 8
+             : (from == 16 && to == 7)  ? value / 125
+             : (from == 16 && to == 8)  ? value / 125000
+             : (from == 16 && to == 9)  ? value / 1.2500E+8
+             : (from == 16 && to == 10) ? value * 2.0000E+15
+             : (from == 16 && to == 11) ? value * 1.0000E+15
+             : (from == 16 && to == 12) ? value * 1.0000E+12
+             : (from == 16 && to == 13) ? value * 1.0000E+9
+             : (from == 16 && to == 14) ? value * 1000000
+             : (from == 16 && to == 15) ? value * 1000
+             : (from == 16 && to == 16) ? value * 1
+             : (from == 16 && to == 17) ? value / 1000
+             : (from == 16 && to == 18) ? value / 1000000
+             : (from == 16 && to == 19) ? value / 1.0000E+9
+
+             : (from == 17 && to == 1)  ? value * 8.0000E+18
+             : (from == 17 && to == 2)  ? value * 8.0000E+15
+             : (from == 17 && to == 3)  ? value * 8.0000E+12
+             : (from == 17 && to == 4)  ? value * 8.0000E+9
+             : (from == 17 && to == 5)  ? value * 8000000
+             : (from == 17 && to == 6)  ? value * 8000
+             : (from == 17 && to == 7)  ? value * 8
+             : (from == 17 && to == 8)  ? value / 125
+             : (from == 17 && to == 9)  ? value / 125000
+             : (from == 17 && to == 10) ? value * 2.0000E+18
+             : (from == 17 && to == 11) ? value * 1.0000E+18
+             : (from == 17 && to == 12) ? value * 1.0000E+15
+             : (from == 17 && to == 13) ? value * 1.0000E+12
+             : (from == 17 && to == 14) ? value * 1.0000E+9
+             : (from == 17 && to == 15) ? value * 1000000
+             : (from == 17 && to == 16) ? value * 1000
+             : (from == 17 && to == 17) ? value * 1
+             : (from == 17 && to == 18) ? value / 1000
+             : (from == 17 && to == 19) ? value / 1000000
+
+             : (from == 18 && to == 1)  ? value * 8.0000E+21
+             : (from == 18 && to == 2)  ? value * 8.0000E+18
+             : (from == 18 && to == 3)  ? value * 8.0000E+15
+             : (from == 18 && to == 4)  ? value * 8.0000E+12
+             : (from == 18 && to == 5)  ? value * 8.0000E+9
+             : (from == 18 && to == 6)  ? value * 8000000
+             : (from == 18 && to == 7)  ? value * 8000
+             : (from == 18 && to == 8)  ? value * 8
+             : (from == 18 && to == 9)  ? value / 125
+             : (from == 18 && to == 10) ? value * 2.0000E+21
+             : (from == 18 && to == 11) ? value * 1.0000E+21
+             : (from == 18 && to == 12) ? value * 1.0000E+18
+             : (from == 18 && to == 13) ? value * 1.0000E+15
+             : (from == 18 && to == 14) ? value * 1.0000E+12
+             : (from == 18 && to == 15) ? value * 1.0000E+9
+             : (from == 18 && to == 16) ? value * 1000000
+             : (from == 18 && to == 17) ? value * 1000
+             : (from == 18 && to == 18) ? value * 1
+             : (from == 18 && to == 19) ? value / 1000
+
+             : (from == 19 && to == 1)  ? value * 8.0000E+24
+             : (from == 19 && to == 2)  ? value * 8.0000E+21
+             : (from == 19 && to == 3)  ? value * 8.0000E+18
+             : (from == 19 && to == 4)  ? value * 8.0000E+15
+             : (from == 19 && to == 5)  ? value * 8.0000E+12
+             : (from == 19 && to == 6)  ? value * 8.0000E+9
+             : (from == 19 && to == 7)  ? value * 8000000
+             : (from == 19 && to == 8)  ? value * 8000
+             : (from == 19 && to == 9)  ? value * 8
+             : (from == 19 && to == 10) ? value * 2.0000E+24
+             : (from == 19 && to == 11) ? value * 1.0000E+24
+             : (from == 19 && to == 12) ? value * 1.0000E+21
+             : (from == 19 && to == 13) ? value * 1.0000E+18
+             : (from == 19 && to == 14) ? value * 1.0000E+15
+             : (from == 19 && to == 15) ? value * 1.0000E+12
+             : (from == 19 && to == 16) ? value * 1.0000E+9
+             : (from == 19 && to == 17) ? value * 1000000
+             : (from == 19 && to == 18) ? value * 1000
+             : (from == 19 && to == 19) ? value * 1
+                                              : value * 0;
+  }
+  return result;
+}
+
+void Conv2::temperature() {
   unit = {"Celcius (C)", "Fahrenheit (F)", "Kelvin (K)", "Rankine (R)"};
   std::cout << "Press enter.";
   while (true) {
@@ -1198,7 +1200,7 @@ void Temperature::temperature() {
 
     glb::i = 0;
     for (auto a : unit)
-      std::cout << "\n" << a << ": " << result.at(glb::i++);
+      std::cout << "\n" << a << ": " << results.at(glb::i++);
 
     std::cout << "\n\nFrom: ";
     std::cin >> glb::strRespond1;
@@ -1232,106 +1234,30 @@ void Temperature::temperature() {
 
     ++iConv1;
     if (iConv1 == 1) {
-      result.at(0) = (value * 1);
-      result.at(1) = ((value * 1.8) + 32);
-      result.at(2) = (value + 273.15);
-      result.at(3) = ((value * 1.8) + 491.67);
+      results.at(0) = (value * 1);
+      results.at(1) = ((value * 1.8) + 32);
+      results.at(2) = (value + 273.15);
+      results.at(3) = ((value * 1.8) + 491.67);
     } else if (iConv1 == 2) {
-      result.at(0) = ((value - 32) * 0.555556);
-      result.at(1) = (value * 1);
-      result.at(2) = ((value + 459.67) * 0.555556);
-      result.at(3) = (value + 459.67);
+      results.at(0) = ((value - 32) * 0.555556);
+      results.at(1) = (value * 1);
+      results.at(2) = ((value + 459.67) * 0.555556);
+      results.at(3) = (value + 459.67);
     } else if (iConv1 == 3) {
-      result.at(0) = (value - 273.15);
-      result.at(1) = ((value * 1.8) - 459.67);
-      result.at(2) = (value * 1);
-      result.at(3) = (value * 1.8);
+      results.at(0) = (value - 273.15);
+      results.at(1) = ((value * 1.8) - 459.67);
+      results.at(2) = (value * 1);
+      results.at(3) = (value * 1.8);
     } else if (iConv1 == 4) {
-      result.at(0) = (value * 0.555556) - 273.15;
-      result.at(1) = (value - 459.67);
-      result.at(2) = (value * 0.555556);
-      result.at(3) = (value * 1);
+      results.at(0) = (value * 0.555556) - 273.15;
+      results.at(1) = (value - 459.67);
+      results.at(2) = (value * 0.555556);
+      results.at(3) = (value * 1);
     } else {
-      result.at(0) = 0;
-      result.at(1) = 0;
-      result.at(2) = 0;
-      result.at(3) = 0;
+      results.at(0) = 0;
+      results.at(1) = 0;
+      results.at(2) = 0;
+      results.at(3) = 0;
     }
   }
 }
-
-// void NumSystem::numSystem() {
-//   unit = {"Binary BIN (Working on it.)", "Octal OCT", "Decimal DEC",
-//           "Hexadecimal HEX"};
-//   std::cout << "Press enter.";
-//   while (true) {
-//     std::cin.clear();
-//     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-//     glb::i = 1;
-//     LOG_CLEAR;
-//     std::cout << "\tCommands:"
-//                  "\n'e' Back to main menu\n\n";
-
-//     for (auto a : unit)
-//       std::cout << "[" << glb::i++ << "] " << a << "\n";
-
-//     printf("\n");
-//     if (iConv1 == 1) { // bin
-//       std::cout << "Binary BIN: " << value << "\n";
-//       std::cout << "Octal OCT: " << std::oct << value << "\n";
-//       std::cout << "Decimal Dec: " << std::dec << value << "\n";
-//       std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
-//     } else if (iConv1 == 2) { // oct
-//       std::cout << "Binary BIN: " << value << "\n";
-//       std::cout << "Octal OCT: " << std::oct << value << "\n";
-//       std::cout << "Decimal Dec: " << std::dec << value << "\n";
-//       std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
-//     } else if (iConv1 == 3) { // dec
-//       std::cout << "Binary BIN: " << value << "\n";
-//       std::cout << "Octal OCT: " << std::oct << value << "\n";
-//       std::cout << "Decimal Dec: " << std::dec << value << "\n";
-//       std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
-//     } else if (iConv1 == 4) { // hex
-//       std::cout << "Binary BIN: " << value << "\n";
-//       std::cout << "Octal OCT: " << std::oct << value << "\n";
-//       std::cout << "Decimal Dec: " << std::dec << value << "\n";
-//       std::cout << "Hexadecimal Hex: " << std::hex << value << "\n";
-//     } else {
-//       result.at(0) = 0;
-//       result.at(1) = 0;
-//       result.at(2) = 0;
-//       result.at(3) = 0;
-//     }
-
-//     std::cout << "\nFrom: ";
-//     std::cin >> glb::strRespond1;
-//     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-//                    glb::strRespond1.begin(), ::tolower);
-//     if (glb::strRespond1 == "e") {
-//       CONV_CLEAR;
-//     } else {
-//       try {
-//         iConv1 = std::stoi(glb::strRespond1);
-//       } catch (...) {
-//         continue;
-//       }
-//     }
-//     if (iConv1 < 1 || iConv1 > 4)
-//       continue;
-
-//     std::cout << "Value of " << unit.at(--iConv1) << ": ";
-//     std::cin >> glb::strRespond1;
-//     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-//                    glb::strRespond1.begin(), ::tolower);
-//     if (glb::strRespond1 == "e") {
-//       CONV_CLEAR;
-//     } else {
-//       try {
-//         value = std::stoi(glb::strRespond1);
-//       } catch (...) {
-//         continue;
-//       }
-//     }
-//   }
-// }

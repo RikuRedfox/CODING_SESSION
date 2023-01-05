@@ -12,7 +12,7 @@
 #include "_class.hpp"
 
 static void mainMenu();
-static inline long double listOfResult(unsigned short where,
+static inline long double listOfResult(unsigned short &where,
                                        unsigned short &from, unsigned short &to,
                                        long double &value);
 
@@ -20,7 +20,7 @@ int main() {
 #if RELEASE == 1 // RELEASE
   mainMenu();
 #else // DEBUGGING
-  
+
 #endif
   return 0;
 }
@@ -99,14 +99,16 @@ static void mainMenu() {
       delete discount;
       // delete conv1;
       delete conv2;
-      conv1->area();
+      // conv1->area();
+      conv1->merge(1);
     } else if (iRespond == 5) {
       delete simplecalc;
       delete bmi;
       delete discount;
-      delete conv1;
-      // delete conv2;
-      conv1->data();
+      // delete conv1;
+      delete conv2;
+      // conv1->data();
+      conv1->merge(2);
     } else if (iRespond == 6) {
       delete simplecalc;
       delete bmi;
@@ -133,8 +135,8 @@ static void mainMenu() {
       delete bmi;
       delete discount;
       delete conv1;
-      delete conv2;
-      continue;
+      // delete conv2;
+      conv2->temperature();
     } else if (iRespond == 10) {
       delete simplecalc;
       delete bmi;
@@ -542,165 +544,122 @@ void Discount::discount() {
   unit.clear();                                                                \
   return mainMenu();
 
-void Conv1::area() {
-  unit = {"Square inch (in)",
-          "Square foot (ft)",
-          "Square yard (yd)",
-          "Square mile (mi)",
-          "acr)",
-          "hectare (ha)",
-          "Square millimeter (mm)",
-          "Square centimeter (cm)",
-          "Square meter (m)",
-          "Square kilometer (km)"};
-  std::cout << "Press enter.";
-  while (true) {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-    glb::i = 1;
-    LOG_CLEAR;
-    std::cout << "\tCommands:"
-                 "\n'e' Back to main menu\n\n";
-
-    for (auto a : unit)
-      std::cout << "[" << glb::i++ << "] " << a << "\n";
-
-    std::cout << "\nFrom: ";
-    std::cin >> glb::strRespond1;
-    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-                   glb::strRespond1.begin(), ::tolower);
-    if (glb::strRespond1 == "e") {
-      CONV_CLEAR
-    } else {
-      try {
-        iConv1 = stoi(glb::strRespond1);
-      } catch (...) {
-        continue;
-      }
-    }
-    if (iConv1 < 1 || iConv1 > 10)
-      continue;
-
-    std::cout << "To: ";
-    std::cin >> glb::strRespond1;
-    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-                   glb::strRespond1.begin(), ::tolower);
-    if (glb::strRespond1 == "e") {
-      CONV_CLEAR
-    } else {
-      try {
-        iConv2 = stoi(glb::strRespond1);
-      } catch (...) {
-        continue;
-      }
-    }
-
-    if (iConv2 < 1 || iConv2 > 10)
-      continue;
-
-    std::cout << "Value of " << unit.at(--iConv1) << ": " << ++iConv1;
-    std::cin >> glb::strRespond1;
-    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-                   glb::strRespond1.begin(), ::tolower);
-    if (glb::strRespond1 == "e") {
-      CONV_CLEAR;
-    } else {
-      try {
-        value = stold(glb::strRespond1);
-      } catch (...) {
-        continue;
-      }
-    }
-
-    result = listOfResult(1, iConv1, iConv2, value);
-
-    std::cout << "\nResult: " << result << " " << unit.at(--iConv2)
-              << "\n\n(Press Enter to continue)";
-    std::cin.get();
+void Conv1::merge(unsigned short where) {
+  if (where == 1) { // Area Conversion
+    unit = {"Square inch (in)",
+            "Square foot (ft)",
+            "Square yard (yd)",
+            "Square mile (mi)",
+            "acr)",
+            "hectare (ha)",
+            "Square millimeter (mm)",
+            "Square centimeter (cm)",
+            "Square meter (m)",
+            "Square kilometer (km)"};
   }
+  if (where == 2) { // Data Storage Conversion
+    unit = {"Bit (b)",       "Kilobit (kb)",   "Megabit (Mb)",  "Gigabit (Gb)",
+            "Terabit (Tb)",  "Petabit (Pb)",   "Exabit (Eb)",   "Zettabit (Zb)",
+            "Yottabit (Yb)", "Nibble ()",      "Byte (B)",      "Kilobyte (kB)",
+            "Megabyte (MB)", "Gigabyte (GB)",  "Terabyte (TB)", "Petabyte (PB)",
+            "Exabyte (EB)",  "Zettabyte (ZB)", "Yottabyte (YB)"};
+  }
+
+LOOP:
+  std::cin.clear();
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+  glb::i = 1;
+  LOG_CLEAR;
+  std::cout << "\tCommands:"
+               "\n'e' Back to main menu\n\n";
+
+  for (auto a : unit)
+    std::cout << "[" << glb::i++ << "] " << a << "\n";
+
+  std::cout << "\nFrom: ";
+  std::cin >> glb::strRespond1;
+  std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                 glb::strRespond1.begin(), ::tolower);
+  if (glb::strRespond1 == "e") {
+    CONV_CLEAR;
+  } else {
+    try {
+      iConv1 = stoi(glb::strRespond1);
+
+      if (where == 1) {
+        if (iConv1 < 1 || iConv1 > 10) {
+          goto LOOP;
+        }
+      } else if (where == 2) {
+        if (iConv1 < 1 || iConv1 > 19) {
+          goto LOOP;
+        }
+      }
+    } catch (...) {
+      goto LOOP;
+    }
+  }
+
+  std::cout << "To: ";
+  std::cin >> glb::strRespond1;
+  std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                 glb::strRespond1.begin(), ::tolower);
+  if (glb::strRespond1 == "e") {
+    CONV_CLEAR;
+  } else {
+    try {
+      iConv2 = stoi(glb::strRespond1);
+
+      if (where == 1) {
+        if (iConv2 < 1 || iConv2 > 10)
+          goto LOOP;
+      } else if (where == 2) {
+        if (iConv2 < 1 || iConv2 > 19)
+          goto LOOP;
+      }
+    } catch (...) {
+      goto LOOP;
+    }
+  }
+
+  std::cout << "Value of " << unit.at(--iConv1) << ": ";
+  ++iConv1;
+  std::cin >> glb::strRespond1;
+  std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
+                 glb::strRespond1.begin(), ::tolower);
+  if (glb::strRespond1 == "e") {
+    CONV_CLEAR;
+  } else {
+    try {
+      value = stold(glb::strRespond1);
+    } catch (...) {
+      goto LOOP;
+    }
+  }
+
+  if (where == 1) {
+    result = listOfResult(where, iConv1, iConv2, value);
+  } else if (where == 2) {
+    result = listOfResult(where, iConv1, iConv2, value);
+  }
+
+  std::cout << "\nResult: " << result << " " << unit.at(--iConv2)
+            << "\n\n(Press enter to continue)";
+  std::cin.get();
+  goto LOOP;
 }
 
-void Conv1::data() {
-  unit = {"Bit (b)",       "Kilobit (kb)",   "Megabit (Mb)",  "Gigabit (Gb)",
-          "Terabit (Tb)",  "Petabit (Pb)",   "Exabit (Eb)",   "Zettabit (Zb)",
-          "Yottabit (Yb)", "Nibble ()",      "Byte (B)",      "Kilobyte (kB)",
-          "Megabyte (MB)", "Gigabyte (GB)",  "Terabyte (TB)", "Petabyte (PB)",
-          "Exabyte (EB)",  "Zettabyte (ZB)", "Yottabyte (YB)"};
-  std::cout << "Press enter.";
-  while (true) {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-    glb::i = 1;
-    LOG_CLEAR;
-    std::cout << "\tCommands:"
-                 "\n'e' Back to main menu\n\n";
-    for (auto a : unit)
-      std::cout << "[" << glb::i++ << "] " << a << "\n";
-
-    std::cout << "\nFrom: ";
-    std::cin >> glb::strRespond1;
-    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-                   glb::strRespond1.begin(), ::tolower);
-    if (glb::strRespond1 == "e") {
-      CONV_CLEAR;
-    } else {
-      try {
-        iConv1 = std::stoi(glb::strRespond1);
-      } catch (...) {
-        continue;
-      }
-    }
-    if (iConv1 < 1 || iConv1 > 19)
-      continue;
-
-    std::cout << "To: ";
-    std::cin >> glb::strRespond1;
-    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-                   glb::strRespond1.begin(), ::tolower);
-    if (glb::strRespond1 == "e") {
-      CONV_CLEAR;
-    } else {
-      try {
-        iConv2 = std::stoi(glb::strRespond1);
-      } catch (...) {
-        continue;
-      }
-    }
-    if (iConv2 < 1 || iConv2 > 19)
-      continue;
-
-    std::cout << "Value of " << unit.at(--iConv1) << ": " << ++iConv1;
-    std::cin >> glb::strRespond1;
-    std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
-                   glb::strRespond1.begin(), ::tolower);
-    if (glb::strRespond1 == "e") {
-      CONV_CLEAR;
-    } else {
-      try {
-        value = std::stoi(glb::strRespond1);
-      } catch (...) {
-        continue;
-      }
-    }
-    result = listOfResult(2, iConv1, iConv2, value);
-    std::cout << "\nResult: " << result << " " << unit.at(--iConv2)
-              << "\n\n(Press enter to continue)";
-    std::cin.get();
-  }
-}
-
-inline static long double listOfResult(unsigned short where,
+inline static long double listOfResult(unsigned short &where,
                                        unsigned short &from, unsigned short &to,
                                        long double &value) {
   long double result = 0.0L;
+  // if(n1 == n)
+  //   if(n2 == n)
+  //   elif(n2 == n)
+  //   else
+  // else
   if (where == 1) {
-    // if(n1 == n)
-    //   if(n2 == n)
-    //   elif(n2 == n)
-    //   else(n2 ==n)
-    // else
     result = (from == 1)    ? ((to == 2)    ? value / 144
                                : (to == 3)  ? value / 1296
                                : (to == 4)  ? value / 4.0145E+9
@@ -804,386 +763,369 @@ inline static long double listOfResult(unsigned short where,
                             : value * 0;
   }
   if (where == 2) {
-    result = (from == 1 && to == 1)    ? value * 1
-             : (from == 1 && to == 2)  ? value / 1000
-             : (from == 1 && to == 3)  ? value / 1000000
-             : (from == 1 && to == 4)  ? value / 1.0000e+9
-             : (from == 1 && to == 5)  ? value / 1.0000e+12
-             : (from == 1 && to == 6)  ? value / 1.0000e+15
-             : (from == 1 && to == 7)  ? value / 1.0000e+18
-             : (from == 1 && to == 8)  ? value / 1.0000e+21
-             : (from == 1 && to == 9)  ? value / 1.0000e+24
-             : (from == 1 && to == 10) ? value / 4
-             : (from == 1 && to == 11) ? value / 8
-             : (from == 1 && to == 12) ? value / 8000
-             : (from == 1 && to == 13) ? value / 8000000
-             : (from == 1 && to == 14) ? value / 8.0000e+9
-             : (from == 1 && to == 15) ? value / 8.0000e+12
-             : (from == 1 && to == 16) ? value / 8.0000e+15
-             : (from == 1 && to == 17) ? value / 8.0000e+18
-             : (from == 1 && to == 18) ? value / 8.0000e+21
-             : (from == 1 && to == 19) ? value / 8.0000e+24
-
-             : (from == 2 && to == 1)  ? value * 1000
-             : (from == 2 && to == 2)  ? value * 1
-             : (from == 2 && to == 3)  ? value / 1000
-             : (from == 2 && to == 4)  ? value / 1000000
-             : (from == 2 && to == 5)  ? value / 1.0000e+9
-             : (from == 2 && to == 6)  ? value / 1.0000e+12
-             : (from == 2 && to == 7)  ? value / 1.0000e+15
-             : (from == 2 && to == 8)  ? value / 1.0000e+18
-             : (from == 2 && to == 9)  ? value / 1.0000e+21
-             : (from == 2 && to == 10) ? value * 250
-             : (from == 2 && to == 11) ? value * 125
-             : (from == 2 && to == 12) ? value / 8
-             : (from == 2 && to == 13) ? value / 8000
-             : (from == 2 && to == 14) ? value / 8000000
-             : (from == 2 && to == 15) ? value / 8.0000e+9
-             : (from == 2 && to == 16) ? value / 8.0000e+12
-             : (from == 2 && to == 17) ? value / 8.0000e+15
-             : (from == 2 && to == 18) ? value / 8.0000e+18
-             : (from == 2 && to == 19) ? value / 8.0000e+21
-
-             : (from == 3 && to == 1)  ? value * 1000000
-             : (from == 3 && to == 2)  ? value * 1000
-             : (from == 3 && to == 3)  ? value * 1
-             : (from == 3 && to == 4)  ? value / 1000
-             : (from == 3 && to == 5)  ? value / 1000000
-             : (from == 3 && to == 6)  ? value / 1.0000E+9
-             : (from == 3 && to == 7)  ? value / 1.0000E+12
-             : (from == 3 && to == 8)  ? value / 1.0000E+15
-             : (from == 3 && to == 9)  ? value / 1.0000E+18
-             : (from == 3 && to == 10) ? value * 250000
-             : (from == 3 && to == 11) ? value * 125000
-             : (from == 3 && to == 12) ? value * 125
-             : (from == 3 && to == 13) ? value / 8
-             : (from == 3 && to == 14) ? value / 8000
-             : (from == 3 && to == 15) ? value / 8000000
-             : (from == 3 && to == 16) ? value / 8.0000E+9
-             : (from == 3 && to == 17) ? value / 8.0000E+12
-             : (from == 3 && to == 18) ? value / 8.0000E+15
-             : (from == 3 && to == 19) ? value / 8.0000E+18
-
-             : (from == 4 && to == 1)  ? value * 1.0000E+9
-             : (from == 4 && to == 2)  ? value * 1000000
-             : (from == 4 && to == 3)  ? value * 1000
-             : (from == 4 && to == 4)  ? value * 1
-             : (from == 4 && to == 5)  ? value / 1000
-             : (from == 4 && to == 6)  ? value / 1000000
-             : (from == 4 && to == 7)  ? value / 1.0000E+9
-             : (from == 4 && to == 8)  ? value / 1.0000E+12
-             : (from == 4 && to == 9)  ? value / 1.0000E+15
-             : (from == 4 && to == 10) ? value * 250000000
-             : (from == 4 && to == 11) ? value * 125000000
-             : (from == 4 && to == 12) ? value * 125000
-             : (from == 4 && to == 13) ? value * 125
-             : (from == 4 && to == 14) ? value / 8
-             : (from == 4 && to == 15) ? value / 8000
-             : (from == 4 && to == 16) ? value / 8000000
-             : (from == 4 && to == 17) ? value / 8.0000E+9
-             : (from == 4 && to == 18) ? value / 8.0000E+12
-             : (from == 4 && to == 19) ? value / 8.0000E+15
-
-             : (from == 5 && to == 1)  ? value * 1.0000E+12
-             : (from == 5 && to == 2)  ? value * 1.0000E+9
-             : (from == 5 && to == 3)  ? value * 1000000
-             : (from == 5 && to == 4)  ? value * 1000
-             : (from == 5 && to == 5)  ? value * 1
-             : (from == 5 && to == 6)  ? value / 1000
-             : (from == 5 && to == 7)  ? value / 1000000
-             : (from == 5 && to == 8)  ? value / 1.0000E+9
-             : (from == 5 && to == 9)  ? value / 1.0000E+12
-             : (from == 5 && to == 10) ? value * 2.5000E+11
-             : (from == 5 && to == 11) ? value * 1.2500E+11
-             : (from == 5 && to == 12) ? value * 125000000
-             : (from == 5 && to == 13) ? value * 125000
-             : (from == 5 && to == 14) ? value * 125
-             : (from == 5 && to == 15) ? value / 8
-             : (from == 5 && to == 16) ? value / 8000
-             : (from == 5 && to == 17) ? value / 8000000
-             : (from == 5 && to == 18) ? value / 8.0000E+9
-             : (from == 5 && to == 19) ? value / 8.0000E+12
-
-             : (from == 6 && to == 1)  ? value * 1.0000E+15
-             : (from == 6 && to == 2)  ? value * 1.0000E+12
-             : (from == 6 && to == 3)  ? value * 1.0000E+9
-             : (from == 6 && to == 4)  ? value * 1000000
-             : (from == 6 && to == 5)  ? value * 1000
-             : (from == 6 && to == 6)  ? value * 1
-             : (from == 6 && to == 7)  ? value / 1000
-             : (from == 6 && to == 8)  ? value / 1000000
-             : (from == 6 && to == 9)  ? value / 1.0000E+9
-             : (from == 6 && to == 10) ? value * 2.5000E+14
-             : (from == 6 && to == 11) ? value * 1.2500E+14
-             : (from == 6 && to == 12) ? value * 1.2500E+11
-             : (from == 6 && to == 13) ? value * 125000000
-             : (from == 6 && to == 14) ? value * 125000
-             : (from == 6 && to == 15) ? value * 125
-             : (from == 6 && to == 16) ? value / 8
-             : (from == 6 && to == 17) ? value / 8000
-             : (from == 6 && to == 18) ? value / 8000000
-             : (from == 6 && to == 19) ? value / 8.0000E+9
-
-             : (from == 7 && to == 1)  ? value * 1.0000E+18
-             : (from == 7 && to == 2)  ? value * 1.0000E+15
-             : (from == 7 && to == 3)  ? value * 1.0000E+12
-             : (from == 7 && to == 4)  ? value * 1.0000E+9
-             : (from == 7 && to == 5)  ? value * 1000000
-             : (from == 7 && to == 6)  ? value * 1000
-             : (from == 7 && to == 7)  ? value * 1
-             : (from == 7 && to == 8)  ? value / 1000
-             : (from == 7 && to == 9)  ? value / 1000000
-             : (from == 7 && to == 10) ? value * 2.5000E+17
-             : (from == 7 && to == 11) ? value * 1.2500E+17
-             : (from == 7 && to == 12) ? value * 1.2500E+14
-             : (from == 7 && to == 13) ? value * 1.2500E+11
-             : (from == 7 && to == 14) ? value * 125000000
-             : (from == 7 && to == 15) ? value * 125000
-             : (from == 7 && to == 16) ? value * 125
-             : (from == 7 && to == 17) ? value * 8
-             : (from == 7 && to == 18) ? value / 8000
-             : (from == 7 && to == 19) ? value / 8000000
-
-             : (from == 8 && to == 1)  ? value * 1.0000E+21
-             : (from == 8 && to == 2)  ? value * 1.0000E+18
-             : (from == 8 && to == 3)  ? value * 1.0000E+15
-             : (from == 8 && to == 4)  ? value * 1.0000E+12
-             : (from == 8 && to == 5)  ? value * 1.0000E+9
-             : (from == 8 && to == 6)  ? value * 1000000
-             : (from == 8 && to == 7)  ? value * 1000
-             : (from == 8 && to == 8)  ? value * 1
-             : (from == 8 && to == 9)  ? value / 1000
-             : (from == 8 && to == 10) ? value * 2.5000E+20
-             : (from == 8 && to == 11) ? value * 1.2500E+20
-             : (from == 8 && to == 12) ? value * 1.2500E+17
-             : (from == 8 && to == 13) ? value * 1.2500E+14
-             : (from == 8 && to == 14) ? value * 1.2500E+11
-             : (from == 8 && to == 15) ? value * 125000000
-             : (from == 8 && to == 16) ? value * 125000
-             : (from == 8 && to == 17) ? value * 125
-             : (from == 8 && to == 18) ? value * 8
-             : (from == 8 && to == 19) ? value / 8000
-
-             : (from == 9 && to == 1)  ? value * 1.0000E+24
-             : (from == 9 && to == 2)  ? value * 1.0000E+21
-             : (from == 9 && to == 3)  ? value * 1.0000E+18
-             : (from == 9 && to == 4)  ? value * 1.0000E+15
-             : (from == 9 && to == 5)  ? value * 1.0000E+12
-             : (from == 9 && to == 6)  ? value * 1.0000E+9
-             : (from == 9 && to == 7)  ? value * 1000000
-             : (from == 9 && to == 8)  ? value * 1000
-             : (from == 9 && to == 9)  ? value * 1
-             : (from == 9 && to == 10) ? value * 2.5000E+23
-             : (from == 9 && to == 11) ? value * 1.2500E+23
-             : (from == 9 && to == 12) ? value * 1.2500E+20
-             : (from == 9 && to == 13) ? value * 1.2500E+17
-             : (from == 9 && to == 14) ? value * 1.2500E+14
-             : (from == 9 && to == 15) ? value * 1.2500E+11
-             : (from == 9 && to == 16) ? value * 125000000
-             : (from == 9 && to == 17) ? value * 125000
-             : (from == 9 && to == 18) ? value * 125
-             : (from == 9 && to == 19) ? value * 8
-
-             : (from == 10 && to == 1)  ? value * 4
-             : (from == 10 && to == 2)  ? value / 250
-             : (from == 10 && to == 3)  ? value / 250000
-             : (from == 10 && to == 4)  ? value / 2.5000E+8
-             : (from == 10 && to == 5)  ? value / 2.5000E+11
-             : (from == 10 && to == 6)  ? value / 2.5000E+14
-             : (from == 10 && to == 7)  ? value / 2.5000E+17
-             : (from == 10 && to == 8)  ? value / 2.5000E+20
-             : (from == 10 && to == 9)  ? value / 2.5000E+23
-             : (from == 10 && to == 10) ? value * 1
-             : (from == 10 && to == 11) ? value / 2
-             : (from == 10 && to == 12) ? value / 2000
-             : (from == 10 && to == 13) ? value / 2000000
-             : (from == 10 && to == 14) ? value / 2.0000E+9
-             : (from == 10 && to == 15) ? value / 2.0000E+12
-             : (from == 10 && to == 16) ? value / 2.0000E+15
-             : (from == 10 && to == 17) ? value / 2.0000E+18
-             : (from == 10 && to == 18) ? value / 2.0000E+21
-             : (from == 10 && to == 19) ? value / 2.0000E+24
-
-             : (from == 11 && to == 1)  ? value * 8
-             : (from == 11 && to == 2)  ? value / 125
-             : (from == 11 && to == 3)  ? value / 125000
-             : (from == 11 && to == 4)  ? value / 1.2500E+8
-             : (from == 11 && to == 5)  ? value / 1.2500E+11
-             : (from == 11 && to == 6)  ? value / 1.2500E+14
-             : (from == 11 && to == 7)  ? value / 1.2500E+17
-             : (from == 11 && to == 8)  ? value / 1.2500E+20
-             : (from == 11 && to == 9)  ? value / 1.2500E+23
-             : (from == 11 && to == 10) ? value * 2
-             : (from == 11 && to == 11) ? value * 1
-             : (from == 11 && to == 12) ? value / 1000
-             : (from == 11 && to == 13) ? value / 1000000
-             : (from == 11 && to == 14) ? value / 1.0000E+9
-             : (from == 11 && to == 15) ? value / 1.0000E+12
-             : (from == 11 && to == 16) ? value / 1.0000E+15
-             : (from == 11 && to == 17) ? value / 1.0000E+18
-             : (from == 11 && to == 18) ? value / 1.0000E+21
-             : (from == 11 && to == 19) ? value / 1.0000E+24
-
-             : (from == 12 && to == 1)  ? value * 8000
-             : (from == 12 && to == 2)  ? value * 8
-             : (from == 12 && to == 3)  ? value / 125
-             : (from == 12 && to == 4)  ? value / 125000
-             : (from == 12 && to == 5)  ? value / 1.2500E+8
-             : (from == 12 && to == 6)  ? value / 1.2500E+11
-             : (from == 12 && to == 7)  ? value / 1.2500E+14
-             : (from == 12 && to == 8)  ? value / 1.2500E+17
-             : (from == 12 && to == 9)  ? value / 1.2500E+20
-             : (from == 12 && to == 10) ? value * 2000
-             : (from == 12 && to == 11) ? value * 1000
-             : (from == 12 && to == 12) ? value * 1
-             : (from == 12 && to == 13) ? value / 1000
-             : (from == 12 && to == 14) ? value / 1000000
-             : (from == 12 && to == 15) ? value / 1.0000E+9
-             : (from == 12 && to == 16) ? value / 1.0000E+12
-             : (from == 12 && to == 17) ? value / 1.0000E+15
-             : (from == 12 && to == 18) ? value / 1.0000E+18
-             : (from == 12 && to == 19) ? value / 1.0000E+21
-
-             : (from == 13 && to == 1)  ? value * 8000000
-             : (from == 13 && to == 2)  ? value * 8000
-             : (from == 13 && to == 3)  ? value * 8
-             : (from == 13 && to == 4)  ? value / 125
-             : (from == 13 && to == 5)  ? value / 125000
-             : (from == 13 && to == 6)  ? value / 1.2500E+8
-             : (from == 13 && to == 7)  ? value / 1.2500E+11
-             : (from == 13 && to == 8)  ? value / 1.2500E+14
-             : (from == 13 && to == 9)  ? value / 1.2500E+17
-             : (from == 13 && to == 10) ? value * 2000000
-             : (from == 13 && to == 11) ? value * 1000000
-             : (from == 13 && to == 12) ? value * 1000
-             : (from == 13 && to == 13) ? value * 1
-             : (from == 13 && to == 14) ? value / 1000
-             : (from == 13 && to == 15) ? value / 1000000
-             : (from == 13 && to == 16) ? value / 1.0000E+9
-             : (from == 13 && to == 17) ? value / 1.0000E+12
-             : (from == 13 && to == 18) ? value / 1.0000E+15
-             : (from == 13 && to == 19) ? value / 1.0000E+18
-
-             : (from == 14 && to == 1)  ? value * 8.0000E+9
-             : (from == 14 && to == 2)  ? value * 8000000
-             : (from == 14 && to == 3)  ? value * 8000
-             : (from == 14 && to == 4)  ? value * 8
-             : (from == 14 && to == 5)  ? value / 125
-             : (from == 14 && to == 6)  ? value / 125000
-             : (from == 14 && to == 7)  ? value / 1.2500E+8
-             : (from == 14 && to == 8)  ? value / 1.2500E+11
-             : (from == 14 && to == 9)  ? value / 1.2500E+14
-             : (from == 14 && to == 10) ? value * 2.0000E+9
-             : (from == 14 && to == 11) ? value * 1.0000E+9
-             : (from == 14 && to == 12) ? value * 1000000
-             : (from == 14 && to == 13) ? value * 1000
-             : (from == 14 && to == 14) ? value * 1
-             : (from == 14 && to == 15) ? value / 1000
-             : (from == 14 && to == 16) ? value / 1000000
-             : (from == 14 && to == 17) ? value / 1.0000E+9
-             : (from == 14 && to == 18) ? value / 1.0000E+11
-             : (from == 14 && to == 19) ? value / 1.0000E+15
-
-             : (from == 15 && to == 1)  ? value * 8.0000E+12
-             : (from == 15 && to == 2)  ? value * 8.0000E+9
-             : (from == 15 && to == 3)  ? value * 8000000
-             : (from == 15 && to == 4)  ? value * 8000
-             : (from == 15 && to == 5)  ? value * 8
-             : (from == 15 && to == 6)  ? value / 125
-             : (from == 15 && to == 7)  ? value / 125000
-             : (from == 15 && to == 8)  ? value / 1.2500E+8
-             : (from == 15 && to == 9)  ? value / 1.2500E+11
-             : (from == 15 && to == 10) ? value * 2.0000E+12
-             : (from == 15 && to == 11) ? value * 1.0000E+12
-             : (from == 15 && to == 12) ? value * 1.0000E+9
-             : (from == 15 && to == 13) ? value * 1000000
-             : (from == 15 && to == 14) ? value * 1000
-             : (from == 15 && to == 15) ? value * 1
-             : (from == 15 && to == 16) ? value / 1000
-             : (from == 15 && to == 17) ? value / 1000000
-             : (from == 15 && to == 18) ? value / 1.0000E+9
-             : (from == 15 && to == 19) ? value / 1.0000E+12
-
-             : (from == 16 && to == 1)  ? value * 8.0000E+15
-             : (from == 16 && to == 2)  ? value * 8.0000E+12
-             : (from == 16 && to == 3)  ? value * 8.0000E+9
-             : (from == 16 && to == 4)  ? value * 8000000
-             : (from == 16 && to == 5)  ? value * 8000
-             : (from == 16 && to == 6)  ? value * 8
-             : (from == 16 && to == 7)  ? value / 125
-             : (from == 16 && to == 8)  ? value / 125000
-             : (from == 16 && to == 9)  ? value / 1.2500E+8
-             : (from == 16 && to == 10) ? value * 2.0000E+15
-             : (from == 16 && to == 11) ? value * 1.0000E+15
-             : (from == 16 && to == 12) ? value * 1.0000E+12
-             : (from == 16 && to == 13) ? value * 1.0000E+9
-             : (from == 16 && to == 14) ? value * 1000000
-             : (from == 16 && to == 15) ? value * 1000
-             : (from == 16 && to == 16) ? value * 1
-             : (from == 16 && to == 17) ? value / 1000
-             : (from == 16 && to == 18) ? value / 1000000
-             : (from == 16 && to == 19) ? value / 1.0000E+9
-
-             : (from == 17 && to == 1)  ? value * 8.0000E+18
-             : (from == 17 && to == 2)  ? value * 8.0000E+15
-             : (from == 17 && to == 3)  ? value * 8.0000E+12
-             : (from == 17 && to == 4)  ? value * 8.0000E+9
-             : (from == 17 && to == 5)  ? value * 8000000
-             : (from == 17 && to == 6)  ? value * 8000
-             : (from == 17 && to == 7)  ? value * 8
-             : (from == 17 && to == 8)  ? value / 125
-             : (from == 17 && to == 9)  ? value / 125000
-             : (from == 17 && to == 10) ? value * 2.0000E+18
-             : (from == 17 && to == 11) ? value * 1.0000E+18
-             : (from == 17 && to == 12) ? value * 1.0000E+15
-             : (from == 17 && to == 13) ? value * 1.0000E+12
-             : (from == 17 && to == 14) ? value * 1.0000E+9
-             : (from == 17 && to == 15) ? value * 1000000
-             : (from == 17 && to == 16) ? value * 1000
-             : (from == 17 && to == 17) ? value * 1
-             : (from == 17 && to == 18) ? value / 1000
-             : (from == 17 && to == 19) ? value / 1000000
-
-             : (from == 18 && to == 1)  ? value * 8.0000E+21
-             : (from == 18 && to == 2)  ? value * 8.0000E+18
-             : (from == 18 && to == 3)  ? value * 8.0000E+15
-             : (from == 18 && to == 4)  ? value * 8.0000E+12
-             : (from == 18 && to == 5)  ? value * 8.0000E+9
-             : (from == 18 && to == 6)  ? value * 8000000
-             : (from == 18 && to == 7)  ? value * 8000
-             : (from == 18 && to == 8)  ? value * 8
-             : (from == 18 && to == 9)  ? value / 125
-             : (from == 18 && to == 10) ? value * 2.0000E+21
-             : (from == 18 && to == 11) ? value * 1.0000E+21
-             : (from == 18 && to == 12) ? value * 1.0000E+18
-             : (from == 18 && to == 13) ? value * 1.0000E+15
-             : (from == 18 && to == 14) ? value * 1.0000E+12
-             : (from == 18 && to == 15) ? value * 1.0000E+9
-             : (from == 18 && to == 16) ? value * 1000000
-             : (from == 18 && to == 17) ? value * 1000
-             : (from == 18 && to == 18) ? value * 1
-             : (from == 18 && to == 19) ? value / 1000
-
-             : (from == 19 && to == 1)  ? value * 8.0000E+24
-             : (from == 19 && to == 2)  ? value * 8.0000E+21
-             : (from == 19 && to == 3)  ? value * 8.0000E+18
-             : (from == 19 && to == 4)  ? value * 8.0000E+15
-             : (from == 19 && to == 5)  ? value * 8.0000E+12
-             : (from == 19 && to == 6)  ? value * 8.0000E+9
-             : (from == 19 && to == 7)  ? value * 8000000
-             : (from == 19 && to == 8)  ? value * 8000
-             : (from == 19 && to == 9)  ? value * 8
-             : (from == 19 && to == 10) ? value * 2.0000E+24
-             : (from == 19 && to == 11) ? value * 1.0000E+24
-             : (from == 19 && to == 12) ? value * 1.0000E+21
-             : (from == 19 && to == 13) ? value * 1.0000E+18
-             : (from == 19 && to == 14) ? value * 1.0000E+15
-             : (from == 19 && to == 15) ? value * 1.0000E+12
-             : (from == 19 && to == 16) ? value * 1.0000E+9
-             : (from == 19 && to == 17) ? value * 1000000
-             : (from == 19 && to == 18) ? value * 1000
-             : (from == 19 && to == 19) ? value * 1
-                                              : value * 0;
+    result = (from == 1)    ? ((to == 2)    ? value / 1000
+                               : (to == 3)  ? value / 1000000
+                               : (to == 4)  ? value / 1.0000e+9
+                               : (to == 5)  ? value / 1.0000e+12
+                               : (to == 6)  ? value / 1.0000e+15
+                               : (to == 7)  ? value / 1.0000e+18
+                               : (to == 8)  ? value / 1.0000e+21
+                               : (to == 9)  ? value / 1.0000e+24
+                               : (to == 10) ? value / 4
+                               : (to == 11) ? value / 8
+                               : (to == 12) ? value / 8000
+                               : (to == 13) ? value / 8000000
+                               : (to == 14) ? value / 8.0000e+9
+                               : (to == 15) ? value / 8.0000e+12
+                               : (to == 16) ? value / 8.0000e+15
+                               : (to == 17) ? value / 8.0000e+18
+                               : (to == 18) ? value / 8.0000e+21
+                               : (to == 19) ? value / 8.0000e+24
+                                            : value * 1)
+             : (from == 2)  ? ((to == 1)    ? value * 1000
+                               : (to == 3)  ? value / 1000
+                               : (to == 4)  ? value / 1000000
+                               : (to == 5)  ? value / 1.0000e+9
+                               : (to == 6)  ? value / 1.0000e+12
+                               : (to == 7)  ? value / 1.0000e+15
+                               : (to == 8)  ? value / 1.0000e+18
+                               : (to == 9)  ? value / 1.0000e+21
+                               : (to == 10) ? value * 250
+                               : (to == 11) ? value * 125
+                               : (to == 12) ? value / 8
+                               : (to == 13) ? value / 8000
+                               : (to == 14) ? value / 8000000
+                               : (to == 15) ? value / 8.0000e+9
+                               : (to == 16) ? value / 8.0000e+12
+                               : (to == 17) ? value / 8.0000e+15
+                               : (to == 18) ? value / 8.0000e+18
+                               : (to == 19) ? value / 8.0000e+21
+                                            : value * 1)
+             : (from == 3)  ? ((to == 1)    ? value * 1000000
+                               : (to == 2)  ? value * 1000
+                               : (to == 4)  ? value / 1000
+                               : (to == 5)  ? value / 1000000
+                               : (to == 6)  ? value / 1.0000E+9
+                               : (to == 7)  ? value / 1.0000E+12
+                               : (to == 8)  ? value / 1.0000E+15
+                               : (to == 9)  ? value / 1.0000E+18
+                               : (to == 10) ? value * 250000
+                               : (to == 11) ? value * 125000
+                               : (to == 12) ? value * 125
+                               : (to == 13) ? value / 8
+                               : (to == 14) ? value / 8000
+                               : (to == 15) ? value / 8000000
+                               : (to == 16) ? value / 8.0000E+9
+                               : (to == 17) ? value / 8.0000E+12
+                               : (to == 18) ? value / 8.0000E+15
+                               : (to == 19) ? value / 8.0000E+18
+                                            : value * 1)
+             : (from == 4)  ? ((to == 1)    ? value * 1.0000E+9
+                               : (to == 2)  ? value * 1000000
+                               : (to == 3)  ? value * 1000
+                               : (to == 5)  ? value / 1000
+                               : (to == 6)  ? value / 1000000
+                               : (to == 7)  ? value / 1.0000E+9
+                               : (to == 8)  ? value / 1.0000E+12
+                               : (to == 9)  ? value / 1.0000E+15
+                               : (to == 10) ? value * 250000000
+                               : (to == 11) ? value * 125000000
+                               : (to == 12) ? value * 125000
+                               : (to == 13) ? value * 125
+                               : (to == 14) ? value / 8
+                               : (to == 15) ? value / 8000
+                               : (to == 16) ? value / 8000000
+                               : (to == 17) ? value / 8.0000E+9
+                               : (to == 18) ? value / 8.0000E+12
+                               : (to == 19) ? value / 8.0000E+15
+                                            : value * 1)
+             : (from == 5)  ? ((to == 1)    ? value * 1.0000E+12
+                               : (to == 2)  ? value * 1.0000E+9
+                               : (to == 3)  ? value * 1000000
+                               : (to == 4)  ? value * 1000
+                               : (to == 6)  ? value / 1000
+                               : (to == 7)  ? value / 1000000
+                               : (to == 8)  ? value / 1.0000E+9
+                               : (to == 9)  ? value / 1.0000E+12
+                               : (to == 10) ? value * 2.5000E+11
+                               : (to == 11) ? value * 1.2500E+11
+                               : (to == 12) ? value * 125000000
+                               : (to == 13) ? value * 125000
+                               : (to == 14) ? value * 125
+                               : (to == 15) ? value / 8
+                               : (to == 16) ? value / 8000
+                               : (to == 17) ? value / 8000000
+                               : (to == 18) ? value / 8.0000E+9
+                               : (to == 19) ? value / 8.0000E+12
+                                            : value * 1)
+             : (from == 6)  ? ((to == 1)    ? value * 1.0000E+15
+                               : (to == 2)  ? value * 1.0000E+12
+                               : (to == 3)  ? value * 1.0000E+9
+                               : (to == 4)  ? value * 1000000
+                               : (to == 5)  ? value * 1000
+                               : (to == 7)  ? value / 1000
+                               : (to == 8)  ? value / 1000000
+                               : (to == 9)  ? value / 1.0000E+9
+                               : (to == 10) ? value * 2.5000E+14
+                               : (to == 11) ? value * 1.2500E+14
+                               : (to == 12) ? value * 1.2500E+11
+                               : (to == 13) ? value * 125000000
+                               : (to == 14) ? value * 125000
+                               : (to == 15) ? value * 125
+                               : (to == 16) ? value / 8
+                               : (to == 17) ? value / 8000
+                               : (to == 18) ? value / 8000000
+                               : (to == 19) ? value / 8.0000E+9
+                                            : value * 1)
+             : (from == 7)  ? ((to == 1)    ? value * 1.0000E+18
+                               : (to == 2)  ? value * 1.0000E+15
+                               : (to == 3)  ? value * 1.0000E+12
+                               : (to == 4)  ? value * 1.0000E+9
+                               : (to == 5)  ? value * 1000000
+                               : (to == 6)  ? value * 1000
+                               : (to == 8)  ? value / 1000
+                               : (to == 9)  ? value / 1000000
+                               : (to == 10) ? value * 2.5000E+17
+                               : (to == 11) ? value * 1.2500E+17
+                               : (to == 12) ? value * 1.2500E+14
+                               : (to == 13) ? value * 1.2500E+11
+                               : (to == 14) ? value * 125000000
+                               : (to == 15) ? value * 125000
+                               : (to == 16) ? value * 125
+                               : (to == 17) ? value * 8
+                               : (to == 18) ? value / 8000
+                               : (to == 19) ? value / 8000000
+                                            : value * 1)
+             : (from == 8)  ? ((to == 1)    ? value * 1.0000E+21
+                               : (to == 2)  ? value * 1.0000E+18
+                               : (to == 3)  ? value * 1.0000E+15
+                               : (to == 4)  ? value * 1.0000E+12
+                               : (to == 5)  ? value * 1.0000E+9
+                               : (to == 6)  ? value * 1000000
+                               : (to == 7)  ? value * 1000
+                               : (to == 9)  ? value / 1000
+                               : (to == 10) ? value * 2.5000E+20
+                               : (to == 11) ? value * 1.2500E+20
+                               : (to == 12) ? value * 1.2500E+17
+                               : (to == 13) ? value * 1.2500E+14
+                               : (to == 14) ? value * 1.2500E+11
+                               : (to == 15) ? value * 125000000
+                               : (to == 16) ? value * 125000
+                               : (to == 17) ? value * 125
+                               : (to == 18) ? value * 8
+                               : (to == 19) ? value / 8000
+                                            : value * 1)
+             : (from == 9)  ? ((to == 1)    ? value * 1.0000E+24
+                               : (to == 2)  ? value * 1.0000E+21
+                               : (to == 3)  ? value * 1.0000E+18
+                               : (to == 4)  ? value * 1.0000E+15
+                               : (to == 5)  ? value * 1.0000E+12
+                               : (to == 6)  ? value * 1.0000E+9
+                               : (to == 7)  ? value * 1000000
+                               : (to == 8)  ? value * 1000
+                               : (to == 10) ? value * 2.5000E+23
+                               : (to == 11) ? value * 1.2500E+23
+                               : (to == 12) ? value * 1.2500E+20
+                               : (to == 13) ? value * 1.2500E+17
+                               : (to == 14) ? value * 1.2500E+14
+                               : (to == 15) ? value * 1.2500E+11
+                               : (to == 16) ? value * 125000000
+                               : (to == 17) ? value * 125000
+                               : (to == 18) ? value * 125
+                               : (to == 19) ? value * 8
+                                            : value * 1)
+             : (from == 10) ? ((to == 1)    ? value * 4
+                               : (to == 2)  ? value / 250
+                               : (to == 3)  ? value / 250000
+                               : (to == 4)  ? value / 2.5000E+8
+                               : (to == 5)  ? value / 2.5000E+11
+                               : (to == 6)  ? value / 2.5000E+14
+                               : (to == 7)  ? value / 2.5000E+17
+                               : (to == 8)  ? value / 2.5000E+20
+                               : (to == 9)  ? value / 2.5000E+23
+                               : (to == 11) ? value / 2
+                               : (to == 12) ? value / 2000
+                               : (to == 13) ? value / 2000000
+                               : (to == 14) ? value / 2.0000E+9
+                               : (to == 15) ? value / 2.0000E+12
+                               : (to == 16) ? value / 2.0000E+15
+                               : (to == 17) ? value / 2.0000E+18
+                               : (to == 18) ? value / 2.0000E+21
+                               : (to == 19) ? value / 2.0000E+24
+                                            : value * 1)
+             : (from == 11) ? ((to == 1)    ? value * 8
+                               : (to == 2)  ? value / 125
+                               : (to == 3)  ? value / 125000
+                               : (to == 4)  ? value / 1.2500E+8
+                               : (to == 5)  ? value / 1.2500E+11
+                               : (to == 6)  ? value / 1.2500E+14
+                               : (to == 7)  ? value / 1.2500E+17
+                               : (to == 8)  ? value / 1.2500E+20
+                               : (to == 9)  ? value / 1.2500E+23
+                               : (to == 10) ? value * 2
+                               : (to == 12) ? value / 1000
+                               : (to == 13) ? value / 1000000
+                               : (to == 14) ? value / 1.0000E+9
+                               : (to == 15) ? value / 1.0000E+12
+                               : (to == 16) ? value / 1.0000E+15
+                               : (to == 17) ? value / 1.0000E+18
+                               : (to == 18) ? value / 1.0000E+21
+                               : (to == 19) ? value / 1.0000E+24
+                                            : value * 1)
+             : (from == 12) ? ((to == 1)    ? value * 8000
+                               : (to == 2)  ? value * 8
+                               : (to == 3)  ? value / 125
+                               : (to == 4)  ? value / 125000
+                               : (to == 5)  ? value / 1.2500E+8
+                               : (to == 6)  ? value / 1.2500E+11
+                               : (to == 7)  ? value / 1.2500E+14
+                               : (to == 8)  ? value / 1.2500E+17
+                               : (to == 9)  ? value / 1.2500E+20
+                               : (to == 10) ? value * 2000
+                               : (to == 11) ? value * 1000
+                               : (to == 13) ? value / 1000
+                               : (to == 14) ? value / 1000000
+                               : (to == 15) ? value / 1.0000E+9
+                               : (to == 16) ? value / 1.0000E+12
+                               : (to == 17) ? value / 1.0000E+15
+                               : (to == 18) ? value / 1.0000E+18
+                               : (to == 19) ? value / 1.0000E+21
+                                            : value * 1)
+             : (from == 13) ? ((to == 1)    ? value * 8000000
+                               : (to == 2)  ? value * 8000
+                               : (to == 3)  ? value * 8
+                               : (to == 4)  ? value / 125
+                               : (to == 5)  ? value / 125000
+                               : (to == 6)  ? value / 1.2500E+8
+                               : (to == 7)  ? value / 1.2500E+11
+                               : (to == 8)  ? value / 1.2500E+14
+                               : (to == 9)  ? value / 1.2500E+17
+                               : (to == 10) ? value * 2000000
+                               : (to == 11) ? value * 1000000
+                               : (to == 12) ? value * 1000
+                               : (to == 14) ? value / 1000
+                               : (to == 15) ? value / 1000000
+                               : (to == 16) ? value / 1.0000E+9
+                               : (to == 17) ? value / 1.0000E+12
+                               : (to == 18) ? value / 1.0000E+15
+                               : (to == 19) ? value / 1.0000E+18
+                                            : value * 1)
+             : (from == 14) ? ((to == 1)    ? value * 8.0000E+9
+                               : (to == 2)  ? value * 8000000
+                               : (to == 3)  ? value * 8000
+                               : (to == 4)  ? value * 8
+                               : (to == 5)  ? value / 125
+                               : (to == 6)  ? value / 125000
+                               : (to == 7)  ? value / 1.2500E+8
+                               : (to == 8)  ? value / 1.2500E+11
+                               : (to == 9)  ? value / 1.2500E+14
+                               : (to == 10) ? value * 2.0000E+9
+                               : (to == 11) ? value * 1.0000E+9
+                               : (to == 12) ? value * 1000000
+                               : (to == 13) ? value * 1000
+                               : (to == 15) ? value / 1000
+                               : (to == 16) ? value / 1000000
+                               : (to == 17) ? value / 1.0000E+9
+                               : (to == 18) ? value / 1.0000E+11
+                               : (to == 19) ? value / 1.0000E+15
+                                            : value * 1)
+             : (from == 15) ? ((to == 1)    ? value * 8.0000E+12
+                               : (to == 2)  ? value * 8.0000E+9
+                               : (to == 3)  ? value * 8000000
+                               : (to == 4)  ? value * 8000
+                               : (to == 5)  ? value * 8
+                               : (to == 6)  ? value / 125
+                               : (to == 7)  ? value / 125000
+                               : (to == 8)  ? value / 1.2500E+8
+                               : (to == 9)  ? value / 1.2500E+11
+                               : (to == 10) ? value * 2.0000E+12
+                               : (to == 11) ? value * 1.0000E+12
+                               : (to == 12) ? value * 1.0000E+9
+                               : (to == 13) ? value * 1000000
+                               : (to == 14) ? value * 1000
+                               : (to == 16) ? value / 1000
+                               : (to == 17) ? value / 1000000
+                               : (to == 18) ? value / 1.0000E+9
+                               : (to == 19) ? value / 1.0000E+12
+                                            : value * 1)
+             : (from == 16) ? ((to == 1)    ? value * 8.0000E+15
+                               : (to == 2)  ? value * 8.0000E+12
+                               : (to == 3)  ? value * 8.0000E+9
+                               : (to == 4)  ? value * 8000000
+                               : (to == 5)  ? value * 8000
+                               : (to == 6)  ? value * 8
+                               : (to == 7)  ? value / 125
+                               : (to == 8)  ? value / 125000
+                               : (to == 9)  ? value / 1.2500E+8
+                               : (to == 10) ? value * 2.0000E+15
+                               : (to == 11) ? value * 1.0000E+15
+                               : (to == 12) ? value * 1.0000E+12
+                               : (to == 13) ? value * 1.0000E+9
+                               : (to == 14) ? value * 1000000
+                               : (to == 15) ? value * 1000
+                               : (to == 17) ? value / 1000
+                               : (to == 18) ? value / 1000000
+                               : (to == 19) ? value / 1.0000E+9
+                                            : value * 1)
+             : (from == 17) ? ((to == 1)    ? value * 8.0000E+18
+                               : (to == 2)  ? value * 8.0000E+15
+                               : (to == 3)  ? value * 8.0000E+12
+                               : (to == 4)  ? value * 8.0000E+9
+                               : (to == 5)  ? value * 8000000
+                               : (to == 6)  ? value * 8000
+                               : (to == 7)  ? value * 8
+                               : (to == 8)  ? value / 125
+                               : (to == 9)  ? value / 125000
+                               : (to == 10) ? value * 2.0000E+18
+                               : (to == 11) ? value * 1.0000E+18
+                               : (to == 12) ? value * 1.0000E+15
+                               : (to == 13) ? value * 1.0000E+12
+                               : (to == 14) ? value * 1.0000E+9
+                               : (to == 15) ? value * 1000000
+                               : (to == 16) ? value * 1000
+                               : (to == 18) ? value / 1000
+                               : (to == 19) ? value / 1000000
+                                            : value * 1)
+             : (from == 18) ? ((to == 1)    ? value * 8.0000E+21
+                               : (to == 2)  ? value * 8.0000E+18
+                               : (to == 3)  ? value * 8.0000E+15
+                               : (to == 4)  ? value * 8.0000E+12
+                               : (to == 5)  ? value * 8.0000E+9
+                               : (to == 6)  ? value * 8000000
+                               : (to == 7)  ? value * 8000
+                               : (to == 8)  ? value * 8
+                               : (to == 9)  ? value / 125
+                               : (to == 10) ? value * 2.0000E+21
+                               : (to == 11) ? value * 1.0000E+21
+                               : (to == 12) ? value * 1.0000E+18
+                               : (to == 13) ? value * 1.0000E+15
+                               : (to == 14) ? value * 1.0000E+12
+                               : (to == 15) ? value * 1.0000E+9
+                               : (to == 16) ? value * 1000000
+                               : (to == 17) ? value * 1000
+                               : (to == 18) ? value * 1
+                               : (to == 19) ? value / 1000
+                                            : value * 1)
+             : (from == 19) ? ((to == 1)    ? value * 8.0000E+24
+                               : (to == 2)  ? value * 8.0000E+21
+                               : (to == 3)  ? value * 8.0000E+18
+                               : (to == 4)  ? value * 8.0000E+15
+                               : (to == 5)  ? value * 8.0000E+12
+                               : (to == 6)  ? value * 8.0000E+9
+                               : (to == 7)  ? value * 8000000
+                               : (to == 8)  ? value * 8000
+                               : (to == 9)  ? value * 8
+                               : (to == 10) ? value * 2.0000E+24
+                               : (to == 11) ? value * 1.0000E+24
+                               : (to == 12) ? value * 1.0000E+21
+                               : (to == 13) ? value * 1.0000E+18
+                               : (to == 14) ? value * 1.0000E+15
+                               : (to == 15) ? value * 1.0000E+12
+                               : (to == 16) ? value * 1.0000E+9
+                               : (to == 17) ? value * 1000000
+                               : (to == 18) ? value * 1000
+                                            : value * 1)
+                            : value * 0;
   }
   return result;
 }

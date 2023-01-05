@@ -3,16 +3,16 @@
 #include <string>
 #include <vector>
 
-#define CREATED                                                                \
+#define CREATED(message)                                                       \
   static unsigned short i = 0;                                                 \
   ++i;                                                                         \
-  printf("Created: %i Times", i);                                              \
+  printf("%s Created: %i Times", message, i);                                  \
   std::cin.get();
 
-#define DESTROYED                                                              \
+#define DESTROYED(message)                                                     \
   static unsigned short i = 0;                                                 \
   ++i;                                                                         \
-  printf("Destroyed: %i Times", i);                                            \
+  printf("%s Destroyed: %i Times", message, i);                                \
   std::cin.get();
 
 /* In the main cpp file, there are variables called strRespond 1 and 2 (at
@@ -120,23 +120,20 @@ public:
 
 class Conv1 {
 public:
-  // Conv1() {
-  //   printf("Conv ");
-  //   CREATED;
-  // }
-
-  // ~Conv1() {
-  //   printf("Conv ");
-  //   DESTROYED;
-  // }
-
-  inline void reset() {
+  Conv1() {
     iConv1 = 0;
     iConv2 = 0;
     result = 0.0;
     value = 0.0;
     unit.clear();
+
+    // CREATED("Conv1");
   }
+
+  // ~Conv1() {
+  //   printf("Conv ");
+  //   DESTROYED;
+  // }
 
 protected:
   unsigned short iConv1, iConv2;
@@ -146,22 +143,22 @@ protected:
 public:
   void area();
   void data();
+
+  void merge(unsigned short where);
 };
 
 class Conv2 : protected Conv1 {
 public:
-  // Conv2() {
-  //   printf("Temperature ");
-  //   CREATED;
-  // }
+  Conv2() {
+    results = {0., 0., 0., 0.};
+
+    // CREATED("Conv2");
+  }
 
   // ~Conv2() {
   //   printf("Temperature ");
   //   DESTROYED;
   // }
-  inline void reset() {
-    results = {0., 0., 0., 0.};
-  }
 
 private:
   std::array<long double, 4> results;

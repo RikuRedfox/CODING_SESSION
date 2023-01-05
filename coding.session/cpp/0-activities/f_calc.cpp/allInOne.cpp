@@ -691,11 +691,16 @@ void Conv1::data() {
   }
 }
 
-static long double listOfResult(unsigned short where,
+inline static long double listOfResult(unsigned short where,
                                        unsigned short &from, unsigned short &to,
                                        long double &value) {
   long double result = 0.0L;
   if (where == 1) {
+    // if(n1 == n)
+    //   if(n2 == n)
+    //   elif(n2 == n)
+    //   else(n2 ==n)
+    // else
     result = (from == 1)    ? ((to == 2)    ? value / 144
                                : (to == 3)  ? value / 1296
                                : (to == 4)  ? value / 4.0145E+9

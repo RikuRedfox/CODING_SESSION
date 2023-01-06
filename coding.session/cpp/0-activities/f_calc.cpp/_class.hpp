@@ -125,7 +125,6 @@ public:
     iConv2 = 0;
     result = 0.0;
     value = 0.0;
-    unit.clear();
 
     // CREATED("Conv1");
   }
@@ -141,10 +140,11 @@ protected:
   std::vector<std::string> unit;
 
 public:
-  void area();
-  void data();
-
   void merge(unsigned short where);
+  inline long double listOfResult(unsigned short &where,
+                                       unsigned short &from, unsigned short &to,
+                                       long double &value);
+  
 };
 
 class Conv2 : protected Conv1 {

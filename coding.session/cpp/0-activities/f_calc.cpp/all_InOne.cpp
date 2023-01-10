@@ -551,21 +551,50 @@ void Conv1::merge(unsigned short where) {
             "Square centimeter (cm)",
             "Square meter (m)",
             "Square kilometer (km)"};
-  }
-  if (where == 2) { // Data Storage Conversion
+  } else if (where == 2) { // Data Storage Conversion
     unit = {"Bit (b)",       "Kilobit (kb)",   "Megabit (Mb)",  "Gigabit (Gb)",
             "Terabit (Tb)",  "Petabit (Pb)",   "Exabit (Eb)",   "Zettabit (Zb)",
             "Yottabit (Yb)", "Nibble ()",      "Byte (B)",      "Kilobyte (kB)",
             "Megabyte (MB)", "Gigabyte (GB)",  "Terabyte (TB)", "Petabyte (PB)",
             "Exabyte (EB)",  "Zettabyte (ZB)", "Yottabyte (YB)"};
-  }
-  if (where == 3) {
+  } else if (where == 3) { // Length / Distance Conversion
     unit = {"Inch (in)",       "Foot (ft)",         "Yard (yd)",
             "Mile (mi)",       "Capefoot (cf)",     "Rod (rd)",
             "Angstrom (A)",    "Nanometer (n)",     "Micron (u)",
             "Millimeter (mm)", "Centimeter (cm)",   "Meter (m)",
             "Kilometer (km)",  "Light-year (l.y.)", "Light-day ()",
             "Light-hour ()",   "Light-minute ()",   "Light-second ()"};
+  } else if (where == 4) { // Weight / Mass Conversion
+    unit = {"Carat (metric) (ct)",
+            "Point (metric) (pt)",
+            "Centigram (cg)",
+            "Dram (avdp) (dr)",
+            "Dram (troy) (dr)",
+            "Grain (metric) (gr)",
+            "Grain (troy) (gr)",
+            "Gram (g)",
+            "Hunderedweight (long) (hwt)",
+            "Hunderedweight (short) (hwt)",
+            "Kilogram (kg)",
+            "Megagram (Mg)",
+            "milligram (mg)",
+            "Microgram (ug)",
+            "Ounce (avdp) (oz)",
+            "Ounce (troy) (oz)",
+            "Pennyweight (dwt)",
+            "Pound (avdp) (lb)",
+            "Pound (metric) (lb)",
+            "Pound (troy) (lb)",
+            "Slug (slug)",
+            "Stone (st)",
+            "Ton-assay (long) (l AT)",
+            "Ton-assay (short) (sh AT)",
+            "Ton (long) (l tn)",
+            "Ton (short) (sh tn)",
+            "Ton-metric (t)",
+            "Tonne (U.S. metric ton) (t)"};
+  } else {
+    CONV_CLEAR
   }
 
 LOOP:
@@ -585,7 +614,7 @@ LOOP:
   std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
                  glb::strRespond1.begin(), ::tolower);
   if (glb::strRespond1 == "e") {
-    CONV_CLEAR;
+    CONV_CLEAR
   } else {
     try {
       iConv1 = stoi(glb::strRespond1);
@@ -593,13 +622,14 @@ LOOP:
       if (where == 1) {
         if (iConv1 < 1 || iConv1 > 10)
           goto LOOP;
-
       } else if (where == 2) {
         if (iConv1 < 1 || iConv1 > 19)
           goto LOOP;
-      }
-      if (where == 3) {
+      } else if (where == 3) {
         if (iConv1 < 1 || iConv1 > 18)
+          goto LOOP;
+      } else if (where == 4) {
+        if (iConv1 < 1 || iConv1 > 29)
           goto LOOP;
       }
     } catch (...) {
@@ -612,7 +642,7 @@ LOOP:
   std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
                  glb::strRespond1.begin(), ::tolower);
   if (glb::strRespond1 == "e") {
-    CONV_CLEAR;
+    CONV_CLEAR
   } else {
     try {
       iConv2 = stoi(glb::strRespond1);
@@ -624,7 +654,10 @@ LOOP:
         if (iConv2 < 1 || iConv2 > 19)
           goto LOOP;
       } else if (where == 3) {
-        if (iConv1 < 1 || iConv1 > 18)
+        if (iConv2 < 1 || iConv2 > 18)
+          goto LOOP;
+      } else if (where == 4) {
+        if (iConv2 < 1 || iConv2 > 29)
           goto LOOP;
       }
     } catch (...) {
@@ -638,7 +671,7 @@ LOOP:
   std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
                  glb::strRespond1.begin(), ::tolower);
   if (glb::strRespond1 == "e") {
-    CONV_CLEAR;
+    CONV_CLEAR
   } else {
     try {
       value = stold(glb::strRespond1);
@@ -666,6 +699,7 @@ inline long double Conv1::listOfResult(unsigned short &where,
                                        unsigned short &from, unsigned short &to,
                                        long double &value) {
   long double result = 0.0L;
+  // !Q: Should I shorten this? but that will be hard to maintain or understand
   // if(n1 == n)
   //   if(n2 == n)
   //   elif(n2 == n)
@@ -773,8 +807,7 @@ inline long double Conv1::listOfResult(unsigned short &where,
                                : (to == 9) ? value * 1000000
                                            : value * 1) // if n1 == n2
                             : value * 0;
-  }
-  if (where == 2) {
+  } else if (where == 2) {
     result = (from == 1)    ? ((to == 2)    ? value / 1000
                                : (to == 3)  ? value / 1000000
                                : (to == 4)  ? value / 1.0000e+9
@@ -1138,8 +1171,7 @@ inline long double Conv1::listOfResult(unsigned short &where,
                                : (to == 18) ? value * 1000
                                             : value * 1)
                             : value * 0;
-  }
-  if (where == 3) {
+  } else if (where == 3) {
     // "Inch (in)"         // 1
     // "Foot (ft)"         // 2
     // "Yard (yd)"         // 3
@@ -1483,6 +1515,240 @@ inline long double Conv1::listOfResult(unsigned short &where,
                                : (to == 17) ? value
                                             : value * 1)
                             : value * 0;
+  } else if (where == 4) {
+    result = (from == 1)   ? ((to == 2)    ? value
+                              : (to == 3)  ? value
+                              : (to == 4)  ? value
+                              : (to == 5)  ? value
+                              : (to == 6)  ? value
+                              : (to == 7)  ? value
+                              : (to == 8)  ? value
+                              : (to == 9)  ? value
+                              : (to == 10) ? value
+                              : (to == 11) ? value
+                              : (to == 12) ? value
+                              : (to == 13) ? value
+                              : (to == 14) ? value
+                              : (to == 15) ? value
+                              : (to == 16) ? value
+                              : (to == 17) ? value
+                              : (to == 18) ? value
+                              : (to == 19) ? value
+                              : (to == 20) ? value
+                              : (to == 21) ? value
+                              : (to == 22) ? value
+                              : (to == 23) ? value
+                              : (to == 24) ? value
+                              : (to == 25) ? value
+                              : (to == 26) ? value
+                              : (to == 27) ? value
+                              : (to == 28) ? value
+                              : (to == 29) ? value
+                                           : value * 1)
+             : (from == 2) ? ((to == 1)    ? value
+                              : (to == 3)  ? value
+                              : (to == 4)  ? value
+                              : (to == 5)  ? value
+                              : (to == 6)  ? value
+                              : (to == 7)  ? value
+                              : (to == 8)  ? value
+                              : (to == 9)  ? value
+                              : (to == 10) ? value
+                              : (to == 11) ? value
+                              : (to == 12) ? value
+                              : (to == 13) ? value
+                              : (to == 14) ? value
+                              : (to == 15) ? value
+                              : (to == 16) ? value
+                              : (to == 17) ? value
+                              : (to == 18) ? value
+                              : (to == 19) ? value
+                              : (to == 20) ? value
+                              : (to == 21) ? value
+                              : (to == 22) ? value
+                              : (to == 23) ? value
+                              : (to == 24) ? value
+                              : (to == 25) ? value
+                              : (to == 26) ? value
+                              : (to == 27) ? value
+                              : (to == 28) ? value
+                              : (to == 29) ? value
+                                           : value * 1)
+             : (from == 3) ? ((to == 1)    ? value
+                              : (to == 2)  ? value
+                              : (to == 4)  ? value
+                              : (to == 5)  ? value
+                              : (to == 6)  ? value
+                              : (to == 7)  ? value
+                              : (to == 8)  ? value
+                              : (to == 9)  ? value
+                              : (to == 10) ? value
+                              : (to == 11) ? value
+                              : (to == 12) ? value
+                              : (to == 13) ? value
+                              : (to == 14) ? value
+                              : (to == 15) ? value
+                              : (to == 16) ? value
+                              : (to == 17) ? value
+                              : (to == 18) ? value
+                              : (to == 19) ? value
+                              : (to == 20) ? value
+                              : (to == 21) ? value
+                              : (to == 22) ? value
+                              : (to == 23) ? value
+                              : (to == 24) ? value
+                              : (to == 25) ? value
+                              : (to == 26) ? value
+                              : (to == 27) ? value
+                              : (to == 28) ? value
+                              : (to == 29) ? value
+                                           : value * 1)
+             : (from == 4) ? ((to == 1)    ? value
+                              : (to == 2)  ? value
+                              : (to == 3)  ? value
+                              : (to == 5)  ? value
+                              : (to == 6)  ? value
+                              : (to == 7)  ? value
+                              : (to == 8)  ? value
+                              : (to == 9)  ? value
+                              : (to == 10) ? value
+                              : (to == 11) ? value
+                              : (to == 12) ? value
+                              : (to == 13) ? value
+                              : (to == 14) ? value
+                              : (to == 15) ? value
+                              : (to == 16) ? value
+                              : (to == 17) ? value
+                              : (to == 18) ? value
+                              : (to == 19) ? value
+                              : (to == 20) ? value
+                              : (to == 21) ? value
+                              : (to == 22) ? value
+                              : (to == 23) ? value
+                              : (to == 24) ? value
+                              : (to == 25) ? value
+                              : (to == 26) ? value
+                              : (to == 27) ? value
+                              : (to == 28) ? value
+                              : (to == 29) ? value
+                                           : value * 1)
+             : (from == 5) ? ((to == 1)    ? value
+                              : (to == 2)  ? value
+                              : (to == 3)  ? value
+                              : (to == 4)  ? value
+                              : (to == 6)  ? value
+                              : (to == 7)  ? value
+                              : (to == 8)  ? value
+                              : (to == 9)  ? value
+                              : (to == 10) ? value
+                              : (to == 11) ? value
+                              : (to == 12) ? value
+                              : (to == 13) ? value
+                              : (to == 14) ? value
+                              : (to == 15) ? value
+                              : (to == 16) ? value
+                              : (to == 17) ? value
+                              : (to == 18) ? value
+                              : (to == 19) ? value
+                              : (to == 20) ? value
+                              : (to == 21) ? value
+                              : (to == 22) ? value
+                              : (to == 23) ? value
+                              : (to == 24) ? value
+                              : (to == 25) ? value
+                              : (to == 26) ? value
+                              : (to == 27) ? value
+                              : (to == 28) ? value
+                              : (to == 29) ? value
+                                           : value * 1)
+             : (from == 6) ? ((to == 1)    ? value
+                              : (to == 2)  ? value
+                              : (to == 3)  ? value
+                              : (to == 4)  ? value
+                              : (to == 5)  ? value
+                              : (to == 7)  ? value
+                              : (to == 8)  ? value
+                              : (to == 9)  ? value
+                              : (to == 10) ? value
+                              : (to == 11) ? value
+                              : (to == 12) ? value
+                              : (to == 13) ? value
+                              : (to == 14) ? value
+                              : (to == 15) ? value
+                              : (to == 16) ? value
+                              : (to == 17) ? value
+                              : (to == 18) ? value
+                              : (to == 19) ? value
+                              : (to == 20) ? value
+                              : (to == 21) ? value
+                              : (to == 22) ? value
+                              : (to == 23) ? value
+                              : (to == 24) ? value
+                              : (to == 25) ? value
+                              : (to == 26) ? value
+                              : (to == 27) ? value
+                              : (to == 28) ? value
+                              : (to == 29) ? value
+                                           : value * 1)
+             : (from == 7) ? ((to == 1)    ? value
+                              : (to == 2)  ? value
+                              : (to == 3)  ? value
+                              : (to == 4)  ? value
+                              : (to == 5)  ? value
+                              : (to == 6)  ? value
+                              : (to == 8)  ? value
+                              : (to == 9)  ? value
+                              : (to == 10) ? value
+                              : (to == 11) ? value
+                              : (to == 12) ? value
+                              : (to == 13) ? value
+                              : (to == 14) ? value
+                              : (to == 15) ? value
+                              : (to == 16) ? value
+                              : (to == 17) ? value
+                              : (to == 18) ? value
+                              : (to == 19) ? value
+                              : (to == 20) ? value
+                              : (to == 21) ? value
+                              : (to == 22) ? value
+                              : (to == 23) ? value
+                              : (to == 24) ? value
+                              : (to == 25) ? value
+                              : (to == 26) ? value
+                              : (to == 27) ? value
+                              : (to == 28) ? value
+                              : (to == 29) ? value
+                                           : value * 1)
+             : (from == 8) ? ((to == 1)    ? value
+                              : (to == 2)  ? value
+                              : (to == 3)  ? value
+                              : (to == 4)  ? value
+                              : (to == 5)  ? value
+                              : (to == 6)  ? value
+                              : (to == 7)  ? value
+                              : (to == 9)  ? value
+                              : (to == 10) ? value
+                              : (to == 11) ? value
+                              : (to == 12) ? value
+                              : (to == 13) ? value
+                              : (to == 14) ? value
+                              : (to == 15) ? value
+                              : (to == 16) ? value
+                              : (to == 17) ? value
+                              : (to == 18) ? value
+                              : (to == 19) ? value
+                              : (to == 20) ? value
+                              : (to == 21) ? value
+                              : (to == 22) ? value
+                              : (to == 23) ? value
+                              : (to == 24) ? value
+                              : (to == 25) ? value
+                              : (to == 26) ? value
+                              : (to == 27) ? value
+                              : (to == 28) ? value
+                              : (to == 29) ? value
+                                           : value * 1)
+                           : value * 1;
   }
   return result;
 }
@@ -1511,7 +1777,7 @@ void Conv2::temperature() {
     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
                    glb::strRespond1.begin(), ::tolower);
     if (glb::strRespond1 == "e") {
-      CONV_CLEAR;
+      CONV_CLEAR
     } else {
       try {
         iConv1 = std::stoi(glb::strRespond1);
@@ -1527,7 +1793,7 @@ void Conv2::temperature() {
     std::transform(glb::strRespond1.begin(), glb::strRespond1.end(),
                    glb::strRespond1.begin(), ::tolower);
     if (glb::strRespond1 == "e") {
-      CONV_CLEAR;
+      CONV_CLEAR
     } else {
       try {
         value = std::stoi(glb::strRespond1);

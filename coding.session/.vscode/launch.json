@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Basics1",
+            "request": "launch",
+            "mainClass": "basic.Basics1",
+            "projectName": "coding.session_523e3134"
+        },
+        {
+            "type": "java",
             "name": "Launch labsMain",
             "request": "launch",
             "mainClass": "labsMain",

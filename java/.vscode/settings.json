@@ -1,0 +1,25 @@
+{
+    "java.project.sourcePaths": [
+        "Reusable/src",
+        "DATA_STRUCT/src",
+        "DATA_STRUCT/lib",
+        "DATA_SORT/src",
+        "DATA_SORT/lib",
+        "DATA_SEARCH/src",
+        "DATA_SEARCH/lib",
+        "ACTIVITY/src",
+        "ACTIVITY/lib",
+        "Reusable/lib"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\programming_src\\openjfx-17.0.7_windows-x64_bin-sdk\\javafx-sdk-17.0.7\\lib\\javafx.base.jar",
+        "c:\\programming_src\\openjfx-17.0.7_windows-x64_bin-sdk\\javafx-sdk-17.0.7\\lib\\javafx.controls.jar",
+        "c:\\programming_src\\openjfx-17.0.7_windows-x64_bin-sdk\\javafx-sdk-17.0.7\\lib\\javafx.fxml.jar",
+        "c:\\programming_src\\openjfx-17.0.7_windows-x64_bin-sdk\\javafx-sdk-17.0.7\\lib\\javafx.graphics.jar",
+        "c:\\programming_src\\openjfx-17.0.7_windows-x64_bin-sdk\\javafx-sdk-17.0.7\\lib\\javafx.media.jar",
+        "c:\\programming_src\\openjfx-17.0.7_windows-x64_bin-sdk\\javafx-sdk-17.0.7\\lib\\javafx.swing.jar",
+        "c:\\programming_src\\openjfx-17.0.7_windows-x64_bin-sdk\\javafx-sdk-17.0.7\\lib\\javafx.web.jar",
+        "c:\\programming_src\\openjfx-17.0.7_windows-x64_bin-sdk\\javafx-sdk-17.0.7\\lib\\javafx-swt.jar"
+    ]
+}

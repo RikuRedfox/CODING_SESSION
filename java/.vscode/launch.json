@@ -1,0 +1,84 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "App",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "GuessTheNumber",
+      "request": "launch",
+      "mainClass": "GuessTheNumber",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "MainDoubleLinkList",
+      "request": "launch",
+      "mainClass": "MainDoubleLinkList",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "MainStack",
+      "request": "launch",
+      "mainClass": "MainStack",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "Mortage",
+      "request": "launch",
+      "mainClass": "Mortage",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "SimpleCalculator",
+      "request": "launch",
+      "mainClass": "SimpleCalculator",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "Timer",
+      "request": "launch",
+      "mainClass": "Timer",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "mid_Act1",
+      "request": "launch",
+      "mainClass": "mid_Act1",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "mid_Act2",
+      "request": "launch",
+      "mainClass": "mid_Act2",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "mid_Act3",
+      "request": "launch",
+      "mainClass": "mid_Act3",
+      "projectName": "java_419461b7"
+    }
+  ]
+}

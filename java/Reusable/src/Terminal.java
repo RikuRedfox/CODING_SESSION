@@ -13,6 +13,11 @@ public class Terminal {
         }
     }
 
+    public static void CLEAR_TO_PROMPT(String prompt){
+        CLEAR_CONSOLE();
+        System.out.print(prompt);
+    }
+
     public static void PAUSE() {
         System.out.println("Press enter to continue...");
         try {
@@ -22,8 +27,9 @@ public class Terminal {
         }
     }
 
-    public static void CLEAR_AND_PAUSE() {
+    public static void CLEAR_AND_PAUSE(String prompt) {
         CLEAR_CONSOLE();
+        System.out.println(prompt);
         PAUSE();
     }
 }

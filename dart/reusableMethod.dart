@@ -1,30 +1,31 @@
 import 'dart:io';
 
-void CLEAR_CONSOLE() {
+Future<void> CLEAR_CONSOLE() async {
   if (Platform.isWindows) {
     // For Windows
-    print(Process.runSync('cls', [], runInShell: true).stdout);
+    await Process.run('cls', [], runInShell: true);
   } else {
     // For macOS and Linux
-    print(Process.runSync('clear', [], runInShell: true).stdout);
+    await Process.run('clear', [], runInShell: true);
   }
-
   // Fallback option
   print('\x1B[2J\x1B[0;0H');
 }
 
 void CLEAR_TO_PROMPT(String prompt) {
-  CLEAR_CONSOLE();
-  stdout.write(prompt);
+  CLEAR_CONSOLE().then((_) {
+    stdout.write(prompt);
+  });
 }
 
-void PAUSE() {
+Future<void> PAUSE() async {
   print('\nPress enter to continue...');
-  stdin.readLineSync();
+  await stdin.readLineSync();
 }
 
 void CLEAR_AND_PAUSE(String prompt) {
-  CLEAR_CONSOLE();
-  print('$prompt');
-  PAUSE();
+  CLEAR_CONSOLE().then((_) {
+    print('$prompt');
+    PAUSE();
+  });
 }

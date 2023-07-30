@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Queue",
+      "request": "launch",
+      "mainClass": "Queue",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
       "name": "Current File",
       "request": "launch",
       "mainClass": "${file}"

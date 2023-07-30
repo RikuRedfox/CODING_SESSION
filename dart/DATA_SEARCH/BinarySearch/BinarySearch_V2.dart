@@ -40,7 +40,7 @@ void main() {
 
           String temp;
           do {
-            stdout.write("Enter thhe student USN: ");
+            stdout.write("Enter the student USN: ");
             temp = stdin.readLineSync()!;
           } while (!isNumeric(temp) || temp.length != 11);
           final int usn = int.parse(temp);
@@ -97,7 +97,7 @@ int binarySearch(List<AMAStudent> studentList, dynamic value) {
   int high = studentList.length - 1;
 
   while (low <= high) {
-    int mid = ((low + high) / 2).floor();
+    int mid = (low + high) ~/ 2;
     AMAStudent student = studentList[mid];
 
     if (value is int) {
@@ -111,10 +111,10 @@ int binarySearch(List<AMAStudent> studentList, dynamic value) {
       }
     } else if (value is String) {
       // For searching a name
-      int nameCamparison = student._name.compareTo(value); // 0 1 -1
-      if (nameCamparison == 0) {
+      int nameComparison = student._name.compareTo(value); // 0 1 -1
+      if (nameComparison == 0) {
         return mid;
-      } else if (nameCamparison > 0) {
+      } else if (nameComparison > 0) {
         high = mid - 1;
       } else {
         low = mid + 1;

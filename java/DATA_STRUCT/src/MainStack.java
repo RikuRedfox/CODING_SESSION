@@ -1,36 +1,34 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 class Stack {
-  private List<Object> data;
+  private Object[] data;
   private int size;
+  private int top;
 
   Stack(int size) {
-    this.data = new ArrayList<>();
+    this.data = new Object[size];
     this.size = size;
+    this.top = -1;
   }
 
   boolean isFull() {
-    return data.size() == size;
+    return top == size - 1;
   }
 
   boolean isEmpty() {
-    return data.isEmpty();
+    return top == -1;
   }
 
   void push(Object value) {
     if (isFull())
       System.out.println("Stack Overflow");
     else
-      data.add(value);
+      data[++top] = value;
   }
 
   void pop() {
     if (isEmpty()) {
       System.out.println("Stack Underflow");
     } else {
-      Object value = data.remove(data.size() - 1);
+      Object value = data[top--];
       System.out.println(value + " has been popped from the Stack");
     }
   }
@@ -39,11 +37,11 @@ class Stack {
     if (isEmpty()) {
       System.out.println("Stack is empty.");
     } else {
-      StringBuilder sb = new StringBuilder();
+      System.out.println("Stack: ");
       for (Object item : data)
-        sb.append(item + " <- ");
+        System.out.println(item + " <- ");
 
-      System.out.println(sb.toString());
+      System.out.println();
     }
   }
 
@@ -51,7 +49,7 @@ class Stack {
 
 public class MainStack {
   public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
+    java.util.Scanner sc = new java.util.Scanner(System.in);
     int size;
     Stack stack;
 

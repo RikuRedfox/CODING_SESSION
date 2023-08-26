@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "BinarySearchTree",
+      "request": "launch",
+      "mainClass": "BinarySearchTree",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
+      "name": "Recap",
+      "request": "launch",
+      "mainClass": "Recap",
+      "projectName": "java_419461b7"
+    },
+    {
+      "type": "java",
       "name": "Queue",
       "request": "launch",
       "mainClass": "Queue",

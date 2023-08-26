@@ -7,7 +7,7 @@ public class GuessTheNumber {
     public static void main(String[] args) {
 
         while (true) {
-            Terminal.CLEAR_CONSOLE();
+            Terminal.clearConsole();
             System.out.println("[1] Easy.");
             System.out.println("[2] Medium rare.");
             System.out.println("[3] More Harder.");
@@ -30,7 +30,7 @@ public class GuessTheNumber {
         int userChance = getChances(difficulty);
         int userGuess = 0;
 
-        Terminal.CLEAR_CONSOLE();
+        Terminal.clearConsole();
         System.out.println("you have " + userChance + " chances to get the correct number.");
         while (userChance > 0) {
             System.out.print("Enter your guess: ");
@@ -42,13 +42,13 @@ public class GuessTheNumber {
                 System.out.println("Hint: Higher! Chances: " + --userChance + "\n");
             } else if (userGuess == randomNumber) {
                 System.out.println("Congratulations! Ypu guessed it right.");
-                Terminal.PAUSE();
+                Terminal.pauseConsole();
                 return;
             }
         }
 
         System.out.println("You ran out of chances. The number was " + randomNumber);
-        Terminal.PAUSE();
+        Terminal.pauseConsole();
         return;
     }
 

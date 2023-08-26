@@ -34,7 +34,7 @@ class DoubleLinkyList {
     void addLast(Object data) {
         if (isFull()) {
             System.out.println("The Node is full. Cannot add more.");
-            Terminal.PAUSE();
+            Terminal.pauseConsole();
             return;
         }
 
@@ -53,7 +53,7 @@ class DoubleLinkyList {
     void addFirst(Object data) {
         if (isFull()) {
             System.out.println("The Node is full. Cannot add more.");
-            Terminal.PAUSE();
+            Terminal.pauseConsole();
             return;
         }
 
@@ -72,13 +72,13 @@ class DoubleLinkyList {
     void insertAtPosition(Object data, int position) {
         if (position < 0 || position > size) {
             System.out.println("Invalid position.");
-            Terminal.PAUSE();
+            Terminal.pauseConsole();
             return;
         }
 
         if (isFull()) {
             System.out.println("The Node is full. Cannot add more.");
-            Terminal.PAUSE();
+            Terminal.pauseConsole();
             return;
         }
 
@@ -104,7 +104,7 @@ class DoubleLinkyList {
             size++;
         } else {
             System.out.println("Invalid position.");
-            Terminal.PAUSE();
+            Terminal.pauseConsole();
         }
     }
 
@@ -200,7 +200,7 @@ class MainDoubleLinkList {
         DoubleLinkyList doubleLinkList = new DoubleLinkyList(maxSize);
 
         while (true) {
-            Terminal.CLEAR_CONSOLE();
+            Terminal.clearConsole();
             doubleLinkList.display();
             System.out.println("\nWhat do you want to do?");
             System.out.println("[1] Insert Node.");
@@ -210,7 +210,7 @@ class MainDoubleLinkList {
 
             switch (userChoice) {
                 case 1:
-                    Terminal.CLEAR_CONSOLE();
+                    Terminal.clearConsole();
                     doubleLinkList.display();
                     System.out.println("\nInserting Node:");
                     System.out.println("[1] Insert at first position.");
@@ -242,7 +242,7 @@ class MainDoubleLinkList {
 
                     break;
                 case 2:
-                    Terminal.CLEAR_CONSOLE();
+                    Terminal.clearConsole();
                     doubleLinkList.display();
                     System.out.println("\nDeleting Node:");
                     System.out.println("[1] Delete first node");
@@ -272,7 +272,7 @@ class MainDoubleLinkList {
                     return;
                 default:
                     System.out.println("Invalid choice.");
-                    Terminal.PAUSE();
+                    Terminal.pauseConsole();
             }
         }
     }

@@ -60,7 +60,7 @@ public class MainStack {
     int userChoice = 0;
 
     while (userChoice != 3) {
-      Terminal.CLEAR_CONSOLE();
+      Terminal.clearConsole();
       System.out.println("Size of Stack: " + size);
       stack.StackDisplay();
       System.out.print("""
@@ -75,20 +75,20 @@ public class MainStack {
 
       switch (userChoice) {
         case 1:
-          Terminal.CLEAR_CONSOLE();
+          Terminal.clearConsole();
           System.out.print("Enter value: ");
           Object value = sc.nextLine();
           stack.push(value);
           break;
         case 2:
           stack.pop();
-          Terminal.PAUSE();
+          Terminal.pauseConsole();
           break;
         case 3:
           return;
         default:
           System.out.println("Invalid Choice");
-          Terminal.PAUSE();
+          Terminal.pauseConsole();
       }
     }
     sc.close();

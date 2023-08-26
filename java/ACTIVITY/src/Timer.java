@@ -11,7 +11,7 @@ public class Timer {
 
   void startTimer(int seconds, int minutes, int hours) throws InterruptedException {
     while (true) {
-      Terminal.CLEAR_CONSOLE();
+      Terminal.clearConsole();
       System.out.printf("%d : %d : %d%n", hours, minutes, seconds);
       Thread.sleep(1000);
 
@@ -34,7 +34,7 @@ public class Timer {
   void getTime() {
     System.out.println("\tTIMER");
 
-    while(true) {
+    while (true) {
       try {
         System.out.print("Enter seconds: ");
         seconds = sc.nextInt();
@@ -48,7 +48,8 @@ public class Timer {
       }
     }
 
-    if (seconds == 0 && minutes == 0 && hours == 0) return;
+    if (seconds == 0 && minutes == 0 && hours == 0)
+      return;
 
     try {
       startTimer(exceedSeconds(seconds), exceedMinutes(minutes), hours);

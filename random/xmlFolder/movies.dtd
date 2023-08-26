@@ -1,0 +1,13 @@
+<!ELEMENT movies (movie+)>
+<!ELEMENT movie (title, director, releaseYear, genre, cast, plot)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT director (#PCDATA)>
+<!ELEMENT releaseYear (#PCDATA)>
+<!ELEMENT genre (#PCDATA)>
+<!ELEMENT cast (actor+)>
+<!ELEMENT actor (#PCDATA)>
+<!ELEMENT plot (#PCDATA)>
+<!ATTLIST movie
+  rating CDATA #IMPLIED
+  duration CDATA #IMPLIED
+>

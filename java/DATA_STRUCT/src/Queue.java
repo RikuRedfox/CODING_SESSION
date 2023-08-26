@@ -125,7 +125,7 @@ public class Queue {
           2.) Pop Element.
           3.) Peek First Element.
           4.) Peek Last Element.
-          5.) Swap Elements.
+          5.) Swap Elements [bugged].
           6.) Check Queue size.
           0.) Exit.
           """);

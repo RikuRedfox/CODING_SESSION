@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE movies SYSTEM "movies.dtd">
+
+<movies>
+  <movie rating="9.3" duration="142">
+    <title>The Shawshank Redemption</title>
+    <director>Frank Darabont</director>
+    <releaseYear>1994</releaseYear>
+    <genre>Drama</genre>
+    <cast>
+      <actor>tim Robbins</actor>
+      <actor>Morgan Freeman</actor>
+    </cast>
+    <plot>Two imprisoned men bond over a number of years. Finding soace and...</plot>
+  </movie>
+
+  <movie rating="8.8" duration="148">
+    <title>Inception</title>
+    <director>Christopher Nolan</director>
+    <releaseYear>2010</releaseYear>
+    <genre>Sci-Fi</genre>
+    <cast>
+      <actor>Leonardo DiCaprio</actor>
+      <actor>Joseph Gordon-Levitt</actor>
+    </cast>
+    <plot>A thief who steals corporate secrets through the use of dream-sharing...</plot>
+  </movie>
+
+  <movie rating="8.5" duration="106">
+    <title>Whiplash</title>
+    <director>Damien Chazelle</director>
+    <releaseYear>2014</releaseYear>
+    <genre>Drama</genre>
+    <cast>
+      <actor>Miles Teller</actor>
+      <actor>J.K. Simmons</actor>
+    </cast>
+    <plot>Andrew Neiman is a first-year student and jazz drummer at the prestigious Shaffer Conservatory in New York City, hoping one day to leave a legacy like that of his childhood idol, jazz drummer Buddy Rich.</plot>
+  </movie>
+
+  <movie rating="6.7" duration="126">
+    <title>I am a Hero</title>
+    <director>Shinsuke Sato</director>
+    <releaseYear>2009</releaseYear>
+    <genre>Horror</genre>
+    <cast>
+      <actor>Hideo Suzuki</actor>
+      <actor>Hayakari Hiromi</actor>
+    </cast>
+    <plot>The story begins with Hideo Suzuki, a 35-year-old manga artist assistant, whose life seems to be stuck around his exhausting but low-paying job, unfulfilled dreams, strange hallucinations and unsatisfying relationships.</plot>
+  </movie>
+
+  <movie rating="9.2" duration="175">
+    <title>The Godfather</title>
+    <director>Francis Ford Coppola</director>
+    <releaseYear>1972</releaseYear>
+    <genre>Action</genre>
+    <cast>
+      <actor>Marlon Brando</actor>
+      <actor>AI Pacino</actor>
+    </cast>
+    <plot>In 1945 New York City, Corleone crime family don Vito Corleone listens to requests during his daughter Connie's wedding to Carlo. Michael, Vito's youngest son and a former Marine, introduces his girlfriend, Kay Adams, to his family at the reception.</plot>
+  </movie>
+
+  <movie rating="8.3" duration="130">
+    <title>Top Gun: Maverick</title>
+    <director>Joseph Kosinski</director>
+    <releaseYear>2022</releaseYear>
+    <genre>Action</genre>
+    <cast>
+      <actor>Tom Cruise</actor>
+      <actor>Miles Teller</actor>
+    </cast>
+    <plot>More than 30 years after graduating from Top Gun,[a] United States Navy Captain Pete "Maverick" Mitchell is a test pilot.</plot>
+  </movie>
+</movies>

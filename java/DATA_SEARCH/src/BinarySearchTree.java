@@ -82,7 +82,7 @@ public class BinarySearchTree {
     HashSet<Integer> uniqueNumbers = new HashSet<>();
 
     while (uniqueNumbers.size() < setSize) {
-      int randomValue = rand.nextInt(maxValue - minValue + 1);
+      int randomValue = rand.nextInt(maxValue - minValue + 1) + minValue;
       uniqueNumbers.add(randomValue);
     }
 
@@ -95,7 +95,7 @@ public class BinarySearchTree {
     System.out.print("Enter the size of the array: ");
     int setSize = scanner.nextInt();
     System.out.print("Do you want to manual insert or random generated?" +
-        "\n[Press: \"0\" Manual | \"1\" Generated]\nInput: ");
+        "\n[Press: \"0\" Manual | \"1\" Generated \"ANY KEY\"Exit.]\nInput: ");
     byte userChoice = scanner.nextByte();
 
     if (userChoice == 0) {

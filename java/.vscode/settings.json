@@ -9,7 +9,8 @@
         "DATA_SEARCH/lib",
         "ACTIVITY/src",
         "ACTIVITY/lib",
-        "Reusable/lib"
+        "Reusable/lib",
+        "random"
     ],
     "java.project.referencedLibraries": [
         "lib/**/*.jar",

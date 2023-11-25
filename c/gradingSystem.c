@@ -9,7 +9,7 @@ typedef struct {
   uint8_t max;
 } Grade;
 
-uint8_t grade_input(uint8_t *grade) {
+uint8_t grade_input(uint8_t *restrict grade) {
   int result;
 
   do {

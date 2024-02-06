@@ -119,52 +119,6 @@ class mid_Act2 {
         hospital.addPatient(patient3);
         hospital.addPatient(patient4);
 
-        /*
-         * System.out.print("Enter the number of patients: ");
-         * int numPatients = sc.nextInt();
-         * 
-         * for (int i = 0; i < numPatients; i++) {
-         * sc.nextLine();
-         * System.out.print("Enter patient name: ");
-         * String name = sc.nextLine();
-         * 
-         * System.out.print("Enter admission date (yyyy mm dd): ");
-         * int year = sc.nextInt();
-         * int month = sc.nextInt();
-         * int day = sc.nextInt();
-         * Date admissionDate = new Date(year, month, day);
-         * 
-         * System.out.print("Enter illness: ");
-         * String illness = sc.next();
-         * 
-         * System.out.print("Enter release date (yyyy mm dd): ");
-         * year = sc.nextInt();
-         * month = sc.nextInt();
-         * day = sc.nextInt();
-         * Date releaseDate = new Date(year, month, day);
-         * 
-         * System.out.print("Is this a pediatric patient? (y/n): ");
-         * String isPediatric = sc.next();
-         * 
-         * if (isPediatric.equalsIgnoreCase("y") || isPediatric.equalsIgnoreCase("yes"))
-         * {
-         * System.out.print("Enter age: ");
-         * int age = sc.nextInt();
-         * 
-         * PediatricPatient patient = new PediatricPatient(
-         * name, admissionDate, illness, releaseDate, age);
-         * hospital.addPatient(patient);
-         * } else if (isPediatric.equalsIgnoreCase("n") ||
-         * isPediatric.equalsIgnoreCase("no")) {
-         * Patient patient = new Patient(
-         * name, admissionDate, illness, releaseDate);
-         * hospital.addPatient(patient);
-         * } else {
-         * return;
-         * }
-         * }
-         */
-
         System.out.println("All Patients:");
         hospital.displayAllPatients();
 

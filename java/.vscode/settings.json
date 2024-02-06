@@ -10,7 +10,7 @@
         "ACTIVITY/src",
         "ACTIVITY/lib",
         "Reusable/lib",
-        "random"
+        "SY_2022-2023"
     ],
     "java.project.referencedLibraries": [
         "lib/**/*.jar",

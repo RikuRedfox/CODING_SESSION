@@ -1,7 +1,8 @@
-Dart
-C/C++
-Python
-Java
+- Dart
+- C/C++
+- Python
+- Java
+
 <details>
 <summary><h1>Getting Started with Create React App</h1></summary>
 

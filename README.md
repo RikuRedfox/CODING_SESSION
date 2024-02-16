@@ -3,7 +3,7 @@ C/C++
 Python
 Java
 <details>
-<summary># Getting Started with Create React App</summary>
+<summary><h1>Getting Started with Create React App</h1></summary>
 
 ## Available Scripts
 
